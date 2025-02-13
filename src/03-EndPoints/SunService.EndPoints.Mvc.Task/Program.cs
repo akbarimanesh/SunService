@@ -1,0 +1,79 @@
+using Framework;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SunService.Domain.AppServices.SunServices.HService;
+using SunService.Domain.Core.SunServices.BaseEntities.Data;
+using SunService.Domain.Core.SunServices.HService.Data;
+using SunService.Domain.Core.SunServices.UserS.Data;
+using SunService.Domain.Core.SunServices.UserS.Entities;
+using SunService.Domain.Core.Task.Configs;
+using SunService.Infra.Data.Db.SqlServer.Ef.Common;
+using SunService.Infra.Data.Repos.Ef.SunServices.BaseEntities;
+using SunService.Infra.Data.Repos.Ef.SunServices.HService;
+using SunService.Infra.Data.Repos.Ef.SunServices.UserS;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+#region Configuration
+
+var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+var siteSettings = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
+builder.Services.AddSingleton(siteSettings);
+
+#endregion
+builder.Services.AddControllersWithViews();
+builder.Services.AddIdentity<User, IdentityRole<int>>(option =>
+{
+    option.SignIn.RequireConfirmedAccount = false;
+    option.Password.RequireDigit = false;
+    option.Password.RequiredLength = 6;
+    option.Password.RequireNonAlphanumeric = false;
+    option.Password.RequireUppercase = false;
+    option.Password.RequireLowercase = false;
+
+    option.User.RequireUniqueEmail = true;
+
+})
+
+   .AddRoles<IdentityRole<int>>()
+   .AddErrorDescriber<PersianIdentityErrorDescriber>()
+   .AddEntityFrameworkStores<AppDbContext>();
+
+#region Register Services
+builder.Services.AddScoped<IBaseEntitiesRepository, BaseEntitiesRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IHomeServiceRepository, HomeServiceRepository>();
+builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+builder.Services.AddScoped<IorderRepository, orderRepository>();
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(siteSettings.ConnectionStrings.SqlConnection));
+#endregion
+
+var app = builder.Build();
+
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseAuthentication();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

@@ -1,0 +1,16 @@
+﻿using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.HService.Entities;
+
+
+namespace SunService.Domain.Core.SunServices.HService.Data
+{
+    public interface ICategoryRepository
+    {
+       
+        public Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken);
+        public Task<Category> GetCategoryById(int id, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task CreateCategory(Category category, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task DeleteCategory(int id, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task UpdateCategory(Category category, CancellationToken cancellationToken);
+    }
+}

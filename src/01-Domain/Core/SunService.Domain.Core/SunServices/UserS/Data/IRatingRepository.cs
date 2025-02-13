@@ -1,0 +1,21 @@
+﻿using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.DTOs;
+using SunService.Domain.Core.SunServices.UserS.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SunService.Domain.Core.SunServices.UserS.Data
+{
+    public interface IRatingRepository
+    {
+        public Task<List<RatingDto>> GetAllRating(CancellationToken cancellationToken);
+        public Task<Rating> GetRatingById(int id, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task CreateRating(Rating rating, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task DeleteRating(int id, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task UpdateRating(Rating rating, CancellationToken cancellationToken);
+    }
+}
