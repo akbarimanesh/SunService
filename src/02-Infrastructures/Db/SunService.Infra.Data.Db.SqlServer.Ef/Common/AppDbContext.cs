@@ -32,8 +32,8 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Common
            
             UserConfigurations.SeedUsers(modelBuilder);
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<Customer>().ToTable("Customers"); 
-            //modelBuilder.Entity<Expert>().ToTable("Experts"); 
+            modelBuilder.Entity<Customer>().ToTable("Customers"); 
+            modelBuilder.Entity<Expert>().ToTable("Experts"); 
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }

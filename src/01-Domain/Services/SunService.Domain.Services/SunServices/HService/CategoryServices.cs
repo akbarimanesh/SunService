@@ -1,0 +1,47 @@
+﻿using SunService.Domain.Core.SunServices.HService.Data;
+using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.HService.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SunService.Domain.Services.SunServices.HService
+{
+    public class CategoryServices : ICategoryServices
+    {
+        private readonly ICategoryRepository _CategoryRepository;
+
+        public CategoryServices(ICategoryRepository categoryRepository)
+        {
+            _CategoryRepository = categoryRepository;
+        }
+
+        public async Task CreateCategory(Category category, CancellationToken cancellationToken)
+        {
+            await _CategoryRepository.CreateCategory(category, cancellationToken);
+        }
+
+        public async Task DeleteCategory(int id, CancellationToken cancellationToken)
+        {
+            await _CategoryRepository.DeleteCategory(id, cancellationToken);
+        }
+
+        public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
+        {
+            return await _CategoryRepository.GetAllCategories(cancellationToken);
+        }
+
+        public async Task<Category> GetCategoryById(int id, CancellationToken cancellationToken)
+        {
+            return await _CategoryRepository.GetCategoryById(id, cancellationToken);
+        }
+
+        public async Task UpdateCategory(Category category, CancellationToken cancellationToken)
+        {
+            await UpdateCategory(category, cancellationToken);
+        }
+    }
+}

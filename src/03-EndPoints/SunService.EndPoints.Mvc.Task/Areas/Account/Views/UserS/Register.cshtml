@@ -1,0 +1,98 @@
+﻿@using SunService.Domain.Core.SunServices.BaseEntities.AppServices
+@using SunService.Domain.Core.SunServices.UserS.Enums
+@using SunService.EndPoints.Mvc.Task.Areas.Account.Models
+@{
+    Layout = "_Layout";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "ثبت نام ";
+}
+@inject IBaseDataAppService BaseDataAppService;
+<div class="page">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+    @await Html.PartialAsync("_TitlePage")
+    <div class="user-area pt-100 pb-70">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- مرکز چین کردن ستون -->
+                <div class="col-lg-6 d-flex justify-content-center">
+                    <!-- تنظیم ستون وسط -->
+                    <div class="user-all-form w-100">
+                        <div class="contact-form">
+                            <h3 class="text-center"> ثبت نام</h3> <!-- عنوان وسط چین -->
+                <div class="bar"></div>
+                <form id="contactForm" method="post" asp-area="Account" asp-controller="UserS" asp-action="Register">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>نام کاربری</label>
+                                <input type="text" asp-for="Username" class="form-control" required data-error="لطفا نام کاربری خود را وارد کنید">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>رمز عبور</label>
+                                <input class="form-control" type="password" asp-for="Password">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label> تکرار رمز عبور</label>
+                                <input class="form-control" type="password" asp-for="ConfirmPassword">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                            <label>شهر</label>
+                                <select asp-for="cityId" class="form-control">
+                                    <option value="">----</option>
+                                    @foreach (var city in await BaseDataAppService.GetCities(default))
+                                    {
+                                        <option value="@city.Id">@city.Title</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                            <label>نقش</label>
+                                <select placeholder="نقش" class="form-control" asp-for="Role" asp-items="Html.GetEnumSelectList<RoleEnum>()">
+                                    <option value="">----</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 text-center">
+                            <button type="submit" class="default-btn">
+                                ثبت نام
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+        </div>
+        </div>
+        
+@section Scripts
+        {
+    <partial name="_ValidationScriptsPartial" />
+}

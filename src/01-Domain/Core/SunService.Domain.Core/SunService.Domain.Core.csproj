@@ -7,15 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SunServices\BaseEntities\AppServices\" />
     <Folder Include="SunServices\BaseEntities\DTOs\" />
     <Folder Include="SunServices\BaseEntities\Enums\" />
-    <Folder Include="SunServices\BaseEntities\Services\" />
     <Folder Include="SunServices\HService\AppServices\" />
-    <Folder Include="SunServices\HService\Services\" />
     <Folder Include="SunServices\HService\Result\" />
-    <Folder Include="SunServices\UserS\AppServices\" />
-    <Folder Include="SunServices\UserS\Services\" />
   </ItemGroup>
 
   <ItemGroup>

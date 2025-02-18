@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SunServices\BaseEntities\" />
-    <Folder Include="SunServices\HService\" />
-    <Folder Include="SunServices\UserS\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\SunService.Domain.Core\SunService.Domain.Core.csproj" />
   </ItemGroup>
 

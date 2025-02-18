@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SunServices\BaseEntities\" />
     <Folder Include="SunServices\HService\" />
-    <Folder Include="SunServices\UserS\" />
   </ItemGroup>
 
   <ItemGroup>

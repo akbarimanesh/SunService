@@ -1,12 +1,23 @@
 using Framework;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using SunService.Domain.AppServices.SunServices.BaseEntities;
 using SunService.Domain.AppServices.SunServices.HService;
+using SunService.Domain.AppServices.SunServices.UserS;
+using SunService.Domain.Core.SunServices.BaseEntities.AppServices;
 using SunService.Domain.Core.SunServices.BaseEntities.Data;
+using SunService.Domain.Core.SunServices.BaseEntities.Services;
 using SunService.Domain.Core.SunServices.HService.Data;
+using SunService.Domain.Core.SunServices.HService.Services;
+using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.Data;
 using SunService.Domain.Core.SunServices.UserS.Entities;
+using SunService.Domain.Core.SunServices.UserS.Services;
 using SunService.Domain.Core.Task.Configs;
+using SunService.Domain.Services.SunServices.BaseEntities;
+using SunService.Domain.Services.SunServices.HService;
+using SunService.Domain.Services.SunServices.UserS;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using SunService.Infra.Data.Repos.Ef.SunServices.BaseEntities;
 using SunService.Infra.Data.Repos.Ef.SunServices.HService;
@@ -51,12 +62,29 @@ builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+builder.Services.AddScoped<IBaseEntitiesServices, BaseEntitiesServices>();
+builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+builder.Services.AddScoped<ISubCategoryServices, SubCategoryServices>();
+builder.Services.AddScoped<IHomeServiceServices, HomeServiceServices>();
+builder.Services.AddScoped<IOfferServices, OfferServices>();
+builder.Services.AddScoped<IorderServices, orderServices>();
+builder.Services.AddScoped<ICustomerServices, CustomerServices>();
+builder.Services.AddScoped<IExpertServices, ExpertServices>();
+builder.Services.AddScoped<IRatingServices, RatingServices>();
+builder.Services.AddScoped<IUserSAppServices, UserSAppServices>();
+builder.Services.AddScoped<IBaseDataAppService, BaseDataAppService>();
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(siteSettings.ConnectionStrings.SqlConnection));
 #endregion
 
 var app = builder.Build();
 
-
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".svg"] = "image/svg+xml";
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -71,7 +99,11 @@ app.UseAuthentication();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
