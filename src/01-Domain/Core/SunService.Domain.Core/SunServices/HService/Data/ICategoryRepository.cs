@@ -9,8 +9,9 @@ namespace SunService.Domain.Core.SunServices.HService.Data
        
         public Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken);
         public Task<Category> GetCategoryById(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task CreateCategory(Category category, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task CreateCategory(CategoryDto category, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteCategory(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task UpdateCategory(Category category, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task UpdateCategory(CategoryDto category, CancellationToken cancellationToken);
+        public Task<bool> GetTitleCategory(string categoyTitle, CancellationToken cToken);
     }
 }

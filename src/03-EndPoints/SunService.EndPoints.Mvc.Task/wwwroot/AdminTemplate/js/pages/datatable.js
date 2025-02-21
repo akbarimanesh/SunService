@@ -1,6 +1,6 @@
-var tableMain = $('#data-table').DataTable({
+var tableMain = $('#subcategory-table').DataTable({
     "columnDefs": [{
-        "targets": [0,5],
+        "targets": [0,3],
         "orderable": false
     }],
     "aaSorting": [],
@@ -19,6 +19,47 @@ var tableMain = $('#data-table').DataTable({
     },
 });
 
+var tableMain = $('#category-table').DataTable({
+    "columnDefs": [{
+        "targets": [0, 3],
+        "orderable": false
+    }],
+    "aaSorting": [],
+    "pageLength": 25,
+    "drawCallback": function () {
+        var topestStatus = $("#btn-check-all-toggle").prop("checked");
+        $("table td input[type='checkbox']").each(function () {
+            currentStatus = $(this).prop("checked");
+            if (topestStatus != currentStatus) {
+                console.log("Reversed");
+                $("#btn-check-all-toggle").prop("checked", currentStatus);
+            }
+        });
+
+        Modiran.initiCkeck();
+    },
+});
+
+var tableMain = $('#homeservice-table').DataTable({
+    "columnDefs": [{
+        "targets": [0, 6],
+        "orderable": false
+    }],
+    "aaSorting": [],
+    "pageLength": 25,
+    "drawCallback": function () {
+        var topestStatus = $("#btn-check-all-toggle").prop("checked");
+        $("table td input[type='checkbox']").each(function () {
+            currentStatus = $(this).prop("checked");
+            if (topestStatus != currentStatus) {
+                console.log("Reversed");
+                $("#btn-check-all-toggle").prop("checked", currentStatus);
+            }
+        });
+
+        Modiran.initiCkeck();
+    },
+});
 $(window).on( 'resize', function () {
     $('#data-table').css("width", "100%");
 } );

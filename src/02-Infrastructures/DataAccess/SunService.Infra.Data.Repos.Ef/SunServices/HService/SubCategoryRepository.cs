@@ -39,21 +39,27 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             {
                 Id = x.Id,
                 Title = x.Title,
-                
+                CategoryName=x.Category.Title,
 
             }).ToListAsync(cancellationToken);
         }
 
         public async Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.SubCategories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.SubCategories.AsNoTracking().Include(s => s.Category).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task UpdateSubCategory(SubCategory subcategory, CancellationToken cancellationToken)
+        public async Task<bool> GetTitleSubCategory(string subcategoyTitle, CancellationToken cToken)
         {
-            var subcategory1 = await _appDbContext.Categories.FirstOrDefaultAsync(x => x.Id == subcategory.Id, cancellationToken);
+            return await _appDbContext.SubCategories.AsNoTracking().AnyAsync(t => t.Title == subcategoyTitle);
+        }
+
+        public async Task UpdateSubCategory(SubCategoryDto subcategory, CancellationToken cancellationToken)
+        {
+            var subcategory1 = await _appDbContext.SubCategories.FirstOrDefaultAsync(x => x.Id == subcategory.Id, cancellationToken);
             subcategory1.Id = subcategory.Id;
             subcategory1.Title = subcategory.Title;
+           
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

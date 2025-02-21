@@ -14,6 +14,7 @@ namespace SunService.Domain.Core.SunServices.HService.Services
         public Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteSubCategory(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task UpdateSubCategory(SubCategory subcategory, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task UpdateSubCategory(SubCategoryDto subcategory, CancellationToken cancellationToken);
+        public Task<bool> GetTitleSubCategory(string subcategoyTitle, CancellationToken cToken);
     }
 }

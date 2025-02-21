@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SunService.Domain.Services.SunServices.HService
@@ -19,7 +20,7 @@ namespace SunService.Domain.Services.SunServices.HService
             _HomeServiceRepository = homeServiceRepository;
         }
 
-        public async Task CreateHomeService(HomeService homeService, CancellationToken cancellationToken)
+        public async Task CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
         {
            await _HomeServiceRepository.CreateHomeService(homeService, cancellationToken);  
         }
@@ -39,7 +40,12 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _HomeServiceRepository.GetHomeServiceById(id, cancellationToken);  
         }
 
-        public async Task UpdateHomeService(HomeService homeService, CancellationToken cancellationToken)
+        public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)
+        {
+            return await _HomeServiceRepository.GetTitleHomeService(homeServiceTitle, cToken);
+        }
+
+        public async Task UpdateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
         {
             await _HomeServiceRepository.UpdateHomeService(homeService, cancellationToken); 
         }

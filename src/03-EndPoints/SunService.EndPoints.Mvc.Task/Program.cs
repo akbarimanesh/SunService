@@ -8,6 +8,7 @@ using SunService.Domain.AppServices.SunServices.UserS;
 using SunService.Domain.Core.SunServices.BaseEntities.AppServices;
 using SunService.Domain.Core.SunServices.BaseEntities.Data;
 using SunService.Domain.Core.SunServices.BaseEntities.Services;
+using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.Services;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
@@ -43,7 +44,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(option =>
     option.Password.RequireNonAlphanumeric = false;
     option.Password.RequireUppercase = false;
     option.Password.RequireLowercase = false;
-
+   
     option.User.RequireUniqueEmail = true;
 
 })
@@ -73,10 +74,28 @@ builder.Services.AddScoped<IExpertServices, ExpertServices>();
 builder.Services.AddScoped<IRatingServices, RatingServices>();
 builder.Services.AddScoped<IUserSAppServices, UserSAppServices>();
 builder.Services.AddScoped<IBaseDataAppService, BaseDataAppService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+builder.Services.AddScoped<ISubCategoryServices, SubCategoryServices>();
+builder.Services.AddScoped<ICategoryAppServices, CategoryAppServices>();
+builder.Services.AddScoped<ISubCategoryAppServices, SubCategoryAppServices>();
+builder.Services.AddScoped<IHomeServiceAppServices, HomeServiceAppServices>();
+builder.Services.AddScoped<IHomeServiceServices, HomeServiceServices>();
+builder.Services.AddScoped<IHomeServiceRepository, HomeServiceRepository>();
+
+
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(siteSettings.ConnectionStrings.SqlConnection));
 #endregion
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/UserS/Login";
+    options.AccessDeniedPath = "/Account/UserS/AccessDenied";
 
+});
 var app = builder.Build();
 
 var provider = new FileExtensionContentTypeProvider();
@@ -107,5 +126,7 @@ app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

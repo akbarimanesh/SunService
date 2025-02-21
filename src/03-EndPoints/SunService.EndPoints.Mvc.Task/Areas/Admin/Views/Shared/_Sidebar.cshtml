@@ -8,21 +8,27 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="dashboard.html" class="current">
+                        <a asp-controller="Users" asp-action="Index" class="current">
                             <i class="icon-home"></i>
                             <span>کاربران</span>
                         </a>
                     </li>
                     <li>
-                        <a href="dashboard2.html" class="">
+                        <a asp-controller="HomeService" asp-action="Index" class="current">
                             <i class="icon-home"></i>
                             <span>سرویس ها</span>
                         </a>
                     </li>
                     <li>
-                        <a href="parastoo.html" class="">
+                        <a asp-controller="Category" asp-action="Index" class="current">
                             <i class="icon-home"></i>
                             <span>دسته بندی ها </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="SubCategory" asp-action="Index" class="current">
+                            <i class="icon-home"></i>
+                            <span>زیر دسته بندی ها </span>
                         </a>
                     </li>
                     <li>

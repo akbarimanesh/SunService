@@ -46,6 +46,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
                 City=x.City.Title,
                 Email=x.Email,
                 Mobile=x.Mobile,
+                ImagePath=x.ImagePath,
               
 
             }).ToListAsync(cancellationToken);
@@ -71,7 +72,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             customer1.UserName= customer.UserName;
             customer1.PasswordHash= customer.PasswordHash;
             customer1.Mobile= customer.Mobile;
-           
+           customer1.ImagePath=customer.ImagePath;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

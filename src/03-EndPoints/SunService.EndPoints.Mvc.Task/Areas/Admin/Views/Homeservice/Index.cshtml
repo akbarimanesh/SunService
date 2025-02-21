@@ -1,0 +1,93 @@
+﻿@using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.UserS.DTOs
+@{
+    ViewData["Title"] = "سان سرویس > مدیریت خدمات > لیست خدمات";
+}
+@model List<HomeServiceDto>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="col-lg-12">
+    <div class="portlet box shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    خدمات
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="top-buttons-box mb-2">
+                <a class="btn btn-success" asp-controller="Homeservice" asp-action="Create">
+                    <i class="icon-plus"></i>
+                    افزودن
+                    <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                </a>
+            </div>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="homeservice-table">
+                        <thead>
+                            <tr>
+
+
+                                <th>شناسه</th>
+                                <th>عکس</th>
+                                <th>عنوان</th>
+                                <th>توضیحات</th>
+                                <th>قیمت پایه</th>
+                                
+                                <th>زیردسته</th>
+
+                                <th>عملیات</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var homeservice in Model)
+                            {
+                                <tr>
+
+                                    <td>@homeservice.Id</td>
+
+                                    @if (string.IsNullOrEmpty(homeservice.ImagePath))
+                                    {
+                                        <td><img style="border-radius : 50%" src="~/images/Homeservice/default-Homeservice.jpg" width="80" height="80" class="d-block mx-auto" /></td>
+                                    }
+                                    else
+                                    {
+
+                                        <td><img src="@homeservice.ImagePath" width="80" height="80" style="border-radius : 50%" class="d-block mx-auto"></td>
+                                    }
+
+
+                                    <td>@homeservice.Title</td>
+                                    <td>@homeservice.Description</td>
+                                    <td>@homeservice.BasePrice</td>
+                                    <td>@homeservice.SubCategoryTitle</td>
+                                    
+                                 
+                                    <td>
+                                        <a asp-controller="HomeService" asp-action="Update" asp-route-Id="@homeservice.Id" class="btn btn-info">ویرایش</a>
+                                        <a onclick="return confirm('آیا از حذف این کاربر اطمینان دارید؟')" asp-action="Delete" asp-route-Id="@homeservice.Id" class="btn btn-danger">حذف</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-lg-12 -->
+@section Scripts
+{
+    <script src="~/AdminTemplate/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/AdminTemplate/js/pages/datatable.js"></script>
+}

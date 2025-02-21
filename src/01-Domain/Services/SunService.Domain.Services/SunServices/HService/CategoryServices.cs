@@ -19,7 +19,7 @@ namespace SunService.Domain.Services.SunServices.HService
             _CategoryRepository = categoryRepository;
         }
 
-        public async Task CreateCategory(Category category, CancellationToken cancellationToken)
+        public async Task CreateCategory(CategoryDto category, CancellationToken cancellationToken)
         {
             await _CategoryRepository.CreateCategory(category, cancellationToken);
         }
@@ -39,9 +39,14 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _CategoryRepository.GetCategoryById(id, cancellationToken);
         }
 
-        public async Task UpdateCategory(Category category, CancellationToken cancellationToken)
+        public async Task<bool> GetTitleCategory(string categoyTitle, CancellationToken cToken)
         {
-            await UpdateCategory(category, cancellationToken);
+            return await _CategoryRepository.GetTitleCategory(categoyTitle, cToken);
+        }
+
+        public async Task UpdateCategory(CategoryDto category, CancellationToken cancellationToken)
+        {
+            await _CategoryRepository.UpdateCategory(category, cancellationToken);
         }
     }
 }

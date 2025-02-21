@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.BaseEntities.Services
     public interface IBaseEntitiesServices
     {
         Task<List<City>> GetCities(CancellationToken cancellationToken);
+        Task<string> UploadImage(IFormFile FormFile, string folderName, CancellationToken cancellationToken);
         public Task<City> GetCityById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateCity(City city, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteCity(int id, CancellationToken cancellationToken);

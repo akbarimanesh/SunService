@@ -11,6 +11,11 @@ namespace SunService.Domain.Core.SunServices.UserS.AppServices
 {
     public interface IUserSAppServices
     {
+        public Task<int> GetCount(CancellationToken cancellationToken);
+        public Task<List<UserSummaryDto>> GetAll(CancellationToken cancellationToken);
+        public Task<UserDto> GetById(int id, CancellationToken cancellationToken);
+        public Task<Result> Update(UserDto model, CancellationToken cancellationToken);
+        public Task<Result> Delete(int id, CancellationToken cancellationToken);
         public Task<IdentityResult> Register(UserDto model, CancellationToken cToken);
         public Task<IdentityResult> Login(string username, string password, CancellationToken cToken);
     }

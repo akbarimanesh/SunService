@@ -20,9 +20,18 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext = appDbContext;
         }
 
-        public async Task CreateHomeService(HomeService homeService, CancellationToken cancellationToken)
+        public async Task CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
         {
-            await _appDbContext.HomeServices.AddAsync(homeService, cancellationToken);
+            var homeService1 = new HomeService
+            {
+                Title = homeService.Title,
+                Description= homeService.Description,
+                BasePrice = homeService.BasePrice,
+                SubCategoryId= homeService.SubCategoryId,
+                ImagePath = homeService.ImagePath
+
+            };
+            await _appDbContext.HomeServices.AddAsync(homeService1, cancellationToken);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -37,24 +46,29 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         {
             return await _appDbContext.HomeServices.AsNoTracking().Select(x => new HomeServiceDto()
             {
-                
+                Id=x.Id,
                 Title = x.Title,
                 Description = x.Description,
                 BasePrice = x.BasePrice,
                 ImagePath = x.ImagePath,
                 NumberVisits = x.NumberVisits,
-                SubCategoryTitle=x.SubCategory.Title
-             
+                SubCategoryTitle=x.SubCategory.Title,
+             SubCategoryId=x.SubCategoryId
 
             }).ToListAsync(cancellationToken);
         }
 
         public async Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.HomeServices.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.HomeServices.AsNoTracking().Include(h => h.SubCategory).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task UpdateHomeService(HomeService homeService, CancellationToken cancellationToken)
+        public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)
+        {
+            return await _appDbContext.HomeServices.AsNoTracking().AnyAsync(t => t.Title == homeServiceTitle);
+        }
+
+        public async Task UpdateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
         {
             var homeServicey1 = await _appDbContext.HomeServices.FirstOrDefaultAsync(x => x.Id == homeService.Id, cancellationToken);
             homeServicey1.Id = homeService.Id;
@@ -62,8 +76,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             homeServicey1.Description = homeService.Description;
             homeServicey1.BasePrice = homeService.BasePrice;
             homeServicey1.ImagePath = homeService.ImagePath;
-            homeServicey1.NumberVisits = homeService.NumberVisits;
-            homeServicey1.SubCategory= homeService.SubCategory;
+          
+         
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

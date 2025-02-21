@@ -1,0 +1,142 @@
+﻿@using SunService.Domain.AppServices.SunServices.BaseEntities
+@using SunService.Domain.Core.SunServices.BaseEntities.AppServices
+@using SunService.EndPoints.Mvc.Task.Areas.Account.Models
+@using SunService.EndPoints.Mvc.Task.Areas.Admin.Models
+@{
+    ViewData["Title"] = "سان سرویس > مدیریت کاربران > ایجاد کاربران";
+
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model CreateViewModel
+@inject IBaseDataAppService BaseDataAppService;
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+<div class="col-lg-12">
+    <div class="portlet box shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    کاربران
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="top-buttons-box mb-2">
+            </div>
+            <div class="row">
+                <form enctype="multipart/form-data" id="simple-form" role="form" method="post">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="FirstName" asp-controller="Users" asp-action="Create" class="form-control" type="text" placeholder="نام">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="LastName" asp-controller="Users" asp-action="Create" class="form-control" type="text" placeholder="نام خانوادگی">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="Mobile" asp-controller="Users" asp-action="Create" class="form-control" type="text" placeholder="شماره موبایل" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="Email" asp-controller="Users" asp-action="Create" class="form-control" type="email" placeholder="آدرس ایمیل" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="Address" asp-controller="Users" asp-action="Create" class="form-control" type="text" placeholder="آدرس" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="Username" asp-controller="Users" asp-action="Create" class="form-control" type="text" placeholder="نام کاربری" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input asp-for="Password" asp-controller="Users" asp-action="Create" class="form-control" type="password" placeholder="کلمه عبور" />
+                            </div>
+                        </div>
+                       
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select asp-for="cityId" asp-controller="Users" asp-action="Create" class="form-select">
+                                    @foreach (var city in await BaseDataAppService.GetCities(default))
+                                    {
+                                        <option value="@city.Id">@city.Title</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select class="form-control" asp-for="RoleId" asp-items="Model.Roles">
+                                    <option value="0" disabled selected>----</option>
+                                </select>
+                            </div>
+                        </div>
+                     @*    <div class="form-group">
+                            <div class="input-group">
+                                <label>کاربر فعال شود؟</label>
+                                <input asp-for="Statuse" class="form-check-input" type="checkbox" />
+                            </div>
+                        </div> *@
+
+                        <div class="form-group relative">
+                            <input asp-for="ProfileImgFile" type="file" class="form-control">
+                            <label>آپلود عکس</label>
+                            <div class="input-group round">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success">
+                                        <i class="icon-picture"></i>
+                                        آپلود عکس
+                                        <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                                    </button>
+                                </span>
+                            </div><!-- /.input-group -->
+                            <div class="help-block"></div>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-check"></i>
+                            ذخیره
+                        </button>
+                        <a asp-action="Index" class="btn btn-warning">
+                            بازگشت
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-lg-12 -->
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

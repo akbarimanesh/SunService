@@ -4,6 +4,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
 {
     public class AccessDeniedController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

@@ -1,0 +1,85 @@
+﻿@using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.UserS.DTOs
+@{
+    ViewData["Title"] = "سان سرویس > مدیریت دسته بندی ها > لیست دسته بندی ها";
+}
+@model List<CategoryDto>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="col-lg-12">
+    <div class="portlet box shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    دسته بندی ها
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="top-buttons-box mb-2">
+                <a class="btn btn-success" asp-controller="Category" asp-action="Create">
+                    <i class="icon-plus"></i>
+                    افزودن
+                    <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                </a>
+            </div>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="category-table">
+                        <thead>
+                            <tr>
+                               
+
+                                <th>شناسه</th>
+                                <th>عکس</th>
+                                <th>عنوان</th>
+                             
+                                <th>عملیات</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in Model)
+                            {
+                                <tr>
+                                   
+                                    <td>@category.Id</td>
+                                  
+                                     @if (string.IsNullOrEmpty(category.ImagePath))
+                                    {
+                                        <td><img style="border-radius : 50%" src="~/images/Category/default-category.jpg" width="80" height="80" class="d-block mx-auto" /></td>
+                                    }
+                                    else
+                                    {
+                                      
+                                        <td><img src="@category.ImagePath" width="80" height="80" style="border-radius : 50%" class="d-block mx-auto"></td>
+                                    }
+
+
+                                
+                                    <td>@category.Title</td>
+                                   <td>
+                                        <a asp-controller="Category" asp-action="Update" asp-route-Id="@category.Id" class="btn btn-info">ویرایش</a>
+                                        <a onclick="return confirm('آیا از حذف این کاربر اطمینان دارید؟')" asp-action="Delete" asp-route-Id="@category.Id" class="btn btn-danger">حذف</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-lg-12 -->
+@section Scripts
+{
+    <script src="~/AdminTemplate/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/AdminTemplate/js/pages/datatable.js"></script>
+}

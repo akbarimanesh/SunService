@@ -12,8 +12,9 @@ namespace SunService.Domain.Core.SunServices.HService.Data
     {
         public Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken);
         public Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task CreateHomeService(HomeService homeService, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteHomeService(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task UpdateHomeService(HomeService homeService, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task UpdateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken);
+        public Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken);
     }
 }

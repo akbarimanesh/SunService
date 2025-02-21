@@ -20,9 +20,16 @@ namespace SunService.Domain.AppServices.SunServices.HService
             _appDbContext = appDbContext;
         }
 
-        public async Task CreateCategory(Category category, CancellationToken cancellationToken)
+        public async Task CreateCategory(CategoryDto category, CancellationToken cancellationToken)
         {
-            await _appDbContext.Categories.AddAsync(category,cancellationToken);
+            var category1 = new Category
+            {
+                Title = category.Title,
+                ImagePath = category.ImagePath,
+                
+            };
+
+            await _appDbContext.Categories.AddAsync(category1,cancellationToken);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -50,11 +57,17 @@ namespace SunService.Domain.AppServices.SunServices.HService
             return await _appDbContext.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
         }
 
-        public async Task UpdateCategory(Category category, CancellationToken cancellationToken)
+        public async Task<bool> GetTitleCategory(string categoyTitle, CancellationToken cToken)
+        {
+            return await _appDbContext.Categories.AsNoTracking().AnyAsync(t => t.Title == categoyTitle);
+        }
+
+        public async Task UpdateCategory(CategoryDto category, CancellationToken cancellationToken)
         {
             var category1 = await _appDbContext.Categories.FirstOrDefaultAsync(x => x.Id == category.Id,cancellationToken);
             category1.Id = category.Id;
             category1.Title = category.Title;
+            category1.ImagePath = category.ImagePath;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

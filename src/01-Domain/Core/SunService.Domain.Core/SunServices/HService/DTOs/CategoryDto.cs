@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Http;
+using SunService.Domain.Core.SunServices.HService.Entities;
 namespace SunService.Domain.Core.SunServices.HService.DTOs
 {
     public class CategoryDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
+       
+        public IFormFile? ProfileImgFile { get; set; }
     }
 }

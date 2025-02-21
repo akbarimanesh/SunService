@@ -44,8 +44,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
                 City = x.City.Title,
                 Email = x.Email,
                 Mobile = x.Mobile,
-                Biography = x.Biography
-                
+                Biography = x.Biography,
+                ImagePath = x.ImagePath,
 
             }).ToListAsync(cancellationToken);
         }
@@ -71,7 +71,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             expert1.PasswordHash = expert.PasswordHash;
             expert1.Mobile = expert.Mobile;
             expert1.Biography=expert.Biography;
-
+            expert1.ImagePath= expert.ImagePath;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

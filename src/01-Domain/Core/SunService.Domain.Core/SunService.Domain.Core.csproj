@@ -9,11 +9,11 @@
   <ItemGroup>
     <Folder Include="SunServices\BaseEntities\DTOs\" />
     <Folder Include="SunServices\BaseEntities\Enums\" />
-    <Folder Include="SunServices\HService\AppServices\" />
     <Folder Include="SunServices\HService\Result\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.11" />
   </ItemGroup>

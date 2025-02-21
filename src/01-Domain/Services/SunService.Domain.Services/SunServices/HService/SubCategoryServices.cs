@@ -38,7 +38,12 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _SubCategoryRepository.GetSubCategoryById(id, cancellationToken);
         }
 
-        public async Task UpdateSubCategory(SubCategory subcategory, CancellationToken cancellationToken)
+        public async Task<bool> GetTitleSubCategory(string subcategoyTitle, CancellationToken cToken)
+        {
+            return await _SubCategoryRepository.GetTitleSubCategory(subcategoyTitle, cToken);
+        }
+
+        public async Task UpdateSubCategory(SubCategoryDto subcategory, CancellationToken cancellationToken)
         {
             await _SubCategoryRepository.UpdateSubCategory(subcategory, cancellationToken); 
         }
