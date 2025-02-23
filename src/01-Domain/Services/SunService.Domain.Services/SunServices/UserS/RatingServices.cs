@@ -18,6 +18,11 @@ namespace SunService.Domain.Services.SunServices.UserS
             _RatingRepository = ratingRepository;
         }
 
+        public async Task Confirmation(int id, CancellationToken cToken)
+        {
+            await _RatingRepository.Confirmation(id, cToken);
+        }
+
         public async Task CreateRating(Rating rating, CancellationToken cancellationToken)
         {
             await _RatingRepository.CreateRating(rating, cancellationToken);
@@ -36,6 +41,11 @@ namespace SunService.Domain.Services.SunServices.UserS
         public async Task<Rating> GetRatingById(int id, CancellationToken cancellationToken)
         {
             return await _RatingRepository.GetRatingById(id, cancellationToken);
+        }
+
+        public async  Task Rejected(int id, CancellationToken cToken)
+        {
+            await _RatingRepository.Rejected(id, cToken);
         }
 
         public async Task UpdateRating(Rating rating, CancellationToken cancellationToken)

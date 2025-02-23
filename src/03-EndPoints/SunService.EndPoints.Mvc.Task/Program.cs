@@ -85,6 +85,9 @@ builder.Services.AddScoped<ISubCategoryAppServices, SubCategoryAppServices>();
 builder.Services.AddScoped<IHomeServiceAppServices, HomeServiceAppServices>();
 builder.Services.AddScoped<IHomeServiceServices, HomeServiceServices>();
 builder.Services.AddScoped<IHomeServiceRepository, HomeServiceRepository>();
+builder.Services.AddScoped<IorderAppServices, orderAppServices>();
+builder.Services.AddScoped<IOfferAppServices, OfferAppServices>();
+builder.Services.AddScoped<IRatingAppServices, RatingAppServices>();
 
 
 

@@ -1,0 +1,74 @@
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.HService.Enums
+@using SunService.EndPoints.Mvc.Task.Areas.Admin.Models
+@model StatusUpdateModel;
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<div class="col-lg-12">
+    <div class="portlet box shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    سفارش ها
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="top-buttons-box mb-2">
+            </div>
+            <div class="row">
+                <form asp-action="Update" enctype="multipart/form-data" id="simple-form" role="form" method="post">
+                    @* <img style="border-radius : 50%" src="@Model.User.ImagePath" width="80" height="80" /> *@
+                    <hr />
+                    <input type="hidden" asp-for="OrderId" />
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select placeholder="انتخاب وضعیت" asp-for="Status" asp-items="Html.GetEnumSelectList<OrderHomeServiceStatusEnum>()"><option value="">انتخاب وضعیت</option></select>
+                                
+                            </select>
+                        </div>
+
+
+                       
+                       
+
+                    </div>
+                    <hr>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-check"></i>
+                            ذخیره
+                        </button>
+                        <a asp-action="Index" class="btn btn-warning">
+                            بازگشت
+                        </a>
+                    </div>
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+                    }
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                    }
+
+                </form>
+            </div>
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!
+
+

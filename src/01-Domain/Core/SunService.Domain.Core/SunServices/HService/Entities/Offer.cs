@@ -11,6 +11,7 @@ namespace SunService.Domain.Core.SunServices.HService.Entities
         public int ExpertId { get; set; }
         public int PriceOffer { get; set; }
         public DateTime OfferDate {get;set; }
+        public DateTime CompletionDate {get;set; }
         public string Description { get; set; }
         public bool StateOffer { get; set; } = false;
         public int OrderId { get; set; }

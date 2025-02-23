@@ -18,6 +18,11 @@ namespace SunService.Domain.Services.SunServices.UserS
             _userRepository = userRepository;
         }
 
+        public async Task ActiveUser(int id, CancellationToken cToken)
+        {
+            await _userRepository.ActiveUser(id, cToken);
+        }
+
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             await _userRepository.Delete(id, cancellationToken);
@@ -41,6 +46,11 @@ namespace SunService.Domain.Services.SunServices.UserS
         public async Task SaveImageUser(int id, string imagepath, CancellationToken cancellationToken)
         {
             await _userRepository.SaveImageUser(id, imagepath, cancellationToken);  
+        }
+
+        public async Task<bool> StatusUser(string username, CancellationToken cancellationToken)
+        {
+            return  await _userRepository.StatusUser(username, cancellationToken);
         }
 
         public async Task<bool> Update(UserDto model, CancellationToken cancellationToken)

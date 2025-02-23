@@ -2,6 +2,7 @@
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.HService.Enums;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         {
             return await _appDbContext.Orders.AsNoTracking().Select(x => new OrderDto()
             {
-
+                Id = x.Id,
                 HomeServiceTitle = x.HomeService.Title,
                 CustomerFullName = x.Customer.FirstName + " " + x.Expert.LastName,
                 ImplementationDate = x.ImplementationDate,
@@ -54,20 +55,12 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             return await _appDbContext.Orders.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task UpdateOrder(Order order, CancellationToken cancellationToken)
+        public async Task UpdateOrderStatus(int orderId, OrderHomeServiceStatusEnum newStatus, CancellationToken cancellationToken)
         {
-            var order1 = await _appDbContext.Orders.FirstOrDefaultAsync(x => x.Id == order.Id, cancellationToken);
-            order1.Id = order.Id;
-            order1.Description = order.Description;
-            order1.ImplementationDate= order.ImplementationDate;
-            order1.ImplementationTime= order.ImplementationTime;
-            order1.CityId= order.CityId;
-            order1.StateOrder= order.StateOrder;
-            order1.OrderHomeServiceStatus = order.OrderHomeServiceStatus;
-            order1.OfferId= order.OfferId;
-            order1.CustomerId= order.CustomerId;
-            order1.ExpertId= order.ExpertId;
-            order1.HomeServiceId= order.HomeServiceId;
+            var order1 = await _appDbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken);
+            
+            order1.OrderHomeServiceStatus = newStatus;
+            
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

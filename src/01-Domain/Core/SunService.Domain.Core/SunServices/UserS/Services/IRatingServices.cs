@@ -15,5 +15,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Services
         public global::System.Threading.Tasks.Task CreateRating(Rating rating, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteRating(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task UpdateRating(Rating rating, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task Confirmation(int id, CancellationToken cToken);
+        public global::System.Threading.Tasks.Task Rejected(int id, CancellationToken cToken);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.HService.Enums;
 using SunService.Domain.Core.SunServices.HService.Services;
 using System;
 using System.Collections.Generic;
@@ -39,9 +40,9 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _OrderRepository.GetorderById(id, cancellationToken);
         }
 
-        public async Task UpdateOrder(Order order, CancellationToken cancellationToken)
+        public async Task UpdateOrderStatus(int orderId, OrderHomeServiceStatusEnum newStatus, CancellationToken cancellationToken)
         {
-            await _OrderRepository.UpdateOrder(order, cancellationToken);
+            await _OrderRepository.UpdateOrderStatus(orderId, newStatus, cancellationToken);
         }
     }
 }

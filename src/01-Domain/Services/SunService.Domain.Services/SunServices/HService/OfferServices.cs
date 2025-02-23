@@ -29,9 +29,9 @@ namespace SunService.Domain.Services.SunServices.HService
             await _OfferRepository.DeleteOffer(id, cancellationToken);
         }
 
-        public async Task<List<OfferDto>> GetAllOffer(CancellationToken cancellationToken)
+        public async Task<List<OfferDto>> GetAllOffer(int OrderId, CancellationToken cancellationToken)
         {
-           return await _OfferRepository.GetAllOffer(cancellationToken);
+           return await _OfferRepository.GetAllOffer(OrderId, cancellationToken);
         }
 
         public async Task<Offer> GetOfferById(int id, CancellationToken cancellationToken)

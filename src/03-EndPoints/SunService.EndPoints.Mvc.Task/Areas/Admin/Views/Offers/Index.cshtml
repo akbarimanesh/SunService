@@ -1,0 +1,93 @@
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.UserS.DTOs
+@{
+    ViewData["Title"] = "سان سرویس > مدیریت پیشنهادها > لیست پیشنهاد  ";
+}
+@model List<OfferDto>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="col-lg-12">
+    <div class="portlet box shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    پیشنهادها
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            @* <div class="top-buttons-box mb-2">
+                <a class="btn btn-success" asp-controller="Orders" asp-action="Create">
+                    <i class="icon-plus"></i>
+                    افزودن
+                    <div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                </a>
+            </div> *@
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="offer-table">
+                        <thead>
+                            <tr>
+
+
+                                <th>شناسه پیشنهاد</th>
+                                <th>شناسه سفارش</th>
+                                <th>کارشناس </th>
+                                <th>قیمت پیشنهادی</th>
+                                <th>تاریخ پیشنهاد</th>
+                                <th>تاریخ اتمام کار</th>
+                                <th>وضعیت پیشنهاد</th>
+                                
+                               
+                               
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var offer in Model)
+                            {
+                                <tr>
+
+                                    <td>@offer.Id</td>
+                                    <td>@offer.OrderId</td>
+                                    <td>@offer.ExpertFullName </td>
+                                    <td>@offer.PriceOffer </td>
+                                    <td>@offer.OfferDate.ToPersianString("yyyy/MM/dd")</td>
+                                    <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>
+                                   
+                                   <td>
+                                        @if (offer.StateOffer)
+                                        {
+                                            <span class="badge bg-success">پذیرفته شده</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">پذیرفته نشده</span>
+                                        }
+                                        
+                                   </td>
+
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-lg-12 -->
+@section Scripts
+{
+    <script src="~/AdminTemplate/plugins/data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/AdminTemplate/js/pages/datatable.js"></script>
+}
+

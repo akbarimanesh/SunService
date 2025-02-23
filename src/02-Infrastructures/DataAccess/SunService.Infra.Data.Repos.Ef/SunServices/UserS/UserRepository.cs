@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
@@ -18,6 +19,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
         public UserRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+        }
+
+        public async Task ActiveUser(int id, CancellationToken cToken)
+        {
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id, cToken);
+            user.StatusUser = true;
+            await _appDbContext.SaveChangesAsync(cToken);
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
@@ -84,6 +92,14 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
             user.ImagePath = imagepath;
             await _appDbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<bool> StatusUser(string username, CancellationToken cancellationToken)
+        {
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.UserName == username, cancellationToken);
+            bool x = user.StatusUser;
+            await _appDbContext.SaveChangesAsync(cancellationToken);
+            return x;
         }
 
         public async Task<bool> Update(UserDto model, CancellationToken cancellationToken)

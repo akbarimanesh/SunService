@@ -1,4 +1,5 @@
-﻿@using SunService.Domain.Core.SunServices.UserS.DTOs
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.UserS.DTOs
 @{
     ViewData["Title"] = "سان سرویس > مدیریت کاربران > لیست کاربران";
 }
@@ -75,11 +76,28 @@
                                     <td>@user.Mobile</td>
                                     <td>@user.Email</td>
                                     <td>@user.City</td>
-                                    <td>@user.Role</td>
-                                    <td>@user.StatusUser</td>
+                                    <td> @EnumExtensionMethods.GetEnumDisplayName(user.Role)</td>
+
                                     <td>
-                                        <a asp-controller="Users" asp-action="Update" asp-route-Id="@user.Id" class="btn btn-info">ویرایش</a>
-                                        <a onclick="return confirm('آیا از حذف این کاربر اطمینان دارید؟')" asp-action="Delete" asp-route-Id="@user.Id" class="btn btn-danger">حذف</a>
+                                        <form asp-action="ActiveUser" asp-controller="Users" method="post" asp-route-id="@user.Id" value="@user.StatusUser">
+                                            @if (user.StatusUser)
+                                            {
+                                                <button type="submit" class="badge bg-success">فعال</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="badge bg-warning">غیر فعال</button>
+                                            }
+                                            </form>
+
+                                    </td>
+                                   
+                                    <td>
+                                        <a asp-controller="Users" asp-action="Update" asp-route-Id="@user.Id" class="btn btn-info ">
+                                           
+                                            ویرایش
+                                        </a>
+                                        <a onclick="return confirm('آیا از حذف این کاربر اطمینان دارید؟')" asp-action="Delete" asp-route-Id="@user.Id" class="btn btn-danger ">حذف</a>
                                     </td>
                                 </tr>
                             }

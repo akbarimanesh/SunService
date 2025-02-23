@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SunService.Domain.Core.SunServices.UserS.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace SunService.Domain.Core.SunServices.UserS.DTOs
         public int Score { get; set; }
         public string? Comment { get; set; }
         public DateTime CreatedAt { get; set; }
+        public StatuseRating Status { get; set; } = StatuseRating.apending;
     }
 }

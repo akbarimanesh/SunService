@@ -1,6 +1,7 @@
 ﻿
 
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.Enums;
 
 namespace SunService.Domain.Core.SunServices.UserS.Entities
 {
@@ -14,6 +15,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Entities
         public string? Comment { get; set; }
         public DateTime CreatedAt { get; set; }
         public int HomeServiceId { get; set; }
+        public StatuseRating Status { get; set; } = StatuseRating.apending;
 
         #endregion
 

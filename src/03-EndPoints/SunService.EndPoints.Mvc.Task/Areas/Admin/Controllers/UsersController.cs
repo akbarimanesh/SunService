@@ -20,7 +20,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         private readonly IUserSAppServices _UserSAppServices;
         private readonly UserManager<User> _userManager;
 
-       
+
         private readonly SignInManager<User> _signInManager;
 
 
@@ -31,7 +31,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             _signInManager = signInManager;
         }
 
-        public async Task< IActionResult> Index(CancellationToken cToken)
+        public async Task<IActionResult> Index(CancellationToken cToken)
         {
             var users = await _UserSAppServices.GetAll(cToken);
             return View(users);
@@ -42,7 +42,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
 
             var model = new CreateViewModel()
             {
-                Roles=Enum.GetValues(typeof(RoleEnum))
+                Roles = Enum.GetValues(typeof(RoleEnum))
                .Cast<RoleEnum>()
 
                .Select(r => new SelectListItem
@@ -65,14 +65,14 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 return View(user);
             }
 
-          
 
-            var user1 = new UserDto {Id=user.Id,FirstName=user.FirstName,LastName=user.LastName ,UserName = user.Username, Email = user.Email, Password = user.Password, CityId = user.cityId, RoleId = user.RoleId ,Mobile=user.Mobile,Address=user.Address,ProfileImgFile=user.ProfileImgFile,ImagePath=user.ImagePath };
+
+            var user1 = new UserDto { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, UserName = user.Username, Email = user.Email, Password = user.Password, CityId = user.cityId, RoleId = user.RoleId, Mobile = user.Mobile, Address = user.Address, ProfileImgFile = user.ProfileImgFile, ImagePath = user.ImagePath };
             var result = await _UserSAppServices.Register(user1, cToken);
 
             if (result.Succeeded)
             {
-                
+
                 return RedirectToAction("Index", "Users");
             }
 
@@ -82,7 +82,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-           
+
             return View(user);
         }
         [HttpGet]
@@ -100,27 +100,27 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 LastName = user.LastName,
                 Address = user.Address,
                 Email = user.Email,
-                 Role = user.Role,
-                Mobile= user.Mobile,
-                Statuse=user.Status,
-                Username= user.UserName,
-                cityId=user.CityId,
-                RoleId=user.RoleId,
-                
-                ProfileImgFile=user.ProfileImgFile,
+                Role = user.Role,
+                Mobile = user.Mobile,
+                Statuse = user.Status,
+                Username = user.UserName,
+                cityId = user.CityId,
+                RoleId = user.RoleId,
+
+                ProfileImgFile = user.ProfileImgFile,
                 Roles = GetRolesList()
-            }; 
+            };
             return View(model);
 
-           
+
         }
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateViewModel user , CancellationToken cToken)
+        public async Task<IActionResult> Update(UpdateViewModel user, CancellationToken cToken)
         {
             if (ModelState.IsValid)
             {
                 user.Roles = GetRolesList();
-                var user1 = new UserDto {Id=user.Id, FirstName = user.FirstName, LastName = user.LastName, UserName = user.Username, Email = user.Email, CityId = user.cityId, RoleId = user.RoleId, Mobile = user.Mobile, Address = user.Address,Status=user.Statuse,Role=user.Role,ProfileImgFile=user.ProfileImgFile };
+                var user1 = new UserDto { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, UserName = user.Username, Email = user.Email, CityId = user.cityId, RoleId = user.RoleId, Mobile = user.Mobile, Address = user.Address, Status = user.Statuse, Role = user.Role, ProfileImgFile = user.ProfileImgFile };
                 var result = await _UserSAppServices.Update(user1, cToken);
                 if (result.IsSuccess)
                 {
@@ -143,8 +143,8 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id, CancellationToken cToken)
         {
-            
-            var result=await _UserSAppServices.Delete(id, cToken);
+
+            var result = await _UserSAppServices.Delete(id, cToken);
             if (result.IsSuccess)
             {
                 TempData["SuccessMessage"] = result.IsMessage;
@@ -163,7 +163,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         {
             return Enum.GetValues(typeof(RoleEnum))
                 .Cast<RoleEnum>()
-                
+
                 .Select(r => new SelectListItem
                 {
                     Value = ((int)r).ToString(),
@@ -171,6 +171,25 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 })
                 .ToList();
         }
+        [HttpPost]
+        public async Task<IActionResult> ActiveUser(int id, CancellationToken cToken)
+        {
+            var result = await _UserSAppServices.ActiveUser(id, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+
+            }
+            return RedirectToAction("Index", "Users");
+
+        }
+
 
     }
 }

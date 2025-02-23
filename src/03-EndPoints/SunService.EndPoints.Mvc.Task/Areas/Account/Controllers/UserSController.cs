@@ -102,31 +102,31 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         {
             if (!ModelState.IsValid)
                 return View(user);
+
             if (string.IsNullOrWhiteSpace(user.Password) || string.IsNullOrWhiteSpace(user.Username))
             {
                 ModelState.AddModelError(string.Empty, "فیلدهای خالی رو پر کنید.");
                 return View(user);
             }
+
             var result = await _UserSAppServices.Login(user.Username, user.Password, cToken);
 
             if (result.Succeeded)
             {
                 var appUser = await _userManager.FindByNameAsync(user.Username);
                 var roles = await _userManager.GetRolesAsync(appUser);
-                if (roles.Contains("Admin")) 
+                if (roles.Contains("Admin"))
                 {
-                   
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
                 }
                 else
                 {
-                   
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
             }
-            else
+            foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور اشتباه است.");
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
             return View(user);

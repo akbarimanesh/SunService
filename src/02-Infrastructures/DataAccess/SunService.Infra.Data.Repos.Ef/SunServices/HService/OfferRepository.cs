@@ -33,18 +33,19 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<OfferDto>> GetAllOffer(CancellationToken cancellationToken)
+        public async Task<List<OfferDto>> GetAllOffer(int OrderId,CancellationToken cancellationToken)
         {
-            return await _appDbContext.Offers.AsNoTracking().Select(x => new OfferDto()
+            return await _appDbContext.Offers.AsNoTracking().Where(x=>x.OrderId==OrderId).Select(x => new OfferDto()
             {
-
+                Id=x.Id,
                 HomeServiceTitle = x.Order.HomeService.Title,
               ExpertFullName=x.Expert.FirstName +" "+x.Expert.LastName,
                 PriceOffer=x.PriceOffer,
                 Description=x.Description,
                 OfferDate=x.OfferDate,
                 OrderId=x.OrderId,
-
+                CompletionDate=x.CompletionDate,
+                StateOffer=x.StateOffer,
 
             }).ToListAsync(cancellationToken);
         }

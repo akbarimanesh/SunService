@@ -38,6 +38,17 @@ namespace SunService.Domain.AppServices.SunServices.UserS
             _expertServices = expertServices;
         }
 
+        public async Task<Result> ActiveUser(int id, CancellationToken cToken)
+        {
+            if (await _UserServices.GetById(id, cToken) != null)
+            {
+                await _UserServices.ActiveUser(id, cToken);
+                return new Result(true, "کاربر فعال شد.");
+            }
+            else
+                return new Result(false, "همچین کاربری وجود ندارد.");
+        }
+
         public async Task<Result> Delete(int id, CancellationToken cancellationToken)
         {
             if (await _UserServices.GetById(id, cancellationToken) != null)
@@ -72,63 +83,87 @@ namespace SunService.Domain.AppServices.SunServices.UserS
 
         public async Task<IdentityResult> Login(string username, string password, CancellationToken cToken)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "نام کاربری و رمز عبور نباید خالی باشند." });
+            }
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "کاربر یافت نشد." });
+            }
+
+            if (!await _UserServices.StatusUser(username, cToken))
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "کاربر شما هنوز فعال نشده است." });
+            }
+
             var result = await _signInManager.PasswordSignInAsync(username, password, true, false);
-            return result.Succeeded ? IdentityResult.Success : IdentityResult.Failed();
+
+            if (!result.Succeeded)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "نام کاربری یا رمز عبور اشتباه است." });
+            }
+
+            return IdentityResult.Success;
         }
+
+
+
 
         public async Task<IdentityResult> Register(UserDto model, CancellationToken cToken)
         {
             string role = string.Empty;
-            var user = new User
-            {
-                
-                FirstName=model.FirstName,
-                LastName=model.LastName,
-                Address=model.Address,
-                Mobile=model.Mobile,
-                RegisterAt=DateTime.Now,
-                StatusUser=model.Status,
-                UserName = model.UserName,
-                Email= model.Email,
-                RoleId=model.RoleId,
-                CityId = model.CityId,
-                ImagePath=model.ImagePath,
-                
-            };
+            var user = new User();
            
+          
+            if ((RoleEnum)model.RoleId == RoleEnum.Admin)
+            {
+                role = "Admin";
+
+            }
+
+            if ((RoleEnum)model.RoleId == RoleEnum.Customer)
+            {
+                role = "Customer";
+                user = new Customer();
+            }
+
+            if ((RoleEnum)model.RoleId == RoleEnum.Expert)
+            {
+                role = "Expert";
+                user = new Expert
+                {
+                    Biography = model.Biography
+                };
+            }
+
+            user.Id = model.Id;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Address = model.Address;
+            user.Mobile = model.Mobile;
+            user.RegisterAt = DateTime.Now;
+            user.StatusUser = model.Status;
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.RoleId = model.RoleId;
+            user.CityId = model.CityId;
+            user.ImagePath = model.ImagePath;
+
+
+
+
+
+
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                if ((RoleEnum)user.RoleId == RoleEnum.Admin)
-                {
-                    role = "Admin";
-                }
-
-                if ((RoleEnum)user.RoleId == RoleEnum.Customer)
-                {
-                    role = "Customer";
-                    var customer = new Customer
-                    {
-                        Id = user.Id,
-                    };
-
-                    await _customerServices.CreateCustomer(customer, cToken);
-
-                }
-
-                if ((RoleEnum)user.RoleId == RoleEnum.Expert)
-                {
-                    role = "Expert";
-                    var expert = new Expert
-                    {
-                        Id = user.Id,
-                    };
-                    await _expertServices.CreateExpert(expert, cToken);
-                }
                 var createdUser = await _userManager.FindByNameAsync(user.UserName);
-                
+
                 if (model.ProfileImgFile is not null)
                 {
                     int userId = user.Id;
@@ -149,8 +184,8 @@ namespace SunService.Domain.AppServices.SunServices.UserS
                     await _userManager.AddClaimAsync(user, new Claim("ExpertId", user.RoleId.ToString()));
                 }
 
-              //  await _signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
-               
+                //  await _signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
+
             }
 
             return result;

@@ -10,7 +10,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Entities
 
        
 
-        public string Biography { get; set; }
+        public string? Biography { get; set; }
 
         #endregion
 

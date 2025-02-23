@@ -9,40 +9,41 @@
                 <ul>
                     <li>
                         <a asp-controller="Users" asp-action="Index" class="current">
-                            <i class="icon-home"></i>
+                            <i class="icon-people"></i>
                             <span>کاربران</span>
                         </a>
                     </li>
                     <li>
                         <a asp-controller="HomeService" asp-action="Index" class="current">
-                            <i class="icon-home"></i>
+                            <i class="icon-wrench"></i>
                             <span>سرویس ها</span>
                         </a>
                     </li>
                     <li>
                         <a asp-controller="Category" asp-action="Index" class="current">
-                            <i class="icon-home"></i>
+                            <i class="icon-list"></i>
                             <span>دسته بندی ها </span>
                         </a>
                     </li>
                     <li>
                         <a asp-controller="SubCategory" asp-action="Index" class="current">
-                            <i class="icon-home"></i>
+                            <i class="icon-list"></i>
                             <span>زیر دسته بندی ها </span>
                         </a>
                     </li>
                     <li>
-                        <a href="parastoo.html" class="">
-                            <i class="icon-home"></i>
-                            <span>بازخوردها </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="yekan.html" class="">
-                            <i class="icon-home"></i>
+                        <a asp-controller="Orders" asp-action="Index" class="current">
+                            <i class="icon-docs"></i>
                             <span>سفارش ها</span>
                         </a>
                     </li>
+                    <li>
+                        <a asp-controller="Ratings" asp-action="Index" class="current">
+                            <i class="icon-envelope-letter"></i>
+                            <span>بازخوردها </span>
+                        </a>
+                    </li>
+                    
                 </ul>
             </li>
         </ul><!-- /#side-menu -->

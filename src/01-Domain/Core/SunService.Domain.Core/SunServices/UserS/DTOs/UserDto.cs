@@ -26,7 +26,7 @@ namespace SunService.Domain.Core.SunServices.UserS.DTOs
         public int RoleId   { get; set; }
         public RoleEnum Role { get; set; }
         public IFormFile? ProfileImgFile { get; set; }
-
+        public string? Biography { get; set; }
         public string? ImagePath { get; set; }
         #endregion
 

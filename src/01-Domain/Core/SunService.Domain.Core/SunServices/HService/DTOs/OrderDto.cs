@@ -1,4 +1,5 @@
-﻿using SunService.Domain.Core.SunServices.HService.Enums;
+﻿using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.HService.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public DateTime CreateAt { get; set; }
         public TimeOnly ImplementationTime { get; set; }
         public OrderHomeServiceStatusEnum OrderHomeServiceStatus { get; set; }
+        public int? OfferId { get; set; }
+        public List<Offer>? Offers { get; set; }
     }
 }
