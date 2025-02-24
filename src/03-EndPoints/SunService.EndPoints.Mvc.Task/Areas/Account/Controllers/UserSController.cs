@@ -7,6 +7,7 @@ using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.EndPoints.Mvc.Task.Areas.Account.Models;
+using SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Threading;
@@ -21,15 +22,17 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IBaseDataAppService _baseDataAppService;
         private readonly UserManager<User> _userManager;
-        public UserSController(IUserSAppServices userSAppServices, SignInManager<User> signInManager, IBaseDataAppService baseDataAppService, UserManager<User> userManager)
+        private readonly ILogger<HomeController> _logger;
+        public UserSController(IUserSAppServices userSAppServices, SignInManager<User> signInManager, IBaseDataAppService baseDataAppService, UserManager<User> userManager, ILogger<HomeController> logger)
         {
             _UserSAppServices = userSAppServices;
             _signInManager = signInManager;
             _userManager = userManager;
             _baseDataAppService = baseDataAppService;
+            _logger = logger;
         }
-     
-     
+
+
         public async Task<IActionResult> Register(CancellationToken cToken)
         {
             var model = new RegisterViewModel
@@ -77,6 +80,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
 
             foreach (var error in result.Errors)
             {
+                _logger.Log(LogLevel.Trace, error.Description);
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 

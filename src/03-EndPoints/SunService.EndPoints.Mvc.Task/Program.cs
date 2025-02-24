@@ -2,6 +2,7 @@ using Framework;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using SunService.Domain.AppServices.SunServices.BaseEntities;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.AppServices.SunServices.UserS;
@@ -19,12 +20,25 @@ using SunService.Domain.Core.Task.Configs;
 using SunService.Domain.Services.SunServices.BaseEntities;
 using SunService.Domain.Services.SunServices.HService;
 using SunService.Domain.Services.SunServices.UserS;
+using SunService.EndPoints.Mvc.Task.Middleware;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using SunService.Infra.Data.Repos.Ef.SunServices.BaseEntities;
 using SunService.Infra.Data.Repos.Ef.SunServices.HService;
 using SunService.Infra.Data.Repos.Ef.SunServices.UserS;
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.ConfigureLogging(o =>
+{
+    o.ClearProviders();
+    o.AddSerilog();
+}).UseSerilog((context, config) =>
+{
+    config.WriteTo.Console();
+    config.WriteTo.Seq("http://localhost:5341/", apiKey: "G3kSqNTR3g9VgOAwKZdd");
+});
 
 // Add services to the container.
 
@@ -52,6 +66,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(option =>
    .AddRoles<IdentityRole<int>>()
    .AddErrorDescriber<PersianIdentityErrorDescriber>()
    .AddEntityFrameworkStores<AppDbContext>();
+
 
 #region Register Services
 builder.Services.AddScoped<IBaseEntitiesRepository, BaseEntitiesRepository>();
@@ -114,12 +129,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+//app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseRouting();
-
+//app.UseErrorLogging();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "areas",

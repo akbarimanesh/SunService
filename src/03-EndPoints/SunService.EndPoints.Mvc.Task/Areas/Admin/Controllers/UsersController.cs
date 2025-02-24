@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.EndPoints.Mvc.Task.Areas.Account.Models;
+using SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers;
 using SunService.EndPoints.Mvc.Task.Areas.Admin.Models;
 using System.Threading.Tasks;
 
@@ -19,16 +21,18 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
     {
         private readonly IUserSAppServices _UserSAppServices;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<HomeController> _logger;
 
 
         private readonly SignInManager<User> _signInManager;
 
 
-        public UsersController(IUserSAppServices userSAppServices, UserManager<User> userManager, SignInManager<User> signInManager)
+        public UsersController(IUserSAppServices userSAppServices, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<HomeController> logger)
         {
             _userManager = userManager;
             _UserSAppServices = userSAppServices;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(CancellationToken cToken)
@@ -124,6 +128,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 var result = await _UserSAppServices.Update(user1, cToken);
                 if (result.IsSuccess)
                 {
+                   
                     TempData["SuccessMessage"] = result.IsMessage;
 
 
@@ -149,12 +154,12 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             {
                 TempData["SuccessMessage"] = result.IsMessage;
 
-
+                _logger.LogInformation(result.IsMessage, id);
             }
             else
             {
                 TempData["ErrorMessage"] = result.IsMessage;
-
+                _logger.LogWarning("حذف کاربر با شناسه {UserId} ناموفق بود. دلیل: {ErrorMessage}", id, result.IsMessage);
             }
             return RedirectToAction("Index", "Users");
 
@@ -184,7 +189,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             else
             {
                 TempData["ErrorMessage"] = result.IsMessage;
-
+                _logger.LogWarning(" کاربر با شناسه {UserId} وجود ندارد: {ErrorMessage}", id, result.IsMessage);
             }
             return RedirectToAction("Index", "Users");
 

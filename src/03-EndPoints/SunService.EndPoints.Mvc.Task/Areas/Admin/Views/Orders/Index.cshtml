@@ -61,7 +61,7 @@
                                     <td>@order.HomeServiceTitle </td>
                                     <td>@order.CreateAt.ToPersianString("yyyy/MM/dd")</td>
                                     <td>@order.ImplementationDate.ToPersianString("yyyy/MM/dd")</td>
-                                    <td>@order.ImplementationTime</td>
+                                    <td>@order.ImplementationTime.ToString("HH:mm")</td>
                                    
                                     
                                     <td>@EnumExtensionMethods.GetEnumDisplayName(order.OrderHomeServiceStatus) </td>

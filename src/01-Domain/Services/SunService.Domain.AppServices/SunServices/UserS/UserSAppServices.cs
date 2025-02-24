@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SunService.Domain.Core.SunServices.BaseEntities.Services;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
@@ -20,6 +21,7 @@ namespace SunService.Domain.AppServices.SunServices.UserS
 
     public class UserSAppServices : IUserSAppServices
     {
+        private readonly ILogger<UserSAppServices> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -27,7 +29,8 @@ namespace SunService.Domain.AppServices.SunServices.UserS
         private readonly IBaseEntitiesServices _baseEntitiesServices;
         private readonly ICustomerServices _customerServices;
         private readonly IExpertServices _expertServices;
-        public UserSAppServices(SignInManager<User> signInManager, UserManager<User> userManager, IPasswordHasher<User> passwordHasher, IUserServices userServices, IBaseEntitiesServices baseEntitiesServices, ICustomerServices customerServices, IExpertServices expertServices)
+
+        public UserSAppServices(SignInManager<User> signInManager, UserManager<User> userManager, IPasswordHasher<User> passwordHasher, IUserServices userServices, IBaseEntitiesServices baseEntitiesServices, ICustomerServices customerServices, IExpertServices expertServices, ILogger<UserSAppServices> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -36,6 +39,7 @@ namespace SunService.Domain.AppServices.SunServices.UserS
             _baseEntitiesServices = baseEntitiesServices;
             _customerServices = customerServices;
             _expertServices = expertServices;
+            _logger = logger;
         }
 
         public async Task<Result> ActiveUser(int id, CancellationToken cToken)
@@ -73,7 +77,9 @@ namespace SunService.Domain.AppServices.SunServices.UserS
 
             }
             else
-                return null;
+                _logger.LogWarning("کاربری با شناسه {UserId} یافت نشد.", id);
+            return null;
+
         }
 
         public async Task<int> GetCount(CancellationToken cancellationToken)
@@ -85,17 +91,20 @@ namespace SunService.Domain.AppServices.SunServices.UserS
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
+                _logger.LogWarning("ورود ناموفق: نام کاربری یا رمز عبور خالی ارسال شده است.");
                 return IdentityResult.Failed(new IdentityError { Description = "نام کاربری و رمز عبور نباید خالی باشند." });
             }
 
             var user = await _userManager.FindByNameAsync(username);
             if (user == null)
             {
+                _logger.LogWarning("ورود ناموفق: کاربر با نام کاربری {Username} یافت نشد.", username);
                 return IdentityResult.Failed(new IdentityError { Description = "کاربر یافت نشد." });
             }
 
             if (!await _UserServices.StatusUser(username, cToken))
             {
+                _logger.LogInformation("ورود ناموفق: کاربر {Username} هنوز فعال نشده است.", username);
                 return IdentityResult.Failed(new IdentityError { Description = "کاربر شما هنوز فعال نشده است." });
             }
 
@@ -103,7 +112,8 @@ namespace SunService.Domain.AppServices.SunServices.UserS
 
             if (!result.Succeeded)
             {
-                return IdentityResult.Failed(new IdentityError { Description = "نام کاربری یا رمز عبور اشتباه است." });
+                _logger.LogWarning("ورود ناموفق: کاربر {Username} رمز عبور اشتباه وارد کرد.", username);
+                return  IdentityResult.Failed(new IdentityError { Description = "نام کاربری یا رمز عبور اشتباه است." });
             }
 
             return IdentityResult.Success;

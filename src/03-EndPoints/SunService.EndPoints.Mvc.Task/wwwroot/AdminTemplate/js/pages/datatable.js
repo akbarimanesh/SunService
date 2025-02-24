@@ -18,6 +18,26 @@ var tableMain = $('#subcategory-table').DataTable({
         Modiran.initiCkeck();
     },
 });
+var tableMain = $('#user-table').DataTable({
+    "columnDefs": [{
+        "targets": [0, 10],
+        "orderable": false
+    }],
+    "aaSorting": [],
+    "pageLength": 25,
+    "drawCallback": function () {
+        var topestStatus = $("#btn-check-all-toggle").prop("checked");
+        $("table td input[type='checkbox']").each(function () {
+            currentStatus = $(this).prop("checked");
+            if (topestStatus != currentStatus) {
+                console.log("Reversed");
+                $("#btn-check-all-toggle").prop("checked", currentStatus);
+            }
+        });
+
+        Modiran.initiCkeck();
+    },
+});
 
 var tableMain = $('#category-table').DataTable({
     "columnDefs": [{
