@@ -12,7 +12,7 @@ using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250214115904_init")]
+    [Migration("20250225001239_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -319,6 +319,22 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserClaims", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+                            ClaimValue = "Admin",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClaimType = "FullName",
+                            ClaimValue = "لیلا اکبری منش",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -604,7 +620,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 11,
                             BasePrice = 5000000,
                             Description = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است",
-                            ImagePath = "\\Images\\Homeservice\\Women's-beauty-homeservice_image.jpg",
+                            ImagePath = "\\Images\\Homeservice\\Women-beauty-homeservice_image.jpg",
                             NumberVisits = 149,
                             SubCategoryId = 11,
                             Title = "زیبایی بانوان"
@@ -638,6 +654,9 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CompletionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -690,7 +709,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("ExpertId")
+                    b.Property<int?>("ExpertId")
                         .HasColumnType("int");
 
                     b.Property<int>("HomeServiceId")
@@ -859,6 +878,9 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -985,21 +1007,21 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             CityId = 1,
-                            ConcurrencyStamp = "9d57c2d6-b7b5-4410-b0ac-1244d5150cc0",
+                            ConcurrencyStamp = "00dd18ff-28a4-434b-ab2a-98818316bfc6",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Mobile = "09196043564",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
-                            NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKlO6/qocUCTFyfTBo8c/+48o3+O/6te/89Xs22nUC5asEV8sHG2Z483FQjvrdD45g==",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDfJIHFHOELo1ZTXb99kojo5GkHJv0paWgXOlf4Ed/d9W5l0DokiRaC527JmtyR8JA==",
                             PhoneNumberConfirmed = false,
                             RegisterAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
-                            SecurityStamp = "ec120681-79a5-4ed2-941a-1da4f8aeaa8f",
+                            SecurityStamp = "8d978d28-37da-432c-9b6d-1e6fb928c931",
                             StatusUser = false,
                             TwoFactorEnabled = false,
-                            UserName = "Admin@gmail.com"
+                            UserName = "Admin"
                         });
                 });
 
@@ -1150,8 +1172,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.HasOne("SunService.Domain.Core.SunServices.UserS.Entities.Expert", "Expert")
                         .WithMany("Orders")
                         .HasForeignKey("ExpertId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SunService.Domain.Core.SunServices.HService.Entities.HomeService", "HomeService")
                         .WithMany("orders")

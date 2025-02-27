@@ -1,0 +1,195 @@
+﻿@using SunService.Domain.Core.SunServices.HService.AppServices
+@using SunService.Domain.Core.SunServices.HService.DTOs
+@{
+    Layout = "_Layout";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "خدمات ";
+}
+
+@model HomeServiceDto
+@await Html.PartialAsync("_TitlePage")
+<div class="page">
+    @inject IHomeServiceAppServices _HomeServiceAppServices;
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+    <div class="find-jobs-area-pageservice pt-100 pb-70">
+        <div class="container">
+            <div class="job-listing-top">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <div class="job-listing-form">
+                            <form>
+                                <div class="row align-items-center">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="عنوان خدمات">
+                                            <i class="ri-search-line"></i>
+                                        </div>
+                                    </div>
+                                   
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group select-group">
+                                            <select class="form-select form-control">
+                                                <option data-display='Choose A Category'>یک دسته را انتخاب کنید</option>
+                                                <option value="1">طراحی سایت</option>
+                                                <option value="2">توسعه وب</option>
+                                                <option value="2">توسعه دهنده</option>
+                                                <option value="2">آژانس خلاق</option>
+                                                <option value="3">مهندس</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <button type="submit" class="submit-btn border-radius-5">
+                                            جستجوی خدمات
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="find-jobs-area-pageservice pt-100 pb-70">
+                <div class="container">
+                    <div class="section-title text-center">
+                        <h2>خدمات آنلاین و تعمیرات در منزل با سان</h2>
+                        <div class="bar m-auto"></div>
+                        <p class="m-auto">در حال حاضر 13 خدمات در سان موجود می باشد.</p>
+                    </div>
+                    <div class="row pt-45">
+                        <div class="col-lg-12">
+                            <div class="find-jobs-card d-flex align-items-center">
+                                <div class="find-jobs-img">
+                                    <a href="job-details.html">
+                                        <img src="/Images/Homeservice/Cleaning-and-catering-homeservice_image.jpg" alt="Images">
+                                    </a>
+                                </div>
+                                <div class="content">
+
+                                    <h3><a href="job-details.html">سرویس نظافت فوری</a></h3>
+                                    <ul class="content-list2">
+                                    </ul>
+                                    <ul class="content-list3">
+                                        <li><i class="ri-map-pin-line"></i> دسته بندی : <b>تمیزکاری</b></li>
+                                        <li><i class="ri-briefcase-line"></i> زیر دسته بندی : <b>نظافت و پذیرایی</b></li>
+
+                                        <li><i class="ri-currency-line"></i>قیمت پایه : <b>2000000</b></li>
+                                    </ul>
+                                </div>
+                                <div class="find-jobs-btn">
+                                    <a href="~/HomeService/Create" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="find-jobs-card d-flex align-items-center">
+                                <div class="find-jobs-img">
+                                    <a href="job-details.html">
+                                        <img src="/Images/Homeservice/Washing-homeservice_image.jpg" alt="Images">
+                                    </a>
+                                </div>
+                                <div class="content">
+
+                                    <h3><a href="job-details.html">قالیشویی</a></h3>
+                                    <ul class="content-list2">
+                                    </ul>
+                                    <ul class="content-list3">
+                                        <li><i class="ri-map-pin-line"></i> دسته بندی : <b>تمیزکاری</b></li>
+                                        <li><i class="ri-briefcase-line"></i> زیر دسته بندی : <b>شستشو</b></li>
+
+                                        <li><i class="ri-currency-line"></i>قیمت پایه : <b>3500000</b></li>
+                                    </ul>
+                                </div>
+                                <div class="find-jobs-btn">
+                                    <a href="post-job.html" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="find-jobs-card d-flex align-items-center">
+                                <div class="find-jobs-img">
+                                    <a href="job-details.html">
+                                        <img src="/Images/Homeservice/Cabinet-homeservice_image.jpg" alt="Images">
+                                    </a>
+                                </div>
+                                <div class="content">
+
+                                    <h3><a href="job-details.html">نجاری</a></h3>
+                                    <ul class="content-list2">
+                                    </ul>
+                                    <ul class="content-list3">
+                                        <li><i class="ri-map-pin-line"></i> دسته بندی : <b>ساختمان</b></li>
+                                        <li><i class="ri-briefcase-line"></i> زیر دسته بندی : <b>چوب و کابینت</b></li>
+
+                                        <li><i class="ri-currency-line"></i>پایه : <b>4000000</b></li>
+                                    </ul>
+                                </div>
+                                <div class="find-jobs-btn">
+                                    <a href="post-job.html" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="find-jobs-card d-flex align-items-center">
+                                <div class="find-jobs-img">
+                                    <a href="job-details.html">
+                                        <img src="/Images/Homeservice/Plumbing-homeservice_image.jpg" alt="Images">
+                                    </a>
+                                </div>
+                                <div class="content">
+
+                                    <h3><a href="job-details.html">نصب و تعمیر شیرآلات</a></h3>
+                                    <ul class="content-list2">
+                                    </ul>
+                                    <ul class="content-list3">
+                                        <li><i class="ri-map-pin-line"></i> دسته بندی : <b>ساختمان</b></li>
+                                        <li><i class="ri-briefcase-line"></i> زیر دسته بندی : <b>لوله کشی</b></li>
+
+                                        <li><i class="ri-currency-line"></i>پایه : <b>2500000</b></li>
+                                    </ul>
+                                </div>
+                                <div class="find-jobs-btn">
+                                    <a href="post-job.html" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+                <div class="col-lg-12 col-md-12 text-center">
+                    <div class="pagination-area">
+                        <a href="#" class="prev page-numbers">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </a>
+                        <span class="page-numbers current" aria-current="page">1</span>
+                        <a href="#" class="page-numbers">2</a>
+                        <a href="#" class="page-numbers">3</a>
+                        <a href="#" class="next page-numbers">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

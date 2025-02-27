@@ -33,7 +33,7 @@ namespace SunService.Domain.AppServices.SunServices.HService
                 return new Result(false, "خدمات موجود می باشد.");
 
             }
-
+          
             else
             {
                 var homeservice1 = new HomeService
@@ -50,6 +50,8 @@ namespace SunService.Domain.AppServices.SunServices.HService
                     
 
                 };
+              
+                   
                 await _homeServiceServices.CreateHomeService(homeService, cancellationToken);
                 return new Result(true, "خدمات با موفقیت اضافه شد.");
             }

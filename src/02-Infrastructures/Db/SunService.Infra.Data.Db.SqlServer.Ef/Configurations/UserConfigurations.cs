@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SunService.Domain.Core.SunServices.UserS.Entities;
+using System.Security.Claims;
 
 namespace SunService.Infra.Data.Db.SqlServer.Ef.Configurations
 {
@@ -18,8 +19,8 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Configurations
             new User()
             {
                 Id = 1,
-                UserName = "Admin@gmail.com",
-                NormalizedUserName = "ADMIN@GMAIL.COM",
+                UserName = "Admin",
+                NormalizedUserName = "ADMIN",
                 Email = "Admin@gmail.com",
                 NormalizedEmail = "ADMIN@GMAIL.COM",
                 LockoutEnabled = false,
@@ -36,6 +37,11 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Configurations
                 user.PasswordHash = passwordHasher.HashPassword(user, "123456");
                 builder.Entity<User>().HasData(user);
             }
+            builder.Entity<IdentityUserClaim<int>>().HasData(
+           new IdentityUserClaim<int>() { Id = 1, UserId = 1, ClaimType = ClaimTypes.Role, ClaimValue = "Admin" },
+           new IdentityUserClaim<int>() { Id = 2, UserId = 1, ClaimType = "FullName", ClaimValue = "لیلا اکبری منش" }
+            );
+
 
             // Seed Roles
             builder.Entity<IdentityRole<int>>().HasData(

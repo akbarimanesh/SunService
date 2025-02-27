@@ -21,6 +21,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
 
         public async Task< IActionResult> Index(CancellationToken cToken)
         {
+            TempData["Menu-HomeService"]= "current";
             var homeservices = await _homeServiceAppServices.GetAllHomeService(cToken);
             return View(homeservices);
         }

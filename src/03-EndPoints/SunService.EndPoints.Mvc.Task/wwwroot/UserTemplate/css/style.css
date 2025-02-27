@@ -1317,7 +1317,7 @@ Inner Banner Area
 .inner-banner {
   position: relative;
   z-index: 1;
-  background-color: #F3F5F0;
+  background-color: #E5FAF5;
 }
 .inner-banner .inner-title {
   padding-top: 170px;
@@ -1583,11 +1583,13 @@ Browse Job Area
 
 .browse-jobs-item {
   position: relative;
+
+  
   margin-bottom: 45px;
-  padding: 25px 18px 25px 93px;
   border: 1px solid #F2F2F2;
   border-radius: 10px;
   transition: var(--transition);
+  box-shadow: 0px 0px 10px 0px rgba(29, 184, 68, 0.5);
 }
 .browse-jobs-item i {
   position: absolute;
@@ -1600,38 +1602,14 @@ Browse Job Area
   text-align: center;
   border-radius: 5px;
 }
-.browse-jobs-item i.jobs-card-bg {
-  color: #4D49DC;
-  background-color: #E4E4FA;
+.jobs-card-img {
+  width: 100px;  /* می‌توانید اندازه را تغییر دهید */
+  height: 100px; /* یا از max-width برای انعطاف‌پذیری استفاده کنید */
+  border-radius: 15px; /* مقدار را بیشتر کنید تا گردتر شود */
+  object-fit: cover; /* برای حفظ نسبت تصویر و جلوگیری از کشیدگی */
+margin-bottom: 10px;
 }
-.browse-jobs-item i.jobs-card-bg2 {
-  color: #FA871C;
-  background-color: #FEEDDD;
-}
-.browse-jobs-item i.jobs-card-bg3 {
-  color: #49DEEE;
-  background-color: #E4FAFC;
-}
-.browse-jobs-item i.jobs-card-bg4 {
-  color: #F71E3F;
-  background-color: #FEDDE2;
-}
-.browse-jobs-item i.jobs-card-bg5 {
-  color: #FA5F1C;
-  background-color: #FEE7DD;
-}
-.browse-jobs-item i.jobs-card-bg6 {
-  color: #00CA99;
-  background-color: #D9F7F0;
-}
-.browse-jobs-item i.jobs-card-bg7 {
-  color: #FFB300;
-  background-color: #FFF4D9;
-}
-.browse-jobs-item i.jobs-card-bg8 {
-  color: #62E3F1;
-  background-color: #E8FBFD;
-}
+
 .browse-jobs-item h3 {
   margin-bottom: 5px;
   font-size: 20px;
@@ -2263,7 +2241,7 @@ Pricing Area End
 Company Area
 ===================================*/
 .company-area {
-  background-color: #F8F8F8;
+ 
 }
 .company-area .owl-dots {
   margin-top: 0 !important;
@@ -2342,6 +2320,7 @@ Company Area
 }
 
 .company-card {
+  box-shadow: 0px 0px 10px 0px rgba(116, 204, 138, 0.5);
   padding: 25px 25px 25px 110px;
   background-color: var(--whiteColor);
   margin-bottom: 30px;
@@ -2353,9 +2332,17 @@ Company Area
   position: absolute;
   top: 30px;
   left: 30px;
-  border-radius: 50%;
+  border-radius: 10px;
   max-width: 70px;
 }
+
+  .custom-link {
+    color: #a1a1a1; 
+    text-decoration: none; /* حذف زیرخط لینک */
+  }
+
+ 
+
 .company-card h3 {
   margin-bottom: 10px;
 }
@@ -2679,12 +2666,16 @@ Company Area End
 Find Job Area
 ===================================*/
 .find-jobs-area {
-  background-color: #F4F4F4;
+  background-color:#ede6fa;
 }
+.find-jobs-area-pageservice {
 
+  
+}
 .find-jobs-card {
+  box-shadow: 0px 0px 10px 0px rgba(116, 204, 138, 0.5);
   background-color: var(--whiteColor);
-  border-radius: 3px;
+  border-radius: 10px;
   padding: 30px;
   position: relative;
   overflow: hidden;
@@ -4388,8 +4379,11 @@ Testimonials Area
 }
 
 .testimonials-widget-area {
-  position: relative;
-  background-color: #F5FBF6;
+  display: flex;
+  justify-content: center; /* وسط‌چین افقی */
+  align-items: center; /* وسط‌چین عمودی */
+  height: 100%; /* ارتفاع متناسب با محتوا */
+
 }
 .testimonials-widget-area .owl-dots {
   margin-top: 0 !important;
@@ -4429,25 +4423,28 @@ Testimonials Area
   position: relative;
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 75px !important;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 .testimonials-widget-item .content-img img {
-  border-radius: 50%;
-  width: 75px !important;
-  margin-left: auto;
-  margin-right: auto;
-  border: 3px solid var(--whiteColor);
+  box-shadow: -1px 0px 10px 0px rgba(29, 184, 68, 0.5);
+  width: 1200px; /* عرض */
+  height: 350px; /* ارتفاع */
+  object-fit: cover; /* حفظ تناسب تصویر */
+  display: block;
+  border-radius: 10px; /* اختیاری: گرد کردن گوشه‌ها */
+   
 }
 .testimonials-widget-item .content-img .line1 {
-  position: absolute;
-  bottom: -10px;
-  left: 15px;
-  width: 10px;
-  height: 30px;
-  background-color: #FF5B4A;
-  border-radius: 50px 50px 100px 0;
+  width: 1760px; /* عرض */
+    height: 514px; /* ارتفاع */
+    object-fit: cover; /* حفظ تناسب تصویر */
+    display: block;
+    border-radius: 10px; 
 }
 .testimonials-widget-item .content-img .line2 {
   position: absolute;
@@ -5294,7 +5291,7 @@ Employers CV Area
   left: 0;
   width: 100%;
   height: 50%;
-  background-color: #F5FBF6;
+  background-color: #e5faf5;
   z-index: -1;
 }
 
@@ -6396,7 +6393,7 @@ Buy Now Btn
 Footer Area
 ===================================*/
 .footer-area {
-  background-color: #F5FBF6;
+  background-color: #E5FAF5;
 }
 
 .footer-widget {

@@ -23,6 +23,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
+            TempData["Menu-Category"] = "current";
             var categories = await _categoryAppServices.GetAllCategories(cToken);
             return View(categories);
         }

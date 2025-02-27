@@ -24,6 +24,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
+            TempData["Menu-Orders"] = "current";
             var orders = await _orderAppServices.GetAllOrder(cancellationToken);
             return View(orders);
         }
@@ -55,7 +56,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             {
                 if (model.Status == 0)
                 {
-                    // در صورت عدم ارسال مقدار صحیح
+                    
                     TempData["ErrorMessage"] = "لطفاً وضعیت را انتخاب کنید.";
                     return RedirectToAction("Index", "Orders");
                 }

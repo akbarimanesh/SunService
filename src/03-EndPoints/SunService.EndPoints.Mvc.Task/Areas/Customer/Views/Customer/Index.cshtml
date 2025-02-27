@@ -1,0 +1,59 @@
+﻿
+
+
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > داشبورد";
+    }
+</div>
+
+
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<div class="dashboard-fun-fact-area">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-fun-fact-box">
+                <div class="icon-box">
+                    <i class="ri-briefcase-line"></i>
+                </div>
+                <span class="sub-title">سفارش ها</span>
+                <h3>100</h3>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-fun-fact-box">
+                <div class="icon-box">
+                    <i class="ri-file-list-line"></i>
+                </div>
+                <span class="sub-title">پیشنهادها</span>
+                <h3>6382</h3>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-fun-fact-box">
+                <div class="icon-box">
+                    <i class="ri-chat-2-line"></i>
+                </div>
+                <span class="sub-title">پیام ها</span>
+                <h3>85</h3>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-fun-fact-box">
+                <div class="icon-box">
+                    <i class="ri-bookmark-line"></i>
+                </div>
+                <span class="sub-title">خدمات</span>
+                <h3>57</h3>
+            </div>
+        </div>
+    </div>
+</div>

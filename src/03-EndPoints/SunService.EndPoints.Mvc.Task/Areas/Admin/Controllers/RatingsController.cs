@@ -18,6 +18,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         [HttpGet]
         public async Task< IActionResult> Index(CancellationToken cToken)
         {
+            TempData["Menu-Ratings"] = "current";
             var ratings= await _ratingAppServices.GetAllRating(cToken);
             return View(ratings);
         }

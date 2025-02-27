@@ -23,6 +23,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
+            TempData["Menu-SubCategory"] = "current";
             var subcategories = await _subcategoryAppServices.GetAllSubCategories(cToken);
             return View(subcategories);
         }

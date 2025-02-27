@@ -318,7 +318,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     OrderHomeServiceStatus = table.Column<int>(type: "int", nullable: false),
                     OfferId = table.Column<int>(type: "int", nullable: true),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
-                    ExpertId = table.Column<int>(type: "int", nullable: false),
+                    ExpertId = table.Column<int>(type: "int", nullable: true),
                     HomeServiceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -358,6 +358,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HomeServiceId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     ExpertServiceExpertId = table.Column<int>(type: "int", nullable: true),
                     ExpertServiceHomeServiceId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -414,6 +415,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     ExpertId = table.Column<int>(type: "int", nullable: false),
                     PriceOffer = table.Column<int>(type: "int", nullable: false),
                     OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CompletionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     StateOffer = table.Column<bool>(type: "bit", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
@@ -498,7 +500,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Balance", "CardNumber", "CityId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "ImagePath", "LastName", "LockoutEnabled", "LockoutEnd", "Mobile", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RegisterAt", "RoleId", "SecurityStamp", "ShabaNumber", "StatusUser", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, null, null, null, 1, "9d57c2d6-b7b5-4410-b0ac-1244d5150cc0", "Admin@gmail.com", false, null, null, null, false, null, "09196043564", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEKlO6/qocUCTFyfTBo8c/+48o3+O/6te/89Xs22nUC5asEV8sHG2Z483FQjvrdD45g==", null, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "ec120681-79a5-4ed2-941a-1da4f8aeaa8f", null, false, false, "Admin@gmail.com" });
+                values: new object[] { 1, 0, null, null, null, 1, "00dd18ff-28a4-434b-ab2a-98818316bfc6", "Admin@gmail.com", false, null, null, null, false, null, "09196043564", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEDfJIHFHOELo1ZTXb99kojo5GkHJv0paWgXOlf4Ed/d9W5l0DokiRaC527JmtyR8JA==", null, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "8d978d28-37da-432c-9b6d-1e6fb928c931", null, false, false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "SubCategories",
@@ -521,6 +523,15 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUserClaims",
+                columns: new[] { "Id", "ClaimType", "ClaimValue", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin", 1 },
+                    { 2, "FullName", "لیلا اکبری منش", 1 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { 1, 1 });
@@ -540,7 +551,7 @@ namespace SunService.Infra.Data.Db.SqlServer.Ef.Migrations
                     { 8, 2500000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Car-repair-homeservice_image.jpg", 149, 8, "امداد خودرو" },
                     { 9, 3500000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Car-wash-homeservice_image.jpg", 122, 9, "کارواش با آب" },
                     { 10, 4000000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Medicine-and-nursing-homeservice_image.jpg", 224, 10, "پرستاری و تزریقات" },
-                    { 11, 5000000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Women's-beauty-homeservice_image.jpg", 149, 11, "زیبایی بانوان" },
+                    { 11, 5000000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Women-beauty-homeservice_image.jpg", 149, 11, "زیبایی بانوان" },
                     { 12, 2200000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Corporate services-homeservice_image.jpg", 110, 12, "خدمات شرکتی ویژه شرکت های کوچک" },
                     { 13, 3400000, "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است", "\\Images\\Homeservice\\Providing-human-resources-homeservice_image.jpg", 132, 13, "استخدام خدمتکار" }
                 });

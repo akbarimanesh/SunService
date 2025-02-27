@@ -1,0 +1,72 @@
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.HService.Entities
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > پیشنهادها";
+    }
+</div>
+@model List<OfferDto>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="resume-alerts-area">
+    <div class="resume-alerts-table table-responsive">
+        <h3>پیشنهادها</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">شناسه پیشنهاد</th>
+                    
+                    <th scope="col">کارشناس </th>
+                    <th scope="col">قیمت پیشنهادی</th>
+                    <th scope="col">تاریخ پیشنهاد</th>
+                    <th scope="col">تاریخ اتمام کار</th>
+                    <th scope="col">عملیات</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var offer in Model)
+                {
+                    <tr>
+
+                        <td>@offer.Id</td>
+                       
+                        <td>@offer.ExpertFullName </td>
+                        <td>@offer.PriceOffer </td>
+                        <td>@offer.OfferDate.ToPersianString("yyyy/MM/dd")</td>
+                        <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>
+
+                        
+                        <td>
+                            <ul class="option-list">
+
+                                <li><button asp-area="Customer" asp-controller="Customer" asp-action="Offer"  class="option-btn d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="پذیرفتن" type="button"><i class="ri-check-line"></i></button></li>
+                                <li><button class="option-btn d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="رد" type="button"><i class="ri-close-line"></i></button></li>
+                              
+                            </ul>
+                        </td>
+
+
+                    </tr>
+                }
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

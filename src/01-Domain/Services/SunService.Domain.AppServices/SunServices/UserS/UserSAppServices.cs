@@ -182,7 +182,8 @@ namespace SunService.Domain.AppServices.SunServices.UserS
                 }
 
                 await _userManager.AddToRoleAsync(user, role);
-
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, role));
+                await _userManager.AddClaimAsync(user, new Claim("FullName", $"{user.FirstName} {user.LastName}"));
 
                 if ((RoleEnum)model.RoleId == RoleEnum.Customer)
                 {

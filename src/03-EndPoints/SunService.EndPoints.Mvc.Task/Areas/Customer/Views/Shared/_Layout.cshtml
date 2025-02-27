@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="keywords" content="Sun Service">
+    <meta name="description" content="Sun Service">
+    <meta name="author" content="Leila Akbarimanesh">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/bootstrap.rtl.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/animate.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/fonts/remixicon.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/UserTemplate/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/metismenu.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/simplebar.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/dropzone.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/magnific-popup.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/odometer.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/meanmenu.min.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/style.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/responsive.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/theme-dark.css">
+
+    <link rel="stylesheet" href="~/UserTemplate/css/rtl.css">
+
+    <title>@User.Claims.First(x => x.Type == "FullName").Value  </title>
+
+    <link rel="icon" type="image/png" href="~/UserTemplate/images/favicon.png">
+</head>
+<body>
+
+    <div class="preloader">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_sidemenu")
+
+    <div class="main-dashboard-content d-flex flex-column">
+
+        <div class="navbar-area">
+            @await Html.PartialAsync("_NavBarC")
+            <ul class="breadcrumb">
+                <li><a href="#">@ViewData["Title"]</a></li>
+            </ul>
+            @RenderBody()
+            <div class="main-responsive-nav">
+                <div class="main-responsive-menu">
+                  
+                    <div class="responsive-burger-menu d-lg-none d-block">
+                      
+                        <span class="top-bar"></span>
+                        <span class="middle-bar"></span>
+                        <span class="bottom-bar"></span>
+
+                      
+                    </div>
+                </div>
+            </div>
+            <div class="breadcrumb-area">
+                <h1>داشبورد </h1>
+                <ol class="breadcrumb">
+                </ol>
+            </div>
+
+   
+    @await Html.PartialAsync("_FooterC")
+    <script src="~/UserTemplate/js/jquery.min.js"></script>
+
+    <script src="~/UserTemplate/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/UserTemplate/js/jquery.magnific-popup.min.js"></script>
+
+    <script src="~/UserTemplate/js/odometer.min.js"></script>
+
+    <script src="~/UserTemplate/js/jquery.appear.min.js"></script>
+
+    <script src="~/UserTemplate/js/meanmenu.min.js"></script>
+
+    <script src="~/UserTemplate/js/metismenu.min.js"></script>
+
+    <script src="~/UserTemplate/js/simplebar.min.js"></script>
+
+    <script src="~/UserTemplate/js/dropzone.min.js"></script>
+
+    <script src="~/UserTemplate/js/sticky-sidebar.min.js"></script>
+
+    <script src="~/UserTemplate/js/tweenMax.min.js"></script>
+
+    <script src="~/UserTemplate/js/owl.carousel.min.js"></script>
+
+    <script src="~/UserTemplate/js/jquery.ajaxchimp.min.js"></script>
+
+    <script src="~/UserTemplate/js/form-validator.min.js"></script>
+
+    <script src="~/UserTemplate/js/contact-form-script.js"></script>
+
+    <script src="~/UserTemplate/js/custom.js"></script>
+    <link type="text/css" rel="stylesheet" href="~/UserTemplate/JalaliDatePicker-main/dist/jalalidatepicker.min.css" />
+    <script type="text/javascript" src="~/UserTemplate/JalaliDatePicker-main/dist/jalalidatepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>jalaliDatepicker.startWatch();</script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#flatpickr-time", {
+          enableTime: true, // فعال‌سازی انتخاب زمان
+          noCalendar: true, // غیرفعال‌سازی تقویم
+          dateFormat: "H:i", // فرمت زمان (ساعت:دقیقه)
+          time_24hr: true // استفاده از فرمت ۲۴ ساعته
+        });
+    </script>
+</body>
+@await RenderSectionAsync("Scripts", required: false)
+</html>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

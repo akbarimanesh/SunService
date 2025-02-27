@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\02-Infrastructures\Db\SunService.Infra.Data.Db.SqlServer.Ef\SunService.Infra.Data.Db.SqlServer.Ef.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Customer\Models\" />
+  </ItemGroup>
+
 </Project>

@@ -3,10 +3,12 @@ using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.HService.Enums;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,7 +42,23 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             {
                 Id = x.Id,
                 HomeServiceTitle = x.HomeService.Title,
-                CustomerFullName = x.Customer.FirstName + " " + x.Expert.LastName,
+                CustomerFullName = x.Customer.FirstName + " " + x.Customer.LastName,
+                ImplementationDate = x.ImplementationDate,
+                ImplementationTime = x.ImplementationTime ,
+                CreateAt = x.CreateAt,
+                OrderHomeServiceStatus = x.OrderHomeServiceStatus
+
+
+            }).ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Orders.AsNoTracking().Where(x => x.CustomerId == id).Select(x => new OrderDto()
+            {
+                Id = x.Id,
+                HomeServiceTitle = x.HomeService.Title,
+                CustomerFullName = x.Customer.FirstName + " " + x.Customer.LastName,
                 ImplementationDate = x.ImplementationDate,
                 ImplementationTime = x.ImplementationTime,
                 CreateAt = x.CreateAt,
@@ -53,6 +71,18 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         public async Task<Order> GetorderById(int id, CancellationToken cancellationToken)
         {
             return await _appDbContext.Orders.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<bool> HasCustomerChosenExpert(int orderId, CancellationToken cancellationToken)
+        {
+           return await _appDbContext.Offers.AsNoTracking().AnyAsync(x => x.OrderId == orderId && x.StateOffer==true, cancellationToken);
+           
+        }
+
+        public async Task<bool> HasExpertOffers(int orderId, CancellationToken cancellationToken)
+        {
+           return await _appDbContext.Offers.AsNoTracking().AnyAsync(x=>x.OrderId==orderId, cancellationToken);
+            
         }
 
         public async Task UpdateOrderStatus(int orderId, OrderHomeServiceStatusEnum newStatus, CancellationToken cancellationToken)

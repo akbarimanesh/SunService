@@ -77,7 +77,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             result.Role = (RoleEnum)user.RoleId;
             result.RoleId = user.RoleId;
             result.ImagePath = user.ImagePath;
-
+            result.Status = user.StatusUser;
             return result;
 
         }
@@ -120,7 +120,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             user.Address = model.Address;
             user.StatusUser = model.Status;
             user.ImagePath = model.ImagePath ?? user.ImagePath;
-
+            
             await _appDbContext.SaveChangesAsync(cancellationToken);
             return true;
         }

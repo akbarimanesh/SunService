@@ -37,6 +37,8 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
+          
+            TempData["Menu-Users"] = "current";
             var users = await _UserSAppServices.GetAll(cToken);
             return View(users);
         }
@@ -110,7 +112,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 Username = user.UserName,
                 cityId = user.CityId,
                 RoleId = user.RoleId,
-
+                
                 ProfileImgFile = user.ProfileImgFile,
                 Roles = GetRolesList()
             };

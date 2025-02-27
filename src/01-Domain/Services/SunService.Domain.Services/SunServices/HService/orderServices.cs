@@ -3,6 +3,7 @@ using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.HService.Enums;
 using SunService.Domain.Core.SunServices.HService.Services;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,9 +36,24 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _OrderRepository.GetAllOrder(cancellationToken);
         }
 
+        public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
+        {
+            return await _OrderRepository.GetAllOrderUser(id, cancellationToken);
+        }
+
         public async Task<Order> GetorderById(int id, CancellationToken cancellationToken)
         {
             return await _OrderRepository.GetorderById(id, cancellationToken);
+        }
+
+        public async Task<bool> HasCustomerChosenExpert(int orderId, CancellationToken cancellationToken)
+        {
+            return await _OrderRepository.HasCustomerChosenExpert(orderId, cancellationToken);
+        }
+
+        public async  Task<bool> HasExpertOffers(int orderId, CancellationToken cancellationToken)
+        {
+            return await _OrderRepository.HasExpertOffers(orderId, cancellationToken);
         }
 
         public async Task UpdateOrderStatus(int orderId, OrderHomeServiceStatusEnum newStatus, CancellationToken cancellationToken)

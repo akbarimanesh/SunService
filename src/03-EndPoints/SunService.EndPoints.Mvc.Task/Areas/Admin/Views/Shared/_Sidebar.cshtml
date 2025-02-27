@@ -8,37 +8,43 @@
                 </a>
                 <ul>
                     <li>
-                        <a asp-controller="Users" asp-action="Index" class="current">
+                        <a asp-controller="Home" asp-action="Index" class="@TempData["Menu-Dashboard"]">
+                            <i class="icon-chart"></i>
+                            <span>داشبورد</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Users" asp-action="Index" class="@TempData["Menu-Users"]">
                             <i class="icon-people"></i>
                             <span>کاربران</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="HomeService" asp-action="Index" class="current">
+                        <a asp-controller="HomeService" asp-action="Index" class="@TempData["Menu-HomeService"]">
                             <i class="icon-wrench"></i>
                             <span>سرویس ها</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Category" asp-action="Index" class="current">
+                        <a asp-controller="Category" asp-action="Index" class="@TempData["Menu-Category"]">
                             <i class="icon-list"></i>
                             <span>دسته بندی ها </span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="SubCategory" asp-action="Index" class="current">
+                        <a asp-controller="SubCategory" asp-action="Index" class="@TempData["Menu-SubCategory"]">
                             <i class="icon-list"></i>
                             <span>زیر دسته بندی ها </span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Orders" asp-action="Index" class="current">
+                        <a asp-controller="Orders" asp-action="Index" class="@TempData["Menu-Orders"]">
                             <i class="icon-docs"></i>
                             <span>سفارش ها</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Ratings" asp-action="Index" class="current">
+                        <a asp-controller="Ratings" asp-action="Index" class="@TempData["Menu-Ratings"]">
                             <i class="icon-envelope-letter"></i>
                             <span>بازخوردها </span>
                         </a>

@@ -117,16 +117,15 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
 
             if (result.Succeeded)
             {
-                var appUser = await _userManager.FindByNameAsync(user.Username);
-                var roles = await _userManager.GetRolesAsync(appUser);
-                if (roles.Contains("Admin"))
-                {
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
-                }
-                else
-                {
+                //var appUser = await _userManager.FindByNameAsync(user.Username);
+                var userRole = UserTools.GetRole(User.Claims);
+
+                  if(userRole=="Admin")
+                  {
+                       return RedirectToAction("Index", "Home", new { area = "Admin" });
+                  }
+                   else
                     return RedirectToAction("Index", "Home", new { area = "" });
-                }
             }
             foreach (var error in result.Errors)
             {
@@ -151,7 +150,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         {
             return Enum.GetValues(typeof(RoleEnum))
                 .Cast<RoleEnum>()
-                .Where(r => r != RoleEnum.Admin) // حذف نقش ادمین
+                .Where(r => r != RoleEnum.Admin) 
                 .Select(r => new SelectListItem
                 {
                     Value = ((int)r).ToString(),

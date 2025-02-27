@@ -101,13 +101,17 @@
                                
                             </div>
                         </div>
+                        
                         <span>کاربر فعال شود؟</span>
-                        <input asp-for="Statuse" asp-controller="Users" asp-action="Update" class="task-checkbox" type="checkbox" placeholder="وضعیت" value="True" />
+                        <input asp-for="Statuse" asp-controller="Users" asp-action="Update" class="task-checkbox" type="checkbox" placeholder="وضعیت"  checked="@(Model.Statuse ? "checked" : null)" />
+                              
+                       
+
                         <div class="form-group relative">
                             <input asp-for="ProfileImgFile" type="file" class="form-control">
                             <label>آپلود عکس</label>
                             <div class="input-group round">
-                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید">
+                                <input type="text" class="form-control file-input" placeholder="برای آپلود کلیک کنید" value="@Model.ProfileImgFile">
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-success">
                                         <i class="icon-picture"></i>

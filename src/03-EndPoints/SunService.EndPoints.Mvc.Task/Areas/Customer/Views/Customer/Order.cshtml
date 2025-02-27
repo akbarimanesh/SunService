@@ -1,0 +1,70 @@
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.HService.DTOs
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > سفارش ها";
+    }
+</div>
+@model List<OrderDto>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+
+<div class="packages-box">
+    <h2>سفارش ها</h2>
+    <div class="packages-table table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    
+                    <th>شناسه سفارش</th>
+                    <th>خدمات</th>
+                    <th>تاریخ ثبت</th>
+                    <th>تاریخ اجرا</th>
+                    <th>ساعت اجرا</th>
+                    <th>وضعیت</th>
+                    <th>پیشنهاد</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                      
+                        <td>@order.Id</td>
+                        
+                        <td>@order.HomeServiceTitle </td>
+                        <td>@order.CreateAt.ToPersianString("yyyy/MM/dd")</td>
+                        <td>@order.ImplementationDate.ToPersianString("yyyy/MM/dd")</td>
+                        <td>@order.ImplementationTime.ToString("HH:mm")</td>
+
+
+                        <td>@EnumExtensionMethods.GetEnumDisplayName(order.OrderHomeServiceStatus) </td>
+
+
+                        <td>
+                            <a asp-area="Customer" asp-controller="Customer" asp-action="Offer" asp-route-Id="@order.Id" class="status">پیشنهادها</a>
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

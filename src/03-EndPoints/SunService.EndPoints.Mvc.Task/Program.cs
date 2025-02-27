@@ -103,6 +103,9 @@ builder.Services.AddScoped<IHomeServiceRepository, HomeServiceRepository>();
 builder.Services.AddScoped<IorderAppServices, orderAppServices>();
 builder.Services.AddScoped<IOfferAppServices, OfferAppServices>();
 builder.Services.AddScoped<IRatingAppServices, RatingAppServices>();
+builder.Services.AddScoped<IGetStatisticsDataAppServices, GetStatisticsDataAppServices>();
+builder.Services.AddScoped<IGetStatisticsDataReopsitory, GetStatisticsDataReopsitory>();
+builder.Services.AddScoped<IGetStatisticsDataServices, GetStatisticsDataServices>();
 
 
 
