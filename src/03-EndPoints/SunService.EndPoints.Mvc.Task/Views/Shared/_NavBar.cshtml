@@ -275,11 +275,18 @@
                                             داشبورد @User.Identity.Name  <i class="ri-file-user-fill"></i>
                                         </a>
                                     }
-                                    else
+                                    else if (User.IsInRole("Customer"))
                                     {
                                         <a asp-area="Customer" asp-controller="Customer" asp-action="Index" as class="default-btn two border-radius-5">
                                             داشبورد @User.Identity.Name  <i class="ri-file-user-fill"></i>
                                         </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" as class="default-btn two border-radius-5">
+                                            داشبورد @User.Identity.Name  <i class="ri-file-user-fill"></i>
+                                        </a>
+
                                     }
                                     <a href="~/Account/UserS/Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
                                 </div>
