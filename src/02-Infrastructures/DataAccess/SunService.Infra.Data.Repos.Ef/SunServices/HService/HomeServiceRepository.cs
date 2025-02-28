@@ -2,6 +2,7 @@
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
@@ -75,9 +76,9 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             homeServicey1.Title = homeService.Title;
             homeServicey1.Description = homeService.Description;
             homeServicey1.BasePrice = homeService.BasePrice;
-            homeServicey1.ImagePath = homeService.ImagePath;
-          
-         
+            homeServicey1.ImagePath = homeService.ImagePath ?? homeServicey1.ImagePath;
+
+
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

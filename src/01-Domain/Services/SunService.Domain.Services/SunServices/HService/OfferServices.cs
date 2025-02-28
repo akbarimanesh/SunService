@@ -34,6 +34,11 @@ namespace SunService.Domain.Services.SunServices.HService
            return await _OfferRepository.GetAllOffer(OrderId, cancellationToken);
         }
 
+        public async Task<List<OfferDto>> GetAllOfferAllOrder(CancellationToken cancellationToken)
+        {
+            return await _OfferRepository.GetAllOfferAllOrder(cancellationToken);
+        }
+
         public async Task<Offer> GetOfferById(int id, CancellationToken cancellationToken)
         {
             return await _OfferRepository.GetOfferById(id, cancellationToken);

@@ -67,7 +67,7 @@ namespace SunService.Domain.AppServices.SunServices.HService
             var category1 = await _appDbContext.Categories.FirstOrDefaultAsync(x => x.Id == category.Id,cancellationToken);
             category1.Id = category.Id;
             category1.Title = category.Title;
-            category1.ImagePath = category.ImagePath;
+            category1.ImagePath = category.ImagePath ?? category1.ImagePath;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

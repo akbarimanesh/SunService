@@ -10,5 +10,6 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
     public interface IOfferAppServices
     {
         public Task<List<OfferDto>> GetAllOffer(int OrderId, CancellationToken cancellationToken);
+        public Task<List<OfferDto>> GetAllOfferAllOrder(CancellationToken cancellationToken);
     }
 }
