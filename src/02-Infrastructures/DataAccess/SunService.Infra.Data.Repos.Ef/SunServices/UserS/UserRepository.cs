@@ -28,6 +28,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             await _appDbContext.SaveChangesAsync(cToken);
         }
 
+        public async Task DeActiveUser(int id, CancellationToken cToken)
+        {
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id, cToken);
+            user.StatusUser = false;
+            await _appDbContext.SaveChangesAsync(cToken);
+        }
+
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             var model = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);

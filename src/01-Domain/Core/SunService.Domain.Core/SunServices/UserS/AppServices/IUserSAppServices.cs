@@ -12,6 +12,8 @@ namespace SunService.Domain.Core.SunServices.UserS.AppServices
     public interface IUserSAppServices
     {
         public Task<Result> ActiveUser(int id, CancellationToken cToken);
+        public Task<Result> DeActiveUser(int id, CancellationToken cToken);
+   
         public Task<int> GetCount(CancellationToken cancellationToken);
         public Task<List<UserSummaryDto>> GetAll(CancellationToken cancellationToken);
         public Task<UserDto> GetById(int id, CancellationToken cancellationToken);

@@ -196,6 +196,24 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             return RedirectToAction("Index", "Users");
 
         }
+        [HttpPost]
+        public async Task<IActionResult> DeActiveUser(int id, CancellationToken cToken)
+        {
+            var result = await _UserSAppServices.DeActiveUser(id, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+                _logger.LogWarning(" کاربر با شناسه {UserId} وجود ندارد: {ErrorMessage}", id, result.IsMessage);
+            }
+            return RedirectToAction("Index", "Users");
+
+        }
 
 
     }

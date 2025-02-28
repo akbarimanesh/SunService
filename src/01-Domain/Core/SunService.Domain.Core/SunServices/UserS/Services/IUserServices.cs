@@ -17,5 +17,6 @@ namespace SunService.Domain.Core.SunServices.UserS.Services
         public System.Threading.Tasks.Task SaveImageUser(int id, string imagepath, CancellationToken cancellationToken);
         public Task<bool> StatusUser(string username, CancellationToken cancellationToken);
         public System.Threading.Tasks.Task ActiveUser(int id, CancellationToken cToken);
+        public System.Threading.Tasks.Task DeActiveUser(int id, CancellationToken cToken);
     }
 }

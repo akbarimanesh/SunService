@@ -53,6 +53,17 @@ namespace SunService.Domain.AppServices.SunServices.UserS
                 return new Result(false, "همچین کاربری وجود ندارد.");
         }
 
+        public async Task<Result> DeActiveUser(int id, CancellationToken cToken)
+        {
+            if(await _UserServices.GetById(id, cToken) != null)
+            {
+                await _UserServices.DeActiveUser(id, cToken);
+                return new Result(true, "کاربر غیرفعال شد.");
+            }
+            else
+                return new Result(false, "همچین کاربری وجود ندارد.");
+        }
+
         public async Task<Result> Delete(int id, CancellationToken cancellationToken)
         {
             if (await _UserServices.GetById(id, cancellationToken) != null)

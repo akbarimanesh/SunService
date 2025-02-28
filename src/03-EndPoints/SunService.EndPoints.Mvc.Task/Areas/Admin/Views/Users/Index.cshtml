@@ -79,16 +79,19 @@
                                     <td> @EnumExtensionMethods.GetEnumDisplayName(user.Role)</td>
 
                                     <td>
-                                        <form asp-action="ActiveUser" asp-controller="Users" method="post" asp-route-id="@user.Id" value="@user.StatusUser">
+                                       
                                             @if (user.StatusUser)
                                             {
-                                                <button type="submit" class="badge bg-success">فعال</button>
+                                            <form asp-action="DeActiveUser" asp-controller="Users" asp-route-id="@user.Id" value="@user.StatusUser"><button type="submit" class="badge bg-success">فعال</button></form>
                                             }
+                                        
+
+                                       
                                             else
                                             {
-                                                <button type="submit" class="badge bg-warning">غیر فعال</button>
+                                                <form asp-action="ActiveUser" asp-controller="Users" asp-route-id="@user.Id" value="@user.StatusUser"><button type="submit" class="badge bg-warning"> غیرفعال</button></form>
                                             }
-                                            </form>
+                                        
 
                                     </td>
                                    

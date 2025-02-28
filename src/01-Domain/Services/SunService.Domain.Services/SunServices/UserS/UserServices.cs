@@ -23,6 +23,11 @@ namespace SunService.Domain.Services.SunServices.UserS
             await _userRepository.ActiveUser(id, cToken);
         }
 
+        public async Task DeActiveUser(int id, CancellationToken cToken)
+        {
+            await _userRepository.DeActiveUser(id, cToken);
+        }
+
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             await _userRepository.Delete(id, cancellationToken);
