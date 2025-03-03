@@ -1,8 +1,10 @@
-﻿using SunService.Domain.Core.SunServices.HService.AppServices;
+﻿using SunService.Domain.Core.SunServices.BaseEntities.Services;
+using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.HService.Enums;
 using SunService.Domain.Core.SunServices.HService.Services;
+using SunService.Domain.Core.SunServices.UserS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,52 @@ namespace SunService.Domain.AppServices.SunServices.HService
     public class orderAppServices : IorderAppServices
     {
         private readonly IorderServices _orderServices;
-
-        public orderAppServices(IorderServices orderServices)
+        private readonly IBaseEntitiesServices _baseEntitiesServices;
+        private readonly ICustomerServices _customerServices;
+        private readonly IExpertServices _expertServices;
+        public orderAppServices(IorderServices orderServices, ICustomerServices customerServices, IExpertServices expertServices = null)
         {
             _orderServices = orderServices;
+            _customerServices = customerServices;
+            _expertServices = expertServices;
+        }
+
+        public async Task<Result> CreateOrder(OrderDto orderdto, CancellationToken cancellationToken)
+        {
+            var customer = await _customerServices.GetCustomerById(orderdto.CustomerId, cancellationToken);
+            if (customer == null)
+            {
+                return new Result(false, "مشتری یافت نشد.");
+            }
+
+            
+            var expert = await _expertServices.GetExpertById(orderdto.HomeserviceId, cancellationToken);
+            if (expert == null)
+            {
+                return new Result(false, "کارشناسی برای این خدمت یافت نشد.");
+                
+            }
+
+            
+            if (customer.CityId != expert.CityId)
+            {
+                return new Result(false, "خدمات مورد نظر برای شهر شما در دسترس نیست.");
+               
+            }
+            var imagesPath = new List<string>();
+            var orderid = await _orderServices.CreateOrder(orderdto,cancellationToken);
+           
+            if (orderdto.Images is not null)
+            {
+                foreach (var image in orderdto.Images)
+                {
+                    var imagePath = await _baseEntitiesServices.UploadImage(image, "Order", cancellationToken);
+                    imagesPath.Add(imagePath);
+                }
+
+                await _baseEntitiesServices.AddOrderImages(imagesPath,orderid, cancellationToken);
+            }
+            return new Result(true, "سفارش شما با موفقیت ثبت شد");
         }
 
         public async Task<List<OrderDto>> GetAllOrder(CancellationToken cancellationToken)

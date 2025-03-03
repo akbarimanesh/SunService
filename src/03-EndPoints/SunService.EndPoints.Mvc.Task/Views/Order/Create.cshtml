@@ -10,7 +10,8 @@
     ViewData["Title"] = "ارسال سفارش ";
 }
 
-@model HomeServiceDto
+@model OrderViewModel
+
 @await Html.PartialAsync("_TitlePage")
 <div class="page">
     @inject IHomeServiceAppServices _HomeServiceAppServices;
@@ -25,6 +26,14 @@
             </ul>
         </div>
     }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
     @if (User.Identity.IsAuthenticated)
     {
         <div class="post-job-area pt-100 pb-70">
@@ -34,20 +43,21 @@
                     <div class="bar"></div>
                     <div class="contact-form">
                       @*   <h3>اطلاعات پایه</h3> *@
-                        <form id="contactForm">
+                        <form  asp-controller="Order" asp-area="" asp-action="Create" method="post">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div class="form-group select-group">
+                                    <div class="form-group">
                                         <label>خدمات</label>
-
-
-                                        <select asp-for="Id" asp-controller="HomeService" asp-action="Create" class="form-select form-control">
-                                                @foreach (var homeservice in await _HomeServiceAppServices.GetAllHomeService(default))
-                                                {
-                                                <option value="@homeservice.Id">@homeservice.Title</option>
-                                                }
-                                            </select>
+                                         <select asp-for="@Model.orderDto.HomeserviceId" asp-controller="HomeService" asp-action="Create" class="form-select form-control">
+                                        @foreach (var homeservice in Model.HomeServices)
+                                        {
                                        
+                                                
+                                                <option value="@homeservice.Id">@homeservice.Title</option>
+                                                
+                                            
+                                        }
+                                        </select>
                                     </div>
                                 </div>
 
@@ -55,13 +65,13 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>تاریخ اجرا</label>
-                                        <input type="text" class="form-control" placeholder="تاریخ اجرا" data-jdp>
+                                        <input asp-for="@Model.orderDto.ImplementationDate" type="text" class="form-control" placeholder="تاریخ اجرا" data-jdp>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ساعت اجرا</label>
-                                        <input class="form-control" id="flatpickr-time" placeholder="HH:MM" type="text" />
+                                        <input asp-for="@Model.orderDto.ImplementationTime" class="form-control" id="flatpickr-time" placeholder="HH:MM" type="text" />
                                       @*   <input name="msg_subject" class="form-control" required data-error="لطفا ساعت را وارد کنید" placeholder="12:00" > *@
                                     </div>
                                 </div>
@@ -69,13 +79,13 @@
                                 <div class="col-lg-12 col-md-12">
                                     <div class="form-group">
                                         <label>توضیحات</label>
-                                        <textarea class="form-control" cols="30" rows="5" required data-error="توضیحات خود را بنویسید"></textarea>
+                                        <textarea asp-for="@Model.orderDto.Description" class="form-control" cols="30" rows="5" required data-error="توضیحات خود را بنویسید"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="choose-img">
                                         <p class="title">آپلود تصاویر</p>
-                                        <input type="file" id="img" name="img" accept="image/*" multiple>
+                                        <input asp-for="@Model.orderDto.Images" type="file" id="img" name="img" accept="image/*" multiple>
                                         <p>حداکثر حجم فایل: 2 مگابایت</p>
                                     </div>
                                 </div>

@@ -11,7 +11,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Data
     public interface IExpertRepository
     {
         public Task<List<ExpertDto>> GetAllExperts(CancellationToken cancellationToken);
-        public Task<Expert> GetCustomerById(int id, CancellationToken cancellationToken);
+        public Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateExpert(Expert expert, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteExpert(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task UpdateExpert(Expert expert, CancellationToken cancellationToken);

@@ -1,10 +1,35 @@
-﻿<div class="breadcrumb-area">
+﻿@using SunService.Domain.Core.SunServices.BaseEntities.AppServices
+@using SunService.EndPoints.Mvc.Task.Areas.Admin.Models
+@using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model UpdateViewModelUser
+@inject IBaseDataAppService BaseDataAppService;
+<div class="breadcrumb-area">
     <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
     @{
         ViewData["Title"] = "خانه > ویرایش پروفایل";
     }
 </div>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
     <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
@@ -18,90 +43,118 @@
     <h3>ویرایش پروفایل</h3>
     <div class="bar"></div>
     <div class="profile-outer-area">
-        <div class="profile-outer">
-            <div class="profileButton">
-                <input class="profileButton-input" type="file" name="attachments[]" accept="image/*, application/pdf" id="upload" multiple />
-                <label class="profileButton-button ripple-effect" for="upload">عکس پروفایل</label>
-                <span class="profileButton-file-name"></span>
+        <form asp-action="Update" asp-controller="Customer" method="post">
+          
+
+                    <div class="form-group relative">
+                        @if (string.IsNullOrEmpty(Model.ImagePath))
+                        {
+                            <img style="border-radius : 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
+                        }
+                        else
+                        {
+                            <img style="border-radius : 50%" src="@Model.ProfileImgFile?.FileName" width="80" height="80" class="d-block mx-auto" />
+                        }
+
+                
+                <br />
+                    <label>تغییر عکس</label>
+                    <div class="input-group round">
+                    <input asp-for="ProfileImgFile" type="file" class="form-control"  class="form-control file-input" placeholder="برای آپلود کلیک کنید" value="@Model.ProfileImgFile">
+                        <span class="input-group-btn">
+                            
+                                <i class="icon-picture"></i>
+                              
+                                <div class="paper-ripple">
+                                    <div class="paper-ripple__background"></div>
+                                    <div class="paper-ripple__waves"></div>
+                                </div>
+                            </button>
+                        </span>
+                    </div><!-- /.input-group -->
+                    <div class="help-block"></div>
+                </div>
+            
+            <br />
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="UserName" />
+    <input type="hidden" asp-for="Status" />
+    <input type="hidden" asp-for="RoleId" />
+
+    <div class="row align-items-center">
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label>نام</label>
+                <input asp-for="FirstName" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.FirstName">
             </div>
-            <div class="text">حداکثر اندازه فایل 1 مگابایت، حداقل ابعاد: 330x300 و فایل های مناسب jpg و png.</div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label> نام خانوادگی</label>
+                <input asp-for="LastName" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.LastName">
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label> ایمیل</label>
+                <input asp-for="Email" asp-controller="Customer" asp-action="Update" class="form-control" type="email" placeholder="آدرس ایمیل" value="@Model.Email">
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label>موبایل</label>
+                <input asp-for="Mobile" asp-controller="Customer" asp-action="Update" class="form-control" type="text" placeholder="شماره موبایل" value="@Model.Mobile" placeholder="09121234567">
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label>شماره کارت</label>
+                <input asp-for="CardNumber" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.CardNumber">
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label>شماره شبا</label>
+                <input asp-for="ShabaNumber" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.ShabaNumber">
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="form-group">
+                <label>موجودی</label>
+                <input asp-for="Balance" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.Balance" placeholder="تومان">
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group select-group">
+                <label>شهر</label>
+                        <select asp-for="cityId" class="form-select form-control" value="@Model.cityId">
+                    @foreach (var city in await @BaseDataAppService.GetCities(default))
+                    {
+                        <option value="@city.Id">@city.Title</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12">
+            <div class="form-group">
+                <label>آدرس</label>
+                <input asp-for="Address" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
+            </div>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12">
+            <button type="submit" class="default-btn">ارسال <i class="flaticon-send"></i></button>
         </div>
     </div>
-    <form>
-        <div class="row align-items-center">
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>نام</label>
-                    <input type="text" class="form-control" >
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label> نام خانوادگی</label>
-                    <input type="text" class="form-control" >
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label> ایمیل</label>
-                    <input type="email" class="form-control" >
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>موبایل</label>
-                    <input type="text" class="form-control" placeholder="09121234567">
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>شماره کارت</label>
-                    <input type="text" class="form-control" >
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>شماره شبا</label>
-                    <input type="text" class="form-control" placeholder="IR870570028180010653892101">
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>موجودی</label>
-                    <input type="text" class="form-control" placeholder="موجودی" >
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>تاریخ</label>
-                    <input type="text" class="form-control" placeholder="12.08.1400" data-jdp>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12">
-                <div class="form-group select-group">
-                    <label>شهر</label>
-                    <select class="form-select form-control">
-                        <option value="1">تهران</option>
-                        <option value="2">کرج</option>
-                        <option value="3">شیراز</option>
-                        <option value="4">مشهد</option>
-                        <option value="5">تبریز</option>
-                    </select>
-                </div>
-            </div>
-            
-           
-            <div class="col-lg-12 col-md-12">
-                <div class="form-group">
-                    <label>آدرس</label>
-                    <input type="text" class="form-control" placeholder="آدرس">
-                </div>
-            </div>
-          
-        
-            <div class="col-lg-12 col-md-12">
-                <button type="submit" class="default-btn">ارسال <i class="flaticon-send"></i></button>
-            </div>
-        </div>
     </form>
+    </div>
 </div>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

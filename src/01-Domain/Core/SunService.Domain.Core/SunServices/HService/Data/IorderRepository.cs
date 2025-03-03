@@ -13,7 +13,7 @@ namespace SunService.Domain.Core.SunServices.HService.Data
         public Task<List<OrderDto>> GetAllOrder(CancellationToken cancellationToken);
         public Task<List<OrderDto>> GetAllOrderUser(int id,CancellationToken cancellationToken);
         public Task<Order> GetorderById(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task CreateOrder(Order order, CancellationToken cancellationToken);
+        public Task<int> CreateOrder(OrderDto orderdto, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteOrder(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task UpdateOrderStatus(int orderId, OrderHomeServiceStatusEnum newStatus, CancellationToken cancellationToken);
         public Task<bool> HasExpertOffers(int orderId, CancellationToken cancellationToken);

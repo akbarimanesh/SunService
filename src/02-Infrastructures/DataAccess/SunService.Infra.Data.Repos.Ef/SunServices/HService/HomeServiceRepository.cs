@@ -45,7 +45,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken)
         {
-            return await _appDbContext.HomeServices.AsNoTracking().Select(x => new HomeServiceDto()
+            return await _appDbContext.HomeServices.AsNoTracking().Include(h => h.SubCategory).ThenInclude(sc => sc.Category).Select(x => new HomeServiceDto()
             {
                 Id=x.Id,
                 Title = x.Title,
@@ -54,8 +54,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 ImagePath = x.ImagePath,
                 NumberVisits = x.NumberVisits,
                 SubCategoryTitle=x.SubCategory.Title,
-             SubCategoryId=x.SubCategoryId
-
+             SubCategoryId=x.SubCategoryId,
+              CategoryTitle = x.SubCategory.Category.Title,
             }).ToListAsync(cancellationToken);
         }
 

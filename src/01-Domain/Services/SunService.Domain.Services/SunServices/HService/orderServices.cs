@@ -21,9 +21,9 @@ namespace SunService.Domain.Services.SunServices.HService
             _OrderRepository = orderRepository;
         }
 
-        public async Task CreateOrder(Order order, CancellationToken cancellationToken)
+        public async Task<int> CreateOrder(OrderDto orderdto, CancellationToken cancellationToken)
         {
-            await _OrderRepository.CreateOrder(order, cancellationToken);
+           return await _OrderRepository.CreateOrder(orderdto, cancellationToken);
         }
 
         public async Task DeleteOrder(int id, CancellationToken cancellationToken)

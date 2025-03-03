@@ -1,4 +1,7 @@
-﻿<div class="sidemenu-area">
+﻿@using SunService.Domain.Core.SunServices.UserS.DTOs
+@using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
+
+<div class="sidemenu-area">
     <div class="sidemenu-header">
         <a href="dashboard.html" class="navbar-brand d-flex align-items-center">
             <img src="~/UserTemplate/images/logo.png" class="logo-one" alt="Logo"><img src="~/UserTemplate/images/logo-2.png" class="logo-two" alt="Logo">
@@ -17,12 +20,15 @@
                     <span class="menu-title">داشبورد</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a asp-area="Customer" asp-controller="Customer" asp-action="Update" class="nav-link">
-                    <span class="icon"><i class="ri-user-line"></i></span>
-                    <span class="menu-title">ویرایش پروفایل</span>
-                </a>
-            </li>
+          
+                <li class="nav-item">
+                <a asp-area="Customer" asp-controller="Customer"  asp-action="Update" class="nav-link">
+                        <span class="icon"><i class="ri-user-line"></i></span>
+                        <span class="menu-title">ویرایش پروفایل</span>
+                    </a>
+                </li>
+          
+           
            
            
             <li class="nav-item">
@@ -31,7 +37,12 @@
                     <span class="menu-title">سفارش های من</span>
                 </a>
             </li>
-            
+            <li class="nav-item">
+                <a asp-area="" asp-controller="HomeService" asp-action="Index" class="nav-link">
+                    <span class="icon"><i class="ri-stack-fill"></i></span>
+                    <span class="menu-title">لیست خدمات</span>
+                </a>
+            </li>
            
             <li class="nav-item">
                 <a href="#" class="nav-link">

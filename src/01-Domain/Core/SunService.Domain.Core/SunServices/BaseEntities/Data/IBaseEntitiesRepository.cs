@@ -9,6 +9,7 @@ namespace SunService.Domain.Core.SunServices.BaseEntities.Data
 {
     public interface IBaseEntitiesRepository
     {
+        public global::System.Threading.Tasks.Task AddOrderImages(List<string> imgAddress, int orderId, CancellationToken cancellationToken);
         Task<List<City>> GetCities(CancellationToken cancellationToken);
         public Task<City> GetCityById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateCity(City city, CancellationToken cancellationToken);

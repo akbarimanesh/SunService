@@ -85,6 +85,9 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             result.RoleId = user.RoleId;
             result.ImagePath = user.ImagePath;
             result.Status = user.StatusUser;
+            result.CardNumber= user.CardNumber;
+            result.ShabaNumber= user.ShabaNumber;
+            result.Balance = user.Balance;
             return result;
 
         }
@@ -127,7 +130,10 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             user.Address = model.Address;
             user.StatusUser = model.Status;
             user.ImagePath = model.ImagePath ?? user.ImagePath;
-            
+            user.CardNumber = model.CardNumber;
+            user.Address=model.Address;
+            user.ShabaNumber = model.ShabaNumber;
+            user.Balance=model.Balance;
             await _appDbContext.SaveChangesAsync(cancellationToken);
             return true;
         }

@@ -14,6 +14,11 @@ namespace SunService.Domain.Services.SunServices.BaseEntities
             _BaseEntitiesRepository = baseEntitiesRepository;
         }
 
+        public async Task AddOrderImages(List<string> imgAddress, int orderId, CancellationToken cancellationToken)
+        {
+            await _BaseEntitiesRepository.AddOrderImages(imgAddress, orderId, cancellationToken);
+        }
+
         public async Task CreateCity(City city, CancellationToken cancellationToken)
         {
             await _BaseEntitiesRepository.CreateCity(city, cancellationToken);

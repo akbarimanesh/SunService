@@ -23,6 +23,9 @@ namespace SunService.Domain.Core.SunServices.UserS.DTOs
         public string? Address { get; set; }
         public bool Status {  get; set; }
         public int CityId { get; set; }
+        public string? CardNumber { get; set; }
+        public string? ShabaNumber { get; set; }
+        public int? Balance { get; set; }
         public int RoleId   { get; set; }
         public RoleEnum Role { get; set; }
         public IFormFile? ProfileImgFile { get; set; }

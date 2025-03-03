@@ -1,6 +1,7 @@
 ﻿
 
 using SunService.Domain.Core.SunServices.HService.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SunService.Domain.Core.SunServices.UserS.Entities
 {
@@ -19,6 +20,8 @@ namespace SunService.Domain.Core.SunServices.UserS.Entities
         public List<Offer>? Offers { get; set; }
         public List<ExpertService> ExpertServices { get; set; }
         public List<Rating>? Ratings { get; set; }
+     
+       
         #endregion
     }
 }

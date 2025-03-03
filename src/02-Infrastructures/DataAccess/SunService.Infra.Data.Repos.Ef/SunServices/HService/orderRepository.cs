@@ -23,10 +23,27 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext = appDbContext;
         }
 
-        public async Task CreateOrder(Order order, CancellationToken cancellationToken)
+        public async Task<int> CreateOrder(OrderDto order, CancellationToken cancellationToken)
         {
-            await _appDbContext.Orders.AddAsync(order, cancellationToken);
+           
+            var order1 = new Order()
+            {
+                Id = order.Id,
+                ImplementationTime = order.ImplementationTime,
+                ImplementationDate = order.ImplementationDate,
+                Customer = order.customer,
+                Description=order.Description,
+                CreateAt= DateTime.Now,
+                OrderHomeServiceStatus= order.OrderHomeServiceStatus,
+                OfferId= order.OfferId,
+                Offers= order.Offers,
+               HomeService=order.homeservice,
+                CityId = order.customer.CityId,
+                Images =order.ImagesOrder
+            };
+            await _appDbContext.Orders.AddAsync(order1, cancellationToken);
             await _appDbContext.SaveChangesAsync(cancellationToken);
+            return order1.Id;
         }
 
         public async Task DeleteOrder(int id, CancellationToken cancellationToken)

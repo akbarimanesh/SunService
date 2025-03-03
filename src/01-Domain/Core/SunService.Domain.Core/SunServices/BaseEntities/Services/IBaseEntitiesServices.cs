@@ -9,6 +9,7 @@ namespace SunService.Domain.Core.SunServices.BaseEntities.Services
 {
     public interface IBaseEntitiesServices
     {
+        public global::System.Threading.Tasks.Task AddOrderImages(List<string> imgAddress, int orderId, CancellationToken cancellationToken);
         Task<List<City>> GetCities(CancellationToken cancellationToken);
         Task<string> UploadImage(IFormFile FormFile, string folderName, CancellationToken cancellationToken);
         public Task<City> GetCityById(int id, CancellationToken cancellationToken);

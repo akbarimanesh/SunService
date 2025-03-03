@@ -29,9 +29,9 @@ namespace SunService.Domain.Services.SunServices.UserS
             return await _ExpertRepository.GetAllExperts(cancellationToken);
         }
 
-        public async Task<Expert> GetCustomerById(int id, CancellationToken cancellationToken)
+        public async Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken)
         {
-            return await _ExpertRepository.GetCustomerById(id, cancellationToken);
+            return await _ExpertRepository.GetExpertById(homeServiceId, cancellationToken);
         }
 
         public async Task UpdateExpert(Expert expert, CancellationToken cancellationToken)

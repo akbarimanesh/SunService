@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.Data;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
@@ -46,13 +47,21 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
                 Mobile = x.Mobile,
                 Biography = x.Biography,
                 ImagePath = x.ImagePath,
-
+               
             }).ToListAsync(cancellationToken);
         }
 
-        public async Task<Expert> GetCustomerById(int id, CancellationToken cancellationToken)
+        public async Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Experts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.ExpertServices
+            .Include(es => es.Expert)
+             .Where(es => es.HomeServiceId == homeServiceId)
+             .Select(es => new Expert
+             {
+                 CityId = es.Expert.CityId
+             })
+             .FirstOrDefaultAsync(cancellationToken);
+
         }
 
         public async Task UpdateExpert(Expert expert, CancellationToken cancellationToken)

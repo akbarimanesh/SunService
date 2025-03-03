@@ -5,6 +5,7 @@ using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,18 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.BaseEntities
         public BaseEntitiesRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+        }
+
+        public async Task AddOrderImages(List<string> imgAddress, int orderId, CancellationToken cancellationToken)
+        {
+            var images = imgAddress.Select(x => new Image()
+            {
+                Path = x,
+                OrderId = orderId
+            });
+
+            await _appDbContext.Images.AddRangeAsync(images, cancellationToken);
+            await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task CreateCity(City city, CancellationToken cancellationToken)

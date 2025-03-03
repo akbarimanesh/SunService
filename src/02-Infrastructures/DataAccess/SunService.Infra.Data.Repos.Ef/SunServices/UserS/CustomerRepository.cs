@@ -54,7 +54,15 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
 
         public async Task<Customer> GetCustomerById(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.Customers.AsNoTracking()
+            .Where(u => u.Id == id)
+            .Select(u => new Customer
+            {
+                Id = u.Id,
+                CityId = u.CityId
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+           
         }
 
         public async Task UpdateCustomer(Customer customer, CancellationToken cancellationToken)
