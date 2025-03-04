@@ -35,10 +35,11 @@
                     <th>شناسه سفارش</th>
                     <th>خدمات</th>
                     <th>تاریخ ثبت</th>
-                    <th>تاریخ اجرا</th>
-                    <th>ساعت اجرا</th>
+                    
                     <th>وضعیت</th>
-                    <th>پیشنهاد</th>
+                    <th>جزئیات سفارش</th>
+                    <th>پیشنهادها</th>
+                    <th>عملیات</th>
                     
                 </tr>
             </thead>
@@ -51,15 +52,22 @@
                         
                         <td>@order.HomeServiceTitle </td>
                         <td>@order.CreateAt.ToPersianString("yyyy/MM/dd")</td>
-                        <td>@order.ImplementationDate.ToPersianString("yyyy/MM/dd")</td>
-                        <td>@order.ImplementationTime.ToString("HH:mm")</td>
+                        
 
 
                         <td>@EnumExtensionMethods.GetEnumDisplayName(order.OrderHomeServiceStatus) </td>
-
-
+                        <td>
+                          
+                            <a asp-area="Customer" asp-controller="Customer" asp-action="Show" asp-route-Id="@order.Id" class="status">نمایش</a>
+                        </td>
+                        
                         <td>
                             <a asp-area="Customer" asp-controller="Customer" asp-action="Offer" asp-route-Id="@order.Id" class="status">پیشنهادها</a>
+                        </td>
+                        <td>
+                            
+                           
+                            <a asp-area="Customer" asp-controller="Customer" asp-action="Payment" asp-route-Id="@order.Id" class="status">اتمام کار</a>
                         </td>
                         
                     </tr>

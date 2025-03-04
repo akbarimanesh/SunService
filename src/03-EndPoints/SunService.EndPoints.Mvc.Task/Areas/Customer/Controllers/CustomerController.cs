@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.Core.SunServices.HService.AppServices;
+using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
@@ -104,6 +105,25 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             var id = int.Parse(userId);
             var orders = await _orderAppServices.GetAllOrderUser(id,cancellationToken);
             return View(orders);
+        }
+        
+        public async Task<IActionResult> Show(int Id,CancellationToken cancellationToken)
+        {
+            var userId = _userManager.GetUserId(User);
+            var id = int.Parse(userId);
+            var order = await _orderAppServices.GetorderById(Id, cancellationToken);
+            var orderDto = new OrderDto
+            {
+                Id = order.Id,
+                HomeServiceTitle = order.HomeService.Title,
+                CreateAt = order.CreateAt,
+                ImplementationDate = order.ImplementationDate,
+                OrderHomeServiceStatus = order.OrderHomeServiceStatus,
+                Description = order.Description,
+                ImplementationTime=order.ImplementationTime,
+             
+            };
+            return View(orderDto);
         }
         public async Task<IActionResult> Offer(int id, CancellationToken cToken)
         {

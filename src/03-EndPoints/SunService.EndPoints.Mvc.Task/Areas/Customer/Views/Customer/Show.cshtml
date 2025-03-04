@@ -1,0 +1,98 @@
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.HService.DTOs
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > جزئیات سفارش";
+    }
+</div>
+@model OrderDto
+
+@if (Model == null)
+{
+    <div class="alert alert-danger">سفارشی یافت نشد.</div>
+    return;
+}
+@if (TempData["SuccessMessage"] != null)
+{
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+<input type="hidden" name="orderId" value="@Model.Id" />
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+
+<div class="packages-box">
+    <h2>سفارش ها</h2>
+    <div class="packages-table table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+
+                    <th>شناسه سفارش</th>
+                    <th>خدمات</th>
+                    <th>تاریخ ثبت</th>
+                    <th>تاریخ اجرا</th>
+                    <th>ساعت اجرا</th>
+                    <th>وضعیت</th>
+                    
+
+                </tr>
+            </thead>
+            <tbody>
+               
+                        <tr>
+
+                            <td>@Model.Id</td>
+
+                            <td>@Model.HomeServiceTitle </td>
+                            <td>@Model.CreateAt.ToPersianString("yyyy/MM/dd")</td>
+                            <td>@Model.ImplementationDate.ToPersianString("yyyy/MM/dd")</td>
+                            <td>@Model.ImplementationTime.ToString("HH:mm")</td>
+                            <td>@EnumExtensionMethods.GetEnumDisplayName(@Model.OrderHomeServiceStatus) </td>
+
+
+                       
+
+                        </tr>
+              
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="order-description mt-4 p-3 border rounded bg-white" >
+    <h3>توضیحات سفارش</h3>
+    <p>@(Model.Description != null ? Model.Description : "توضیحاتی برای این سفارش موجود نیست.")</p>
+</div>
+
+
+<div class="order-images mt-4 p-3 border rounded bg-white">
+    <h3>تصاویر سفارش</h3>
+    <div class="row">
+        @if (Model.Images != null && Model.Images.Any())
+        {
+            @foreach (var image in Model.Images)
+            {
+                <div class="col-md-3 mb-3">
+                    <img src="@image" class="img-fluid rounded shadow-sm" alt="تصویر سفارش">
+                </div>
+            }
+        }
+        else
+        {
+            <p>تصویری برای این سفارش موجود نیست.</p>
+        }
+    </div>
+</div>
+<br />
