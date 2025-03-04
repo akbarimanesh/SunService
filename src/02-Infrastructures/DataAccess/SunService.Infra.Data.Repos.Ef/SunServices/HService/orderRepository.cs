@@ -1,16 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Framework;
+using Microsoft.EntityFrameworkCore;
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.HService.Enums;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 {
@@ -25,21 +21,26 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<int> CreateOrder(OrderDto order, CancellationToken cancellationToken)
         {
-           
+
             var order1 = new Order()
             {
                 Id = order.Id,
                 ImplementationTime = order.ImplementationTime,
                 ImplementationDate = order.ImplementationDate,
-                Customer = order.customer,
-                Description=order.Description,
-                CreateAt= DateTime.Now,
-                OrderHomeServiceStatus= order.OrderHomeServiceStatus,
-                OfferId= order.OfferId,
-                Offers= order.Offers,
-               HomeService=order.homeservice,
-                CityId = order.customer.CityId,
-                Images =order.ImagesOrder
+
+                Description = order.Description,
+                CreateAt = DateTime.Now,
+                OrderHomeServiceStatus = OrderHomeServiceStatusEnum.OfferExpert,
+                OfferId = order.OfferId,
+
+                CityId = order.CityId ?? 0,
+
+
+                CustomerId = order.CustomerId,
+             
+               HomeServiceId = order.HomeserviceId,
+                ExpertId = order.ExpertId,
+
             };
             await _appDbContext.Orders.AddAsync(order1, cancellationToken);
             await _appDbContext.SaveChangesAsync(cancellationToken);

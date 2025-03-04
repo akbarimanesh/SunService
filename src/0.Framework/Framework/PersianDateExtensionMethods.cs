@@ -50,6 +50,7 @@ namespace Framework
         {
             return date.ToString(format, GetPersianCulture());
         }
+       
     }
 
 }

@@ -111,7 +111,7 @@
         <div class="section-title text-center">
             <h2>خدمات آنلاین و تعمیرات در منزل با سان</h2>
             <div class="bar m-auto"></div>
-            <p class="m-auto">در حال حاضر 13 خدمات در سان موجود می باشد.</p>
+          @*   <p class="m-auto">در حال حاضر 13 خدمات در سان موجود می باشد.</p> *@
         </div>
         <div class="row pt-45">
 
@@ -166,7 +166,7 @@
                             </ul>
                         </div>
                         <div class="find-jobs-btn">
-                            <a asp-controller="Order" asp-action="Create" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
+                            <a asp-controller="Order" asp-action="Create" asp-route-Id="@item.Id"  class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
                         </div>
 
                     </div>

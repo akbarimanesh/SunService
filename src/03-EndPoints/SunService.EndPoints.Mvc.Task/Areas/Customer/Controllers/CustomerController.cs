@@ -64,7 +64,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                
                 cityId = user.CityId,
               
-                
+                ImagePath=user.ImagePath,
                 ProfileImgFile = user.ProfileImgFile,
                
             };
@@ -77,7 +77,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             if (ModelState.IsValid)
             {
                
-                var user1 = new UserDto { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Email = user.Email, CityId = user.cityId,  Mobile = user.Mobile, Address = user.Address, ProfileImgFile = user.ProfileImgFile ,Balance=user.Balance,CardNumber=user.CardNumber,ShabaNumber=user.ShabaNumber,UserName=user.UserName,RoleId=user.RoleId ?? 0,Status=user.Status??false };
+                var user1 = new UserDto { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Email = user.Email, CityId = user.cityId,  Mobile = user.Mobile, Address = user.Address, ProfileImgFile = user.ProfileImgFile ,Balance=user.Balance,CardNumber=user.CardNumber,ShabaNumber=user.ShabaNumber,UserName=user.UserName,RoleId=user.RoleId ?? 0,Status=user.Status??false};
                 var result = await _UserSAppServices.Update(user1, cToken);
                 if (result.IsSuccess)
                 {

@@ -43,12 +43,13 @@
                     <div class="bar"></div>
                     <div class="contact-form">
                       @*   <h3>اطلاعات پایه</h3> *@
-                        <form  asp-controller="Order" asp-area="" asp-action="Create" method="post">
+                        <form asp-controller="Order" asp-area="" asp-action="Create" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>خدمات</label>
-                                         <select asp-for="@Model.orderDto.HomeserviceId" asp-controller="HomeService" asp-action="Create" class="form-select form-control">
+                                        <input type="hidden" asp-for="@Model.orderDto.HomeserviceId" />
+                                        <select asp-for="@Model.orderDto.HomeserviceId" asp-controller="HomeService" asp-action="Create" class="form-select form-control" >
                                         @foreach (var homeservice in Model.HomeServices)
                                         {
                                        
@@ -79,13 +80,13 @@
                                 <div class="col-lg-12 col-md-12">
                                     <div class="form-group">
                                         <label>توضیحات</label>
-                                        <textarea asp-for="@Model.orderDto.Description" class="form-control" cols="30" rows="5" required data-error="توضیحات خود را بنویسید"></textarea>
+                                        <textarea asp-for="@Model.orderDto.Description" class="form-control" cols="30" rows="5"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="choose-img">
                                         <p class="title">آپلود تصاویر</p>
-                                        <input asp-for="@Model.orderDto.Images" type="file" id="img" name="img" accept="image/*" multiple>
+                                        <input asp-for="@Model.orderDto.Images" type="file"  multiple>
                                         <p>حداکثر حجم فایل: 2 مگابایت</p>
                                     </div>
                                 </div>
@@ -109,6 +110,9 @@
             window.location.href = '@Url.Content("~/Account/UserS/Login")';
         </script>
     }
+   
+
+   
     @section Scripts
     {
         <partial name="_ValidationScriptsPartial" />

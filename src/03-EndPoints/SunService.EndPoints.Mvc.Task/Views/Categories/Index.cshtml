@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SunService.Domain.Core.SunServices.HService.DTOs
+@{
     Layout = "_Layout";
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -6,7 +7,7 @@
     ViewData["Title"] = "دسته بندی ";
 }
 
-
+@model List<CategoryDto>
 @await Html.PartialAsync("_TitlePage")
 <div class="page">
 
@@ -31,170 +32,71 @@
                        
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="browse-btn float-end">
-                        <a href="#"> همه دسته ها را مرور کنید <i class="ri-arrow-left-s-line"></i></a>
-                    </div>
-                </div>
+                
             </div>
             <div class="row pt-45">
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
 
-                        <img src="/Images/Category/clean-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
+                <div class="browse-jobs-area pt-100 pb-70">
+                    <div class="container">
+                        <div class="section-title text-center">
+                            <h2>خدمات آنلاین و تعمیرات در منزل با سان</h2>
+                            <div class="bar m-auto"></div>
+                            @*   <p class="m-auto">در حال حاضر 13 خدمات در سان موجود می باشد.</p> *@
+                        </div>
+                        <div class="row pt-45">
 
-                        <h3><a href="~/HomeService/Index" >تمیزکاری</a></h3>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left" ></i> نظافت و پذیرایی
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> شستشو
-                            </a>
-                        </p>
+
+
+
+                            @foreach (var category in Model)
+                            {
+                                <div class="col-lg-3 col-6">
+                                    <div class="browse-jobs-item">
+                                        <img src="@category.ImagePath" alt="@category.Title" width="80" height="80" class="jobs-card-img">
+
+                                        <h3><a href="#">@category.Title</a></h3>
+                                    </div>
+                                </div>
+                            }
+
+
+
+                           @*  <div class="col-lg-12 col-md-12 text-center">
+                                <div class="pagination-area">
+                                    @if (@Model.CurrentPage > 1)
+                                    {
+                                        <a href="@Url.Action("Index", new { page = Model.CurrentPage - 1 })" class="prev page-numbers">
+                                            <i class="ri-arrow-right-s-line"></i>
+                                        </a>
+                                    }
+
+                                    @for (int i = 1; i <= Model.TotalPages; i++)
+                                    {
+                                        if (i == Model.CurrentPage)
+                                        {
+                                            <span class="page-numbers current">@i</span>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Index", new { page = i })" class="page-numbers">@i</a>
+                                        }
+                                    }
+
+                                    @if (Model.CurrentPage < Model.TotalPages)
+                                    {
+                                        <a href="@Url.Action("Index", new { page = Model.CurrentPage + 1 })" class="next page-numbers">
+                                            <i class="ri-arrow-left-s-line"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </div> م
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/Building-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-
-                        <h3><a href="company-details.html">ساختمان</a></h3>
-                       
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> چوب و کابینت
-                            </a>
-                        </p>
-                      
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> لوله کشی
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/Repairs-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-                        <h3><a href="company-details.html">تعمیرات اشیا</a></h3>
-                       
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> تعمیر لوازم خانگی
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> سرمایش و گرمایش
-                            </a>
-                        </p>
-                      
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/Cargo-transportation-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-
-                        <h3><a href="company-details.html">اسباب کشی</a></h3>
-                       
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> باربری
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> بسته بندی
-                            </a>
-                        </p>
-                      
-                       
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/Car-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-
-                        <h3><a href="company-details.html">خودرو</a></h3>
-                     
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> تعمیرات خودرو
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> کارواش خودرو
-                            </a>
-                        </p>
-                       
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/Beauty-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-
-                        <h3><a href="company-details.html">سلامت و زیبایی</a></h3>
-                     
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> پزشکی و پرستاری
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> زیبایی بانوان
-                            </a>
-                        </p>
-                       
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/Complexes-mainCategory-icon.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-
-                        <h3><a href="company-details.html">سازمان ها </a></h3>
-                        
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> خدمات شرکتی
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> تامین نیروی انسانی
-                            </a>
-                        </p>
-                     
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="company-card">
-
-                        <img src="/Images/Category/7d41ccae-48ff-4211-8726-a5ab67e9e8d1other-category.jpg" alt="Category Icon" width="80" height="80" class="jobs-card-img">
-
-                        <h3><a href="company-details.html"> سایر خدمات</a></h3>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> سایر
-                            </a>
-                        </p>
-                        <p>
-                            <a href="~/HomeService/Index" class="custom-link">
-                                <i class="bi bi-chevron-left"></i> خدمات
-                            </a>
-                        </p>
-                     
-                    </div>
-                </div>
+                </div> *@
+                
+               
+                
+                
             </div>
         </div>
     </div>

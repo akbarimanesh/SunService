@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\0.Framework\Framework\Framework.csproj" />
     <ProjectReference Include="..\..\..\01-Domain\Core\SunService.Domain.Core\SunService.Domain.Core.csproj" />
     <ProjectReference Include="..\..\Db\SunService.Infra.Data.Db.SqlServer.Ef\SunService.Infra.Data.Db.SqlServer.Ef.csproj" />
   </ItemGroup>

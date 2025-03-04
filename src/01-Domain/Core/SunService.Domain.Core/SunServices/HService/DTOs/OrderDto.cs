@@ -15,21 +15,22 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public int Id { get; set; }
         public string? HomeServiceTitle { get; set; }
         public int CustomerId { get; set; }
-        public Customer? customer { get; set; }
-        public Expert? expert { get; set; }
-        
-        public int ExpertId { get; set; }
+   
+        public int? CityId { get; set; }
+     
+        public int? ExpertId { get; set; }
         public int HomeserviceId { get; set; }
-        public HomeService? homeservice { get; set; }    
+     
         public string? CustomerFullName { get; set; }
         public DateTime ImplementationDate { get; set; }
         public DateTime CreateAt { get; set; }
         public TimeOnly ImplementationTime { get; set; }
-        public OrderHomeServiceStatusEnum OrderHomeServiceStatus { get; set; }
+        public OrderHomeServiceStatusEnum OrderHomeServiceStatus { get; set; } 
         public int? OfferId { get; set; }
         public List<Offer>? Offers { get; set; }
         public string? Description { get; set; }
         public List<IFormFile>? Images { get; set; }
-        public List<Image>? ImagesOrder { get; set; }
+       
+
     }
 }

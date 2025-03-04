@@ -43,115 +43,119 @@
     <h3>ویرایش پروفایل</h3>
     <div class="bar"></div>
     <div class="profile-outer-area">
-        <form asp-action="Update" asp-controller="Customer" method="post">
-          
+        <form asp-action="Update" asp-controller="Customer" method="post" enctype="multipart/form-data">
 
-                    <div class="form-group relative">
-                        @if (string.IsNullOrEmpty(Model.ImagePath))
-                        {
-                            <img style="border-radius : 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
-                        }
-                        else
-                        {
-                            <img style="border-radius : 50%" src="@Model.ProfileImgFile?.FileName" width="80" height="80" class="d-block mx-auto" />
-                        }
 
+            <div class="form-group relative">
+                @if (string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img style="border-radius : 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
+                }
+                else
+                {
+                    <img style="border-radius : 50%" src="@Model.ImagePath" width="80" height="80" class="d-block mx-auto" />
+                }
+            </div>
+
+            <br />
+            <label>تغییر عکس</label>
+            <div class="form-group relative">
+                <input asp-for="ProfileImgFile" type="file" class="form-control">
                 
-                <br />
-                    <label>تغییر عکس</label>
-                    <div class="input-group round">
-                    <input asp-for="ProfileImgFile" type="file" class="form-control"  class="form-control file-input" placeholder="برای آپلود کلیک کنید" value="@Model.ProfileImgFile">
-                        <span class="input-group-btn">
-                            
-                                <i class="icon-picture"></i>
-                              
-                                <div class="paper-ripple">
-                                    <div class="paper-ripple__background"></div>
-                                    <div class="paper-ripple__waves"></div>
-                                </div>
-                            </button>
-                        </span>
-                    </div><!-- /.input-group -->
-                    <div class="help-block"></div>
-                </div>
-            
+                <div class="input-group round">
+                  
+                    <span class="input-group-btn">
+                       
+                            <i class="icon-picture"></i>
+                           
+                            <div class="paper-ripple">
+                                <div class="paper-ripple__background"></div>
+                                <div class="paper-ripple__waves"></div>
+                            </div>
+                        </button>
+                    </span>
+                </div><!-- /.input-group -->
+                <div class="help-block"></div>
+            </div>
+
+
             <br />
 
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="UserName" />
-    <input type="hidden" asp-for="Status" />
-    <input type="hidden" asp-for="RoleId" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserName" />
+            <input type="hidden" asp-for="Status" />
+            <input type="hidden" asp-for="RoleId" />
 
-    <div class="row align-items-center">
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label>نام</label>
-                <input asp-for="FirstName" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.FirstName">
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label> نام خانوادگی</label>
-                <input asp-for="LastName" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.LastName">
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label> ایمیل</label>
-                <input asp-for="Email" asp-controller="Customer" asp-action="Update" class="form-control" type="email" placeholder="آدرس ایمیل" value="@Model.Email">
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label>موبایل</label>
-                <input asp-for="Mobile" asp-controller="Customer" asp-action="Update" class="form-control" type="text" placeholder="شماره موبایل" value="@Model.Mobile" placeholder="09121234567">
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label>شماره کارت</label>
-                <input asp-for="CardNumber" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.CardNumber">
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label>شماره شبا</label>
-                <input asp-for="ShabaNumber" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.ShabaNumber">
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-12 col-md-12">
-            <div class="form-group">
-                <label>موجودی</label>
-                <input asp-for="Balance" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.Balance" placeholder="تومان">
-            </div>
-        </div>
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>نام</label>
+                        <input asp-for="FirstName" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.FirstName">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label> نام خانوادگی</label>
+                        <input asp-for="LastName" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.LastName">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label> ایمیل</label>
+                        <input asp-for="Email" asp-controller="Customer" asp-action="Update" class="form-control" type="email" placeholder="آدرس ایمیل" value="@Model.Email">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>موبایل</label>
+                        <input asp-for="Mobile" asp-controller="Customer" asp-action="Update" class="form-control" type="text" placeholder="شماره موبایل" value="@Model.Mobile" placeholder="09121234567">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>شماره کارت</label>
+                        <input asp-for="CardNumber" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.CardNumber">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>شماره شبا</label>
+                        <input asp-for="ShabaNumber" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.ShabaNumber">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>موجودی</label>
+                        <input asp-for="Balance" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.Balance" placeholder="تومان">
+                    </div>
+                </div>
 
-        <div class="col-xl-6 col-lg-12 col-md-12">
+                <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group select-group">
-                <label>شهر</label>
+                        <label>شهر</label>
                         <select asp-for="cityId" class="form-select form-control" value="@Model.cityId">
-                    @foreach (var city in await @BaseDataAppService.GetCities(default))
-                    {
-                        <option value="@city.Id">@city.Title</option>
-                    }
-                </select>
+                            @foreach (var city in await @BaseDataAppService.GetCities(default))
+                            {
+                                <option value="@city.Id">@city.Title</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>آدرس</label>
+                        <input asp-for="Address" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12">
+                    <button type="submit" class="default-btn">ارسال <i class="flaticon-send"></i></button>
+                </div>
             </div>
-        </div>
-
-
-        <div class="col-lg-12 col-md-12">
-            <div class="form-group">
-                <label>آدرس</label>
-                <input asp-for="Address" asp-controller="Customer" asp-action="Update" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
-            </div>
-        </div>
-
-
-        <div class="col-lg-12 col-md-12">
-            <button type="submit" class="default-btn">ارسال <i class="flaticon-send"></i></button>
-        </div>
-    </div>
-    </form>
+        </form>
     </div>
 </div>
 @section Scripts
