@@ -2,6 +2,7 @@
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,21 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext = appDbContext;
         }
 
+        public async Task AcceptOffer(int id, CancellationToken cToken)
+        {
+            var offer = await _appDbContext.Offers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            offer.StateOffer = true;
+            var otherOffers = await _appDbContext.Offers
+           .Where(o => o.OrderId == offer.OrderId && o.Id != id)
+            .ToListAsync(cToken);
+
+            foreach (var offer1 in otherOffers)
+            {
+                offer1.StateOffer = false; 
+            }
+            await _appDbContext.SaveChangesAsync();
+        }
+
         public async Task CreateOffer(Offer offer, CancellationToken cancellationToken)
         {
             await _appDbContext.Offers.AddAsync(offer, cancellationToken);
@@ -33,21 +49,37 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<OfferDto>> GetAllOffer(int OrderId,CancellationToken cancellationToken)
-        {
-            return await _appDbContext.Offers.AsNoTracking().Where(x=>x.OrderId==OrderId).Select(x => new OfferDto()
-            {
-                Id=x.Id,
-                HomeServiceTitle = x.Order.HomeService.Title,
-              ExpertFullName=x.Expert.FirstName +" "+x.Expert.LastName,
-                PriceOffer=x.PriceOffer,
-                Description=x.Description,
-                OfferDate=x.OfferDate,
-                OrderId=x.OrderId,
-                CompletionDate=x.CompletionDate,
-                StateOffer=x.StateOffer,
 
-            }).ToListAsync(cancellationToken);
+        public async Task<List<OfferDto>> GetAllOffer(int OrderId, CancellationToken cancellationToken)
+        {
+            var offers = await _appDbContext.Offers
+                .AsNoTracking()
+                .Where(x => x.OrderId == OrderId)
+                .Include(x => x.Expert) 
+                .Include(x => x.Expert.ExpertServices) 
+                    .ThenInclude(es => es.Ratings) 
+                .Select(x => new OfferDto()
+                {
+                    Id = x.Id,
+                    HomeServiceTitle = x.Order.HomeService.Title,
+                    ExpertFullName = x.Expert.FirstName + " " + x.Expert.LastName,
+                    PriceOffer = x.PriceOffer,
+                    Description = x.Description,
+                    OfferDate = x.OfferDate,
+                    OrderId = x.OrderId,
+                    CompletionDate = x.CompletionDate,
+                    StateOffer = x.StateOffer,
+
+                  
+                    AverageRating = x.Expert.ExpertServices
+                        .Where(es => es.HomeServiceId == x.Order.HomeServiceId) 
+                        .SelectMany(es => es.Ratings) 
+                        .Where(r => r.Status == StatuseRating.aproved) 
+                        .Average(r => (double?)r.Score) ?? 0 
+                })
+                .ToListAsync(cancellationToken);
+
+            return offers;
         }
 
         public async Task<List<OfferDto>> GetAllOfferAllOrder(CancellationToken cancellationToken)
@@ -70,6 +102,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         public async Task<Offer> GetOfferById(int id, CancellationToken cancellationToken)
         {
             return await _appDbContext.Offers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+       
+        public async Task RejectedOffer(int id, CancellationToken cToken)
+        {
+            var offer = await _appDbContext.Offers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            offer.StateOffer = false;
+            await _appDbContext.SaveChangesAsync();
         }
 
         public async Task UpdateOffer(Offer offer, CancellationToken cancellationToken)

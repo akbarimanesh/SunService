@@ -8,14 +8,6 @@
     }
 </div>
 @model List<OfferDto>
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
 
 <div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
     <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
@@ -23,7 +15,17 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
+
 <div class="resume-alerts-area">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
     <div class="resume-alerts-table table-responsive">
         <h3>پیشنهادها</h3>
         <table class="table table-bordered">
@@ -35,6 +37,7 @@
                     <th scope="col">قیمت پیشنهادی</th>
                     <th scope="col">تاریخ پیشنهاد</th>
                     <th scope="col">تاریخ اتمام کار</th>
+                    <th scope="col">امتیاز کاربر</th>
                     <th scope="col">عملیات</th>
                     
                 </tr>
@@ -43,29 +46,61 @@
                 @foreach (var offer in Model)
                 {
                     <tr>
-
                         <td>@offer.Id</td>
-                       
-                        <td>@offer.ExpertFullName </td>
-                        <td>@offer.PriceOffer </td>
+                        <td>@offer.ExpertFullName</td>
+                        <td>@offer.PriceOffer</td>
                         <td>@offer.OfferDate.ToPersianString("yyyy/MM/dd")</td>
                         <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>
 
-                        
                         <td>
-                            <ul class="option-list">
-
-                                <li><button asp-area="Customer" asp-controller="Customer" asp-action="Offer"  class="option-btn d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="پذیرفتن" type="button"><i class="ri-check-line"></i></button></li>
-                                <li><button class="option-btn d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="رد" type="button"><i class="ri-close-line"></i></button></li>
-                              
-                            </ul>
+                            <span class="stars">
+                                @{
+                                    int roundedRating = (int)Math.Round(offer.AverageRating);
+                                }
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="@(i <= roundedRating ? "star-filled" : "star-empty")">★</span>
+                                }
+                            </span>
                         </td>
 
+                        <style>
+                            .star-filled {
+                                color: gold;
+                                font-size: 18px;
+                            }
 
+                            .star-empty {
+                                color: lightgray;
+                                font-size: 18px;
+                            }
+                        </style>
+
+                        <td>
+                            @if (offer.StateOffer == true)
+                            {
+                                <span class="text-success">پذیرفته شده</span>
+                            }
+                            else if (offer.StateOffer == false)
+                            {
+                                <span class="text-danger">رد شده</span>
+                            }
+                            else
+                            {
+                                <ul class="option-list">
+                                    <li>
+                                        <form asp-area="Customer" asp-controller="Customer" asp-action="AcceptOffer" method="get">
+                                            <input type="hidden" name="id" value="@offer.Id" />
+                                            <button type="submit" class="option-btn d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="پذیرفتن">
+                                                <i class="ri-check-line"></i>
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            }
+                        </td>
                     </tr>
                 }
-                    
-                </tr>
             </tbody>
         </table>
     </div>

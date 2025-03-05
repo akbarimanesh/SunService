@@ -19,11 +19,12 @@ namespace SunService.Domain.AppServices.SunServices.HService
         private readonly IBaseEntitiesServices _baseEntitiesServices;
         private readonly ICustomerServices _customerServices;
         private readonly IExpertServices _expertServices;
-        public orderAppServices(IorderServices orderServices, ICustomerServices customerServices, IExpertServices expertServices = null)
+        public orderAppServices(IorderServices orderServices, ICustomerServices customerServices, IExpertServices expertServices = null, IBaseEntitiesServices baseEntitiesServices = null)
         {
             _orderServices = orderServices;
             _customerServices = customerServices;
             _expertServices = expertServices;
+            _baseEntitiesServices = baseEntitiesServices;
         }
 
         public async Task<Result> CreateOrder(OrderDto orderdto, CancellationToken cancellationToken)

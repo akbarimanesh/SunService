@@ -35,7 +35,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
                 CityId = order.CityId ?? 0,
 
-
+                
                 CustomerId = order.CustomerId,
              
                HomeServiceId = order.HomeserviceId,
@@ -88,7 +88,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<Order> GetorderById(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Orders.AsNoTracking().Include(x => x.HomeService).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.Orders.AsNoTracking().Include(x => x.HomeService).Include(x => x.Images).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public async Task<bool> HasCustomerChosenExpert(int orderId, CancellationToken cancellationToken)

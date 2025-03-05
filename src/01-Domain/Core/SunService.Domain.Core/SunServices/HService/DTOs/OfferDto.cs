@@ -17,6 +17,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public DateTime OfferDate { get; set; }
         public string Description { get; set; }
         public int OrderId { get; set; }
-        public bool StateOffer { get; set; } 
+        public bool? StateOffer { get; set; }
+        public double AverageRating { get; set; } 
     }
 }

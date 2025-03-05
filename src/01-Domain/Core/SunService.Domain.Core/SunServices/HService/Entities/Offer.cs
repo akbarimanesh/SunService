@@ -13,7 +13,7 @@ namespace SunService.Domain.Core.SunServices.HService.Entities
         public DateTime OfferDate {get;set; }
         public DateTime CompletionDate {get;set; }
         public string Description { get; set; }
-        public bool StateOffer { get; set; } = false;
+        public bool? StateOffer { get; set; } 
         public int OrderId { get; set; }
 
         #endregion

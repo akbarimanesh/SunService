@@ -107,17 +107,17 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
                 TempData["ErrorMessage"] = result.IsMessage;
 
             }
-            
-            //var homeService = await _homeServiceAppServices.GetAllHomeService(cToken);
 
-            //var viewmodel = new OrderViewModel
-            //{
+            var homeService = await _homeServiceAppServices.GetAllHomeService(cToken);
 
-            //    HomeServices = homeService,
-            //    orderDto = new OrderDto()
+            var viewmodel = new OrderViewModel
+            {
 
-            //};
-            return View(model);
+                HomeServices = homeService,
+                orderDto = new OrderDto()
+
+            };
+            return View(viewmodel);
         }
        
         }

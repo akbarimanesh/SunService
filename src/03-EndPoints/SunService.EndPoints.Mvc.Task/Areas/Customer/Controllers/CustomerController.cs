@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SunService.Domain.AppServices.SunServices.HService;
+using SunService.Domain.AppServices.SunServices.UserS;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
@@ -121,7 +122,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 OrderHomeServiceStatus = order.OrderHomeServiceStatus,
                 Description = order.Description,
                 ImplementationTime=order.ImplementationTime,
-             
+                ImageUrls = order.Images?.Select(img => img.Path).ToList() ?? new List<string>()
             };
             return View(orderDto);
         }
@@ -131,6 +132,36 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             var offers = await _offerAppServices.GetAllOffer(order.Id, cToken);
             return View(offers);
         }
-        
+        [HttpGet]
+        public async Task<IActionResult> AcceptOffer(int id, CancellationToken cToken)
+        {
+            var result = await _offerAppServices.AcceptOffer(id, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+            }
+            var offer = await _offerAppServices.GetOfferById(id, cToken);
+            return RedirectToAction("Offer", "Customer", new { id = offer.OrderId });
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> RejectOffer(int id, CancellationToken cToken)
+        {
+            var result = await _offerAppServices.RejectedOffer(id, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+            }
+
+            return RedirectToAction("Offer", "Customer");
+        }
     }
 }

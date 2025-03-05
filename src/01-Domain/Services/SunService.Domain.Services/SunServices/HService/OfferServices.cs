@@ -19,6 +19,11 @@ namespace SunService.Domain.Services.SunServices.HService
             _OfferRepository = offerRepository;
         }
 
+        public async Task AcceptOffer(int id, CancellationToken cToken)
+        {
+            await _OfferRepository.AcceptOffer(id, cToken);
+        }
+
         public async Task CreateOffer(Offer offer, CancellationToken cancellationToken)
         {
             await _OfferRepository.CreateOffer(offer, cancellationToken);
@@ -42,6 +47,11 @@ namespace SunService.Domain.Services.SunServices.HService
         public async Task<Offer> GetOfferById(int id, CancellationToken cancellationToken)
         {
             return await _OfferRepository.GetOfferById(id, cancellationToken);
+        }
+
+        public async Task RejectedOffer(int id, CancellationToken cToken)
+        {
+            await _OfferRepository.RejectedOffer(id, cToken);
         }
 
         public async Task UpdateOffer(Offer offer, CancellationToken cancellationToken)

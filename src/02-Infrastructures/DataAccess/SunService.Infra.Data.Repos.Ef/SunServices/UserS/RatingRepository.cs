@@ -25,8 +25,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
 
         public async Task Confirmation(int id, CancellationToken cToken)
         {
-            var car = await _appDbContext.Ratings.Where(x => x.Id == id).FirstOrDefaultAsync();
-            car.Status = StatuseRating.aproved;
+            var rating = await _appDbContext.Ratings.Where(x => x.Id == id).FirstOrDefaultAsync();
+            rating.Status = StatuseRating.aproved;
             await _appDbContext.SaveChangesAsync();
         }
 
@@ -71,8 +71,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
 
         public async Task Rejected(int id, CancellationToken cToken)
         {
-            var car = await _appDbContext.Ratings.Where(x => x.Id == id).FirstOrDefaultAsync();
-            car.Status = StatuseRating.Rejected;
+            var rating = await _appDbContext.Ratings.Where(x => x.Id == id).FirstOrDefaultAsync();
+            rating.Status = StatuseRating.Rejected;
             await _appDbContext.SaveChangesAsync();
         }
 

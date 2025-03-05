@@ -80,9 +80,9 @@
 <div class="order-images mt-4 p-3 border rounded bg-white">
     <h3>تصاویر سفارش</h3>
     <div class="row">
-        @if (Model.Images != null && Model.Images.Any())
+        @if (Model.ImageUrls != null && Model.ImageUrls.Any())
         {
-            @foreach (var image in Model.Images)
+            @foreach (var image in Model.ImageUrls)
             {
                 <div class="col-md-3 mb-3">
                     <img src="@image" class="img-fluid rounded shadow-sm" alt="تصویر سفارش">

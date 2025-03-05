@@ -64,13 +64,17 @@
                                     <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>
                                    
                                    <td>
-                                        @if (offer.StateOffer)
+                                        @if (offer.StateOffer.HasValue && offer.StateOffer.Value)
                                         {
                                             <span class="badge bg-success">پذیرفته شده</span>
                                         }
-                                        else
+                                        else if (offer.StateOffer.HasValue && !offer.StateOffer.Value)
                                         {
                                             <span class="badge bg-warning">پذیرفته نشده</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary"> نامشخص</span>
                                         }
                                         
                                    </td>
