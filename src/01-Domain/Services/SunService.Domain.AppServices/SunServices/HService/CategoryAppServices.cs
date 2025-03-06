@@ -1,4 +1,5 @@
-﻿using SunService.Domain.Core.SunServices.BaseEntities.AppServices;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SunService.Domain.Core.SunServices.BaseEntities.AppServices;
 using SunService.Domain.Core.SunServices.BaseEntities.Services;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
@@ -16,10 +17,12 @@ namespace SunService.Domain.AppServices.SunServices.HService
     {
         private readonly ICategoryServices _categoryServices;
         private readonly IBaseEntitiesServices _baseEntitiesServices;
-        public CategoryAppServices(ICategoryServices categoryServices, IBaseEntitiesServices baseEntitiesServices)
+        private readonly IMemoryCache _memoryCache;
+        public CategoryAppServices(ICategoryServices categoryServices, IBaseEntitiesServices baseEntitiesServices, IMemoryCache memoryCache)
         {
             _categoryServices = categoryServices;
             _baseEntitiesServices = baseEntitiesServices;
+            _memoryCache = memoryCache;
         }
 
         public async Task<Result> CreateCategory(CategoryDto category, CancellationToken cancellationToken)
@@ -62,7 +65,25 @@ namespace SunService.Domain.AppServices.SunServices.HService
 
         public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
         {
-            return await _categoryServices.GetAllCategories(cancellationToken);
+            List<CategoryDto> categories;
+
+            if (_memoryCache.Get("CategoriesList") is not null)
+            {
+                categories = _memoryCache.Get<List<CategoryDto>>("CategoriesList");
+
+            }
+            else
+            {
+                categories = await _categoryServices.GetAllCategories(cancellationToken);
+                _memoryCache.Set("CategoriesList", categories, TimeSpan.FromHours(2));
+            }
+
+
+
+
+            return categories;
+
+           
         }
 
         public async Task<Category> GetCategoryById(int id, CancellationToken cancellationToken)

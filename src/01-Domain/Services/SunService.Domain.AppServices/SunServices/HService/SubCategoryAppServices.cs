@@ -1,4 +1,5 @@
-﻿using SunService.Domain.Core.SunServices.HService.AppServices;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.HService.Services;
@@ -13,10 +14,12 @@ namespace SunService.Domain.AppServices.SunServices.HService
     public class SubCategoryAppServices : ISubCategoryAppServices
     {
         private readonly ISubCategoryServices _subCategoryServices;
+        private readonly IMemoryCache _memoryCache;
 
-        public SubCategoryAppServices(ISubCategoryServices subcategoryServices)
+        public SubCategoryAppServices(ISubCategoryServices subcategoryServices, IMemoryCache memoryCache)
         {
             _subCategoryServices = subcategoryServices;
+            _memoryCache = memoryCache;
         }
 
         public async Task<Result> CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken)
@@ -54,8 +57,26 @@ namespace SunService.Domain.AppServices.SunServices.HService
 
         public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
         {
-            return await _subCategoryServices.GetAllSubCategories(cancellationToken);
+            List<SubCategoryDto> subcategories;
+
+            if (_memoryCache.Get("SubCategoriesList") is not null)
+            {
+                subcategories = _memoryCache.Get<List<SubCategoryDto>>("SubCategoriesList");
+
+            }
+            else
+            {
+                subcategories = await _subCategoryServices.GetAllSubCategories(cancellationToken);
+                _memoryCache.Set("SubCategoriesList", subcategories, TimeSpan.FromHours(2));
+            }
+            return subcategories;
         }
+
+
+
+
+          
+           
 
         public async Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken)
         {

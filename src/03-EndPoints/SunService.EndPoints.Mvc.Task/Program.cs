@@ -117,6 +117,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/UserS/AccessDenied";
 
 });
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 
 var provider = new FileExtensionContentTypeProvider();

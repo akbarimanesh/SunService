@@ -1,4 +1,5 @@
-﻿using SunService.Domain.Core.SunServices.BaseEntities.Services;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SunService.Domain.Core.SunServices.BaseEntities.Services;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
@@ -16,10 +17,12 @@ namespace SunService.Domain.AppServices.SunServices.HService
     {
         private readonly IHomeServiceServices _homeServiceServices;
         private readonly IBaseEntitiesServices _baseEntitiesServices;
-        public HomeServiceAppServices(IHomeServiceServices homeServiceServices, IBaseEntitiesServices baseEntitiesServices)
+        private readonly IMemoryCache _memoryCache;
+        public HomeServiceAppServices(IHomeServiceServices homeServiceServices, IBaseEntitiesServices baseEntitiesServices, IMemoryCache memoryCache)
         {
             _homeServiceServices = homeServiceServices;
             _baseEntitiesServices = baseEntitiesServices;
+            _memoryCache = memoryCache;
         }
 
         public async Task<Result> CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
@@ -70,7 +73,26 @@ namespace SunService.Domain.AppServices.SunServices.HService
 
         public async Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken)
         {
-            return await _homeServiceServices.GetAllHomeService(cancellationToken);
+            List<HomeServiceDto> homeServices;
+            
+            if (_memoryCache.Get("HomeServiceList") is not null)
+            {
+                homeServices = _memoryCache.Get<List<HomeServiceDto>>("HomeServiceList");
+               
+            }
+            else
+            {
+                homeServices = await _homeServiceServices.GetAllHomeService(cancellationToken);
+                _memoryCache.Set("HomeServiceList", homeServices, TimeSpan.FromHours(2));
+            }
+
+
+
+
+            return homeServices;
+            
+
+           
         }
 
         public async Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken)
