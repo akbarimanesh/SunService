@@ -16,7 +16,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Entities
         public DateTime CreatedAt { get; set; }
         public int HomeServiceId { get; set; }
         public StatuseRating Status { get; set; } = StatuseRating.apending;
-
+   
         #endregion
 
         #region NavigationProperties

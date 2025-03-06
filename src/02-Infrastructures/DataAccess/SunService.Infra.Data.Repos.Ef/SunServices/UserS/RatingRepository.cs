@@ -57,9 +57,10 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
         public async Task<List<RatingDto>> GetAllRating(CancellationToken cancellationToken)
         {
             return await _appDbContext.Ratings.AsNoTracking()
-                .Include(x => x.Expert)  
-                .Include(x => x.Customer)  
-                .Include(x => x.HomeService)  
+                .Include(x => x.Expert)
+                .Include(x => x.Expert.ExpertServices)
+                    .ThenInclude(es => es.Ratings)
+                .Include(x => x.Customer)
                 .Select(x => new RatingDto()
                 {
                     Id = x.Id,
@@ -70,10 +71,16 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
                     Comment = x.Comment,
                     CreatedAt = x.CreatedAt,
                     Status = x.Status,
-                    AverageRating = x.Expert.Ratings.Any() ? x.Expert.Ratings.Average(r => r.Score) : 0 
+                    ImagePathEXpert = x.Expert.ImagePath,
+
+
+                    AverageRating = _appDbContext.Ratings
+                        .Where(r => r.ExpertId == x.ExpertId && r.HomeServiceId == x.HomeServiceId && r.Status == StatuseRating.aproved)
+                        .Average(r => (double?)r.Score) ?? 0
                 })
                 .ToListAsync(cancellationToken);
         }
+
 
         public async Task<Rating> GetRatingById(int id, CancellationToken cancellationToken)
         {

@@ -1,4 +1,5 @@
-﻿@model HomePageViewModel
+﻿@using SunService.Domain.Core.SunServices.UserS.Enums
+@model HomePageViewModel
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -192,7 +193,10 @@
             <div class="testimonials-widget-item">
 
                 <div class="content-img">
-                    <img src="/Images/trending/9.jpg" alt="Images">
+                    <a asp-action="Create" asp-controller="Order" asp-area="">
+                        <img src="/Images/trending/9.jpg" alt="Images">
+                    </a>
+                    
 
                 </div>
 
@@ -200,8 +204,9 @@
             <div class="testimonials-widget-item">
 
                 <div class="content-img">
-                    <img src="/Images/trending/6.jpg" alt="Images">
-
+                      <a asp-action="Create" asp-controller="Order" asp-area="">
+                          <img src="/Images/trending/6.jpg" alt="Images">
+                    </a>
                 </div>
 
             </div>
@@ -209,15 +214,18 @@
             <div class="testimonials-widget-item">
 
                 <div class="content-img">
-                    <img src="/Images/trending/7.jpg" alt="Images">
-
+                      <a asp-action="Create" asp-controller="Order" asp-area="">
+                         <img src="/Images/trending/7.jpg" alt="Images">
+</a>
                 </div>
 
             </div>
             <div class="testimonials-widget-item">
 
                 <div class="content-img">
+                      <a asp-action="Create" asp-controller="Order" asp-area="">
                     <img src="/Images/trending/8.jpg" alt="Images">
+                    </a>
 
                 </div>
 
@@ -226,8 +234,9 @@
             <div class="testimonials-widget-item">
 
                 <div class="content-img">
+                      <a asp-action="Create" asp-controller="Order" asp-area="">
                     <img src="/Images/trending/10.jpg" alt="Images">
-
+                    </a>
                 </div>
 
             </div>
@@ -235,49 +244,77 @@
     </div>
 </div>
 
+
+@{
+    var groupedExperts = Model.ratingDtos
+        .GroupBy(r => new { r.ExpertFullName, r.HomeServiceTitle, r.ImagePathEXpert, r.Status })
+        .Select(g => new
+        {
+            ExpertFullName = g.Key.ExpertFullName,
+            HomeServiceTitle = g.Key.HomeServiceTitle,
+
+            ImagePathEXpert = g.Key.ImagePathEXpert,
+            Status = g.Key.Status,
+            AverageRating = g.Average(r => r.AverageRating) 
+        })
+        .OrderByDescending(e => e.AverageRating) 
+        .ToList();
+}
 
 <div class="freelancers-area pt-100 pb-70">
     <div class="container">
         <div class="section-title text-center">
             <h2>کارشناس های دارای بالاترین امتیاز</h2>
             <div class="bar m-auto"></div>
-
         </div>
 
         <div class="row pt-45 justify-content-center">
-            @foreach (var item in @Model.ratingDtos)
+            @foreach (var item in groupedExperts)
             {
-                <div class="col-lg-4 col-sm-6">
-                    <div class="freelancers-card">
-                        <a href="freelancer.html">
-                            @*  <img src="~/UserTemplate/images/freelancers/freelancers-img1.jpg" alt="Images"> *@
-                        </a>
-                        <div class="title">
-                            <h3>
-                                <a href="freelancer.html">@item.ExpertFullName</a>
-                            </h3>
-
-                        </div>
-                        <p>@item.HomeServiceTitle</p>
-                        <div class="rating">
-                            <span class="stars">
-                                @for (int i = 1; i <= 5; i++)
+               
+               
+                 @if (item.Status == StatuseRating.aproved) 
+                {
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="freelancers-card">
+                            <a href="freelancer.html">
+                                @if (string.IsNullOrEmpty(item.ImagePathEXpert))
                                 {
-                                    <span class="@(i <= item.Score ? "star-filled" : "star-empty")">★</span>
+                                    <img style="border-radius: 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
                                 }
-                            </span>
-                        </div>
-                        <div class="sub-title">
-                            <span class="sub-title2">میانگین امتیاز : <b>@item.AverageRating</b></span>
+                                else
+                                {
+                                    <img style="border-radius: 50%" src="@item.ImagePathEXpert" width="80" height="80" class="d-block mx-auto" />
+                                }
+                            </a>
+                            <div class="title">
+                                <h3>
+                                    <a href="freelancer.html">@item.ExpertFullName</a>
+                                </h3>
+                            </div>
+                            <p>@item.HomeServiceTitle</p>
+                            <div class="rating">
+                                <span class="stars">
+                                    @{
+                                        int roundedRating = (int)Math.Round(item.AverageRating);
+                                    }
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <span class="@(i <= roundedRating ? "star-filled" : "star-empty")">★</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="sub-title">
+                                <span class="sub-title2">میانگین امتیاز : <b>@item.AverageRating.ToString("0.0")</b></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             }
-
-
         </div>
     </div>
 </div>
+
 <style>
     .star-filled {
         color: gold;
