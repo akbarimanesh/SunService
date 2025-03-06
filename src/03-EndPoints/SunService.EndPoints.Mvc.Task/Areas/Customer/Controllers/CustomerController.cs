@@ -163,5 +163,21 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
             return RedirectToAction("Offer", "Customer");
         }
+        [HttpGet]
+        public async Task<IActionResult> Payment(int offerId, CancellationToken cToken)
+        {
+            var result = await _offerAppServices.UpdateBalances(offerId, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+            }
+
+           // var offer = await _offerAppServices.GetOfferById(offerId, cToken);
+            return RedirectToAction("Order", "Customer");
+        }
     }
 }

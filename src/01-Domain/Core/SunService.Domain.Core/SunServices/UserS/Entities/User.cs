@@ -12,7 +12,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Entities
         public string? Mobile { get; set; }
         public string? ShabaNumber { get; set; }
         public string? CardNumber { get; set; }
-        public int? Balance { get; set; }
+        public int? Balance { get; set; } = 0;
         public string? Address { get; set; }
         public bool StatusUser { get; set; } = false;
         public int RoleId { get; set; }

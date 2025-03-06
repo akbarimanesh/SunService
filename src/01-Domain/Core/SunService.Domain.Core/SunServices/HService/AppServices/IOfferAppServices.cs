@@ -1,5 +1,6 @@
 ﻿using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
 {
     public interface IOfferAppServices
     {
+        public Task<Result> UpdateBalances(int offerId, CancellationToken cancellationToken);
         public Task<Offer> GetOfferById(int id, CancellationToken cancellationToken);
         public Task<Result> AcceptOffer(int id, CancellationToken cToken);
         public Task<Result> RejectedOffer(int id, CancellationToken cToken);

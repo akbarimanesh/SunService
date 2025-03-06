@@ -1,5 +1,7 @@
-﻿using SunService.Domain.Core.SunServices.HService.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,11 @@ namespace SunService.Domain.Core.SunServices.HService.Data
 {
     public interface IOfferRepository
     {
+        public global::System.Threading.Tasks.Task ChangeStatuseOrder(int orderId, CancellationToken cancellationToken);
+        public Task<User> GetAdmin(CancellationToken cancellationToken);
+        public Task<Customer> GetCustomer(int id, CancellationToken cancellationToken);
+        public Task<Expert> GetExpert(int id, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task UpdateUserBalance(int userId, int newBalance, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task AcceptOffer(int id, CancellationToken cToken);
         public global::System.Threading.Tasks.Task RejectedOffer(int id, CancellationToken cToken);
         public Task<List<OfferDto>> GetAllOffer(int OrderId,CancellationToken cancellationToken);

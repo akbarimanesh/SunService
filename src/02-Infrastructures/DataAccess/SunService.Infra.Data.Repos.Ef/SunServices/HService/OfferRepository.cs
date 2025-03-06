@@ -2,6 +2,8 @@
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.HService.Enums;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
@@ -23,8 +25,11 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task AcceptOffer(int id, CancellationToken cToken)
         {
-            var offer = await _appDbContext.Offers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var offer = await _appDbContext.Offers.Where(x => x.Id == id).Include(x=>x.Order).FirstOrDefaultAsync();
             offer.StateOffer = true;
+            offer.Order.OrderHomeServiceStatus = OrderHomeServiceStatusEnum.ExpetToCome;
+            offer.Order.OfferId = offer.Id;
+            offer.Order.ExpertId = offer.ExpertId;
             var otherOffers = await _appDbContext.Offers
            .Where(o => o.OrderId == offer.OrderId && o.Id != id)
             .ToListAsync(cToken);
@@ -34,6 +39,14 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 offer1.StateOffer = false; 
             }
             await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task ChangeStatuseOrder(int orderId, CancellationToken cancellationToken)
+        {
+            var order = await _appDbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken);
+            order.OrderHomeServiceStatus = OrderHomeServiceStatusEnum.FinishingWork;
+            await _appDbContext.SaveChangesAsync(cancellationToken);
+        
         }
 
         public async Task CreateOffer(Offer offer, CancellationToken cancellationToken)
@@ -49,7 +62,11 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 
-
+       
+        public async Task<User> GetAdmin(CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Users.FirstOrDefaultAsync(a => a.Id == 1, cancellationToken);
+        }
         public async Task<List<OfferDto>> GetAllOffer(int OrderId, CancellationToken cancellationToken)
         {
             var offers = await _appDbContext.Offers
@@ -99,9 +116,21 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             }).ToListAsync(cancellationToken);
         }
 
+        public async Task<Customer> GetCustomer(int id, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Customers.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<Expert> GetExpert(int id, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Experts.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id);
+        }
+
         public async Task<Offer> GetOfferById(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Offers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.Offers.AsNoTracking().Include(o => o.Order)
+            .ThenInclude(o => o.Expert)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
        
         public async Task RejectedOffer(int id, CancellationToken cToken)
@@ -110,6 +139,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             offer.StateOffer = false;
             await _appDbContext.SaveChangesAsync();
         }
+
+       
 
         public async Task UpdateOffer(Offer offer, CancellationToken cancellationToken)
         {
@@ -121,6 +152,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             offer1.Description = offer.Description;
             offer1.StateOffer = offer.StateOffer;
             offer1.OrderId= offer.OrderId;
+            await _appDbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateUserBalance(int userId, int newBalance, CancellationToken cancellationToken)
+        {
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+            user.Balance = newBalance;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

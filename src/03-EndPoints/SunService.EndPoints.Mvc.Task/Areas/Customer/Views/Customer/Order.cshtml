@@ -1,5 +1,6 @@
 ﻿@using Framework
 @using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.HService.Enums
 <div class="breadcrumb-area">
     <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
     @{
@@ -7,14 +8,6 @@
     }
 </div>
 @model List<OrderDto>
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
 
 <div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
     <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
@@ -26,6 +19,15 @@
 
 
 <div class="packages-box">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
     <h2>سفارش ها</h2>
     <div class="packages-table table-responsive">
         <table class="table table-bordered">
@@ -65,9 +67,18 @@
                             <a asp-area="Customer" asp-controller="Customer" asp-action="Offer" asp-route-Id="@order.Id" class="status">پیشنهادها</a>
                         </td>
                         <td>
+                            @if (order.OrderHomeServiceStatus == OrderHomeServiceStatusEnum.FinishingWork)
+                            {
+                                <span class="text-success">پایان کار</span>
+                            }
+                            else
+                            {
+                                <input type="hidden" name="offerId" value="@order.OfferId" />
+                                <a asp-area="Customer" asp-controller="Customer" asp-action="Payment" asp-route-offerId="@order.OfferId" class="status">اتمام کار</a>
+
+                            }
                             
-                           
-                            <a asp-area="Customer" asp-controller="Customer" asp-action="Payment" asp-route-Id="@order.Id" class="status">اتمام کار</a>
+                            
                         </td>
                         
                     </tr>

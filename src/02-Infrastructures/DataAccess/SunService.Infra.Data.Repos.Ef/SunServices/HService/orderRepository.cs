@@ -34,8 +34,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 OfferId = order.OfferId,
 
                 CityId = order.CityId ?? 0,
-
                 
+               
                 CustomerId = order.CustomerId,
              
                HomeServiceId = order.HomeserviceId,
@@ -64,9 +64,9 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 ImplementationDate = x.ImplementationDate,
                 ImplementationTime = x.ImplementationTime ,
                 CreateAt = x.CreateAt,
-                OrderHomeServiceStatus = x.OrderHomeServiceStatus
-
-
+                OrderHomeServiceStatus = x.OrderHomeServiceStatus,
+                 OfferId = x.OfferId,
+                
             }).ToListAsync(cancellationToken);
         }
 
@@ -80,9 +80,9 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 ImplementationDate = x.ImplementationDate,
                 ImplementationTime = x.ImplementationTime,
                 CreateAt = x.CreateAt,
-                OrderHomeServiceStatus = x.OrderHomeServiceStatus
-
-
+                OrderHomeServiceStatus = x.OrderHomeServiceStatus,
+                OfferId = x.OfferId,
+                
             }).ToListAsync(cancellationToken);
         }
 
