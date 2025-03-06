@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.UserS.AppServices
 {
     public interface IRatingAppServices
     {
+        public Task<Result> CreateRating(SubRatingDto submitratingDto, int orderId, CancellationToken cancellationToken);
         public Task<Result> Confirmation(int id, CancellationToken cToken);
         public Task<Result> Rejected(int id, CancellationToken cToken);
         public Task<List<RatingDto>> GetAllRating(CancellationToken cancellationToken);

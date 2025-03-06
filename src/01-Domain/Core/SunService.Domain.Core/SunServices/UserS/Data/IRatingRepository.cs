@@ -14,7 +14,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Data
     {
         public Task<List<RatingDto>> GetAllRating(CancellationToken cancellationToken);
         public Task<Rating> GetRatingById(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task CreateRating(Rating rating, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task CreateRating(SubRatingDto submitratingDto, int orderId, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteRating(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task UpdateRating(Rating rating, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task Confirmation(int id, CancellationToken cToken);

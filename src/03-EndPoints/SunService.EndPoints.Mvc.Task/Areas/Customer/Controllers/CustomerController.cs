@@ -6,6 +6,7 @@ using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.AppServices.SunServices.UserS;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
@@ -25,12 +26,15 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         private readonly IOfferAppServices _offerAppServices;
         private readonly UserManager<User> _userManager;
         private readonly IUserSAppServices _UserSAppServices;
-        public CustomerController(IorderAppServices orderAppServices, IOfferAppServices offerAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices)
+        private readonly IRatingAppServices _ratingAppServices;
+        public CustomerController(IorderAppServices orderAppServices, IOfferAppServices offerAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices, IRatingAppServices ratingAppServices)
         {
             _orderAppServices = orderAppServices;
             _offerAppServices = offerAppServices;
             _userManager = userManager;
             _UserSAppServices = userSAppServices;
+           
+            _ratingAppServices = ratingAppServices;
         }
 
         public IActionResult Index()
@@ -38,11 +42,11 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Update( CancellationToken cToken)
+        public async Task<IActionResult> Update(CancellationToken cToken)
         {
             var userId = _userManager.GetUserId(User);
-           
-           
+
+
             if (string.IsNullOrEmpty(userId))
             {
                 return NotFound();
@@ -56,19 +60,19 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 LastName = user.LastName,
                 Address = user.Address,
                 Email = user.Email,
-                UserName= user.UserName,
-                RoleId= user.RoleId,
+                UserName = user.UserName,
+                RoleId = user.RoleId,
                 Status = user.Status,
                 Mobile = user.Mobile,
-                CardNumber=user.CardNumber,
-                ShabaNumber=user.ShabaNumber,
+                CardNumber = user.CardNumber,
+                ShabaNumber = user.ShabaNumber,
                 Balance = user.Balance ?? 0,
-               
+
                 cityId = user.CityId,
-              
-                ImagePath=user.ImagePath,
+
+                ImagePath = user.ImagePath,
                 ProfileImgFile = user.ProfileImgFile,
-               
+
             };
             return View(model);
 
@@ -78,8 +82,8 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-               
-                var user1 = new UserDto { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Email = user.Email, CityId = user.cityId,  Mobile = user.Mobile, Address = user.Address, ProfileImgFile = user.ProfileImgFile ,Balance=user.Balance,CardNumber=user.CardNumber,ShabaNumber=user.ShabaNumber,UserName=user.UserName,RoleId=user.RoleId ?? 0,Status=user.Status??false};
+
+                var user1 = new UserDto { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Email = user.Email, CityId = user.cityId, Mobile = user.Mobile, Address = user.Address, ProfileImgFile = user.ProfileImgFile, Balance = user.Balance, CardNumber = user.CardNumber, ShabaNumber = user.ShabaNumber, UserName = user.UserName, RoleId = user.RoleId ?? 0, Status = user.Status ?? false };
                 var result = await _UserSAppServices.Update(user1, cToken);
                 if (result.IsSuccess)
                 {
@@ -95,20 +99,20 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 }
                 return RedirectToAction("Update", "Customer");
             }
-            
+
             return View(user);
 
 
         }
-        public async Task< IActionResult> Order(CancellationToken cancellationToken)
+        public async Task<IActionResult> Order(CancellationToken cancellationToken)
         {
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
-            var orders = await _orderAppServices.GetAllOrderUser(id,cancellationToken);
+            var orders = await _orderAppServices.GetAllOrderUser(id, cancellationToken);
             return View(orders);
         }
-        
-        public async Task<IActionResult> Show(int Id,CancellationToken cancellationToken)
+
+        public async Task<IActionResult> Show(int Id, CancellationToken cancellationToken)
         {
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
@@ -121,7 +125,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 ImplementationDate = order.ImplementationDate,
                 OrderHomeServiceStatus = order.OrderHomeServiceStatus,
                 Description = order.Description,
-                ImplementationTime=order.ImplementationTime,
+                ImplementationTime = order.ImplementationTime,
                 ImageUrls = order.Images?.Select(img => img.Path).ToList() ?? new List<string>()
             };
             return View(orderDto);
@@ -176,8 +180,53 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 TempData["ErrorMessage"] = result.IsMessage;
             }
 
-           // var offer = await _offerAppServices.GetOfferById(offerId, cToken);
+            var offer = await _offerAppServices.GetOfferById(offerId, cToken);
+            return RedirectToAction("Score", "Customer", new { orderId = offer.OrderId });
+        }
+       
+        [HttpGet]
+        public async Task<IActionResult> Score(int orderId, CancellationToken cToken)
+        {
+
+            var order = await _orderAppServices.GetorderById(orderId, cToken);
+            if (order == null) return NotFound();
+
+            var model = new SubRatingDto
+            {
+                ExpertId = order.ExpertId??0,
+                CustomerId = order.CustomerId,
+                OrderId = orderId
+            };
+
+            ViewBag.OrderId = orderId; 
+
+            return View(model);
+
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> Score(SubRatingDto ratingDto, CancellationToken cToken)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "لطفاً تمام فیلدها را پر کنید.";
+                return RedirectToAction("Score", new { orderId = ratingDto.OrderId });
+            }
+
+            var result= await _ratingAppServices.CreateRating(ratingDto, ratingDto.OrderId, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+            }
+
+
             return RedirectToAction("Order", "Customer");
+
+
         }
     }
 }

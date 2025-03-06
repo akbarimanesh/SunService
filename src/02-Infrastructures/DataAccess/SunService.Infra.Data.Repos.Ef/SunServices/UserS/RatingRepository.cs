@@ -30,9 +30,20 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task CreateRating(Rating rating, CancellationToken cancellationToken)
+        public async Task CreateRating(SubRatingDto submitratingDto, int orderId, CancellationToken cancellationToken)
         {
-            await _appDbContext.Ratings.AddAsync(rating, cancellationToken);
+            var order = await _appDbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken);
+            var rating = new Rating
+            {
+                ExpertId = submitratingDto.ExpertId,
+                CustomerId = submitratingDto.CustomerId,
+                Score = submitratingDto.Score,
+                Comment = submitratingDto.Comment,
+                CreatedAt = DateTime.Now,
+                HomeServiceId = order.HomeServiceId,
+                Status = StatuseRating.apending
+            };
+            await _appDbContext.AddAsync(rating, cancellationToken);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
 

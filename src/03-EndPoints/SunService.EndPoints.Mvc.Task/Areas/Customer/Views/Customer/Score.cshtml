@@ -1,0 +1,102 @@
+﻿@using SunService.Domain.Core.SunServices.UserS.DTOs
+@using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > ثبت نظر";
+    }
+</div>
+@model SubRatingDto
+
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،بهترین خدمات رو با ما تجربه کنید.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="comments-form">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+    <div class="contact-form">
+        <h3>نظر بدهید</h3>
+
+        <form asp-area="Customer" asp-action="Score" asp-controller="Customer" method="post">
+            <input type="hidden" name="orderId" value="@Model.OrderId" />
+            <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
+            <input type="hidden" name="ExpertId" value="@Model.ExpertId" />
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <div class="custom-star-rating">
+                            <span class="custom-star" data-value="1">⭐</span>
+                            <span class="custom-star" data-value="2">⭐</span>
+                            <span class="custom-star" data-value="3">⭐</span>
+                            <span class="custom-star" data-value="4">⭐</span>
+                            <span class="custom-star" data-value="5">⭐</span>
+                        </div>
+                        <input type="hidden" name="Score" id="Score" value="0" />
+                        <style>
+                         
+                            .custom-star-rating {
+                                font-size: 2rem;
+                                direction: rtl;
+                                cursor: pointer;
+                            }
+
+                            .custom-star {
+                                color: gray !important; 
+                                transition: color 0.3s !important;
+                            }
+
+                                .custom-star.active {
+                                    color: gold !important;
+                                }
+                        </style>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                    <label for="Comment">نظر شما:</label>
+                    <textarea name="comment" class="form-control" cols="30" rows="5" placeholder="نظر خود را وارد کنید..."></textarea>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12">
+                <button type="submit" class="default-btn border-radius-5">
+                    ارسال پیام <i class="ri-chat-4-line"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".custom-star"); 
+        const scoreInput = document.getElementById("Score");
+
+        stars.forEach(star => {
+            star.addEventListener("click", function () {
+                let value = this.getAttribute("data-value");
+                scoreInput.value = value;
+
+                
+                stars.forEach(s => s.classList.remove("active"));
+
+                
+                for (let i = 0; i < value; i++) {
+                    stars[i].classList.add("active");
+                }
+            });
+        });
+    });
+</script>

@@ -23,9 +23,9 @@ namespace SunService.Domain.Services.SunServices.UserS
             await _RatingRepository.Confirmation(id, cToken);
         }
 
-        public async Task CreateRating(Rating rating, CancellationToken cancellationToken)
+        public async Task CreateRating(SubRatingDto submitratingDto, int orderId, CancellationToken cancellationToken)
         {
-            await _RatingRepository.CreateRating(rating, cancellationToken);
+            await _RatingRepository.CreateRating(submitratingDto, orderId, cancellationToken);
         }
 
         public async Task DeleteRating(int id, CancellationToken cancellationToken)
