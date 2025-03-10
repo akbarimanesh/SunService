@@ -70,6 +70,11 @@ namespace SunService.Domain.AppServices.SunServices.HService
             return await _orderServices.GetAllOrder(cancellationToken);
         }
 
+        public async Task<List<OrderDto>> GetAllOrderHomeserviceExpert(int expertId, CancellationToken cancellationToken)
+        {
+            return await _orderServices.GetAllOrderHomeserviceExpert(expertId, cancellationToken);  
+        }
+
         public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
         {
             return await _orderServices.GetAllOrderUser(id, cancellationToken);

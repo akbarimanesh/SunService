@@ -23,5 +23,5 @@ public class UpdateViewModelUser
     public int cityId { get; set; }
     public int? RoleId { get; set; }
     public string? ImagePath { get; set; }
-    public List<RatingDto> Ratings { get; set; }
+    public List<RatingDto>? Ratings { get; set; }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
@@ -18,12 +19,13 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IUserSAppServices _UserSAppServices;
         private readonly IHomeServiceAppServices _homeServiceAppServices;
-
-        public ExpertController(UserManager<User> userManager, IUserSAppServices userSAppServices, IHomeServiceAppServices homeServiceAppServices)
+        private readonly IorderAppServices _orderAppServices;
+        public ExpertController(UserManager<User> userManager, IUserSAppServices userSAppServices, IHomeServiceAppServices homeServiceAppServices, IorderAppServices orderAppServices)
         {
             _userManager = userManager;
             _UserSAppServices = userSAppServices;
             _homeServiceAppServices = homeServiceAppServices;
+            _orderAppServices = orderAppServices;
         }
 
 
@@ -196,7 +198,25 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
 
             return View(model);
         }
+        public async Task<IActionResult> Order(CancellationToken cancellationToken)
+        {
+            var userId = _userManager.GetUserId(User);
+            var id = int.Parse(userId);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var orders = await _orderAppServices.GetAllOrderHomeserviceExpert(id, cancellationToken);
 
+            var user = await _UserSAppServices.GetById(id, cancellationToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+            return View(orders);
+        }
 
     }
 }

@@ -36,6 +36,11 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _OrderRepository.GetAllOrder(cancellationToken);
         }
 
+        public async Task<List<OrderDto>> GetAllOrderHomeserviceExpert(int expertId, CancellationToken cancellationToken)
+        {
+            return await _OrderRepository.GetAllOrderHomeserviceExpert(expertId, cancellationToken);    
+        }
+
         public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
         {
             return await _OrderRepository.GetAllOrderUser(id, cancellationToken);

@@ -70,6 +70,40 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             }).ToListAsync(cancellationToken);
         }
 
+        public async Task<List<OrderDto>> GetAllOrderHomeserviceExpert(int expertId, CancellationToken cancellationToken)
+        {
+            var expertSkills = await _appDbContext.ExpertServices
+           .Where(es => es.ExpertId == expertId)
+           .Select(es => es.HomeServiceId)
+           .ToListAsync(cancellationToken);
+
+            if (!expertSkills.Any())
+            {
+                return new List<OrderDto>(); 
+            }
+
+            
+            var orders = await _appDbContext.Orders
+                .Where(o => expertSkills.Contains(o.HomeServiceId) && o.OrderHomeServiceStatus == OrderHomeServiceStatusEnum.OfferExpert) 
+                .OrderByDescending(o => o.CreateAt)
+                .Select(o => new OrderDto
+                {
+                    Id = o.Id,
+                    HomeServiceTitle = o.HomeService.Title,
+                    CreateAt = o.CreateAt,
+                    ImplementationDate = o.ImplementationDate,
+                    OrderHomeServiceStatus = o.OrderHomeServiceStatus,
+                    Description = o.Description,
+                    CustomerFullName = o.Customer.FirstName + " " + o.Customer.LastName,
+                    CityId = o.Customer.CityId,
+                    ImageUrls = o.Images.Select(img => img.Path).ToList()
+                })
+                .ToListAsync(cancellationToken);
+
+            return orders;
+        }
+        
+
         public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
         {
             return await _appDbContext.Orders.AsNoTracking().Where(x => x.CustomerId == id).Select(x => new OrderDto()

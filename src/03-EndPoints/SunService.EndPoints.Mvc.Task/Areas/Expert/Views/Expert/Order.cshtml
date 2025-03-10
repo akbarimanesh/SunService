@@ -1,0 +1,76 @@
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.HService.Enums
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > درخواست ها";
+    }
+</div>
+@model List<OrderDto>
+
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،تخصص از شما ،کار از ما.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+
+<div class="packages-box">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <h2>درخواست ها</h2>
+    <div class="packages-table table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+
+                    <th>شناسه سفارش</th>
+                    <th>خدمات</th>
+                    <th>تاریخ ثبت</th>
+
+                    <th>وضعیت</th>
+                    <th>جزئیات سفارش</th>
+                    <th>ارائه پیشنهاد</th>
+                    
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+
+                        <td>@order.Id</td>
+
+                        <td>@order.HomeServiceTitle </td>
+                        <td>@order.CreateAt.ToPersianString("yyyy/MM/dd")</td>
+
+
+
+                        <td>@EnumExtensionMethods.GetEnumDisplayName(order.OrderHomeServiceStatus) </td>
+                        <td>
+
+                            <a asp-area="Expert" asp-controller="Expert" asp-action="Show" asp-route-Id="@order.Id" class="status">جزئیات درخواست</a>
+                        </td>
+
+                        <td>
+                            <a asp-area="Expert" asp-controller="Expert" asp-action="Offer" asp-route-Id="@order.Id" class="status">ارائه پیشنهاد</a>
+                        </td>
+                       
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
