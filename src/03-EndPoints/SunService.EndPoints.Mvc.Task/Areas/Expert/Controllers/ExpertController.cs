@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.Core.SunServices.HService.AppServices;
+using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
@@ -217,6 +218,31 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
 
             return View(orders);
         }
+        public async Task<IActionResult> Show(int Id, CancellationToken cancellationToken)
+        {
+            var userId = _userManager.GetUserId(User);
+            var id = int.Parse(userId);
+            var order = await _orderAppServices.GetorderById(Id, cancellationToken);
+            var orderDto = new OrderDto
+            {
+                Id = order.Id,
+                HomeServiceTitle = order.HomeService.Title,
+                CreateAt = order.CreateAt,
+                ImplementationDate = order.ImplementationDate,
+                OrderHomeServiceStatus = order.OrderHomeServiceStatus,
+                Description = order.Description,
+                ImplementationTime = order.ImplementationTime,
+                ImageUrls = order.Images?.Select(img => img.Path).ToList() ?? new List<string>()
+            };
 
+            var user = await _UserSAppServices.GetById(id, cancellationToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+            return View(orderDto);
+        }
     }
 }
