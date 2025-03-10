@@ -87,7 +87,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                     CompletionDate = x.CompletionDate,
                     StateOffer = x.StateOffer,
                     ExpertId = x.ExpertId,
-                  
+                   HomeserviceId=x.Order.HomeServiceId,
                     AverageRating = x.Expert.ExpertServices
                         .Where(es => es.HomeServiceId == x.Order.HomeServiceId) 
                         .SelectMany(es => es.Ratings) 

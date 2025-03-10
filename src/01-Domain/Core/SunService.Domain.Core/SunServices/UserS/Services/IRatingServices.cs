@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.UserS.Services
 {
     public interface IRatingServices
     {
+        public Task<List<RatingDto>> GetRatingsByExpertId(int expertId, int homeServiceId, CancellationToken cancellationToken);
         public Task<List<RatingDto>> GetAllRating(CancellationToken cancellationToken);
         public Task<Rating> GetRatingById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateRating(SubRatingDto submitratingDto, int orderId, CancellationToken cancellationToken);

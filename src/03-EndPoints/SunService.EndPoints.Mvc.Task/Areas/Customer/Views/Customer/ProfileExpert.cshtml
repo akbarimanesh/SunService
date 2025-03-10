@@ -1,4 +1,5 @@
-﻿@using SunService.Domain.Core.SunServices.BaseEntities.AppServices
+﻿@using Framework
+@using SunService.Domain.Core.SunServices.BaseEntities.AppServices
 @using SunService.Domain.Core.SunServices.HService.AppServices
 @using SunService.EndPoints.Mvc.Task.Areas.Admin.Models
 @using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
@@ -127,13 +128,78 @@
                     <input disabled asp-for="Address" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
                     </div>
                 </div>
+            <div class="expert-reviews">
+                <h3>نظرات مشتریان </h3>
 
+                @if (Model.Ratings != null && Model.Ratings.Any())
+                {
+                    <ul class="review-list">
+                        @foreach (var rating in Model.Ratings)
+                        {
+                            //<h7>@rating.HomeServiceTitle</h7>
+                            <li class="review-item">
+                                <div class="review-header">
+                                    <strong>@rating.CustomerFullName</strong>
+                                    <span class="review-date">@rating.CreatedAt.ToPersianString("yyyy/MM/dd")</span>
+                                </div>
+                                <div class="review-rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <span class="@(i <= rating.Score ? "star-filled" : "star-empty")">★</span>
+                                    }
+                                </div>
+                                <p class="review-comment">@rating.Comment</p>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>هنوز نظری برای این کارشناس ثبت نشده است.</p>
+                }
+            </div>
 
             </div>
         </form>
     </div>
 </div>
-
+<style>
+    .expert-reviews {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+    }
+    .review-list {
+        list-style: none;
+        padding: 0;
+    }
+    .review-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+    .review-date {
+        color: #777;
+        font-size: 0.9em;
+    }
+    .review-rating {
+        color: gold;
+        font-size: 18px;
+    }
+    .review-comment {
+        margin-top: 5px;
+        font-size: 14px;
+    }
+    .star-empty {
+        color: lightgray;
+    }
+</style>
 @section Scripts {
             <script>
                         $(document).ready(function() {

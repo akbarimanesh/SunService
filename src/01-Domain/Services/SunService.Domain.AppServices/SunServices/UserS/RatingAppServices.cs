@@ -55,6 +55,11 @@ namespace SunService.Domain.AppServices.SunServices.UserS
                 return null;
         }
 
+        public async Task<List<RatingDto>> GetRatingsByExpertId(int expertId, int homeServiceId, CancellationToken cancellationToken)
+        {
+            return await _ratingServices.GetRatingsByExpertId(expertId, homeServiceId, cancellationToken);  
+        }
+
         public async Task<Result> Rejected(int id, CancellationToken cToken)
         {
             await _ratingServices.Rejected(id, cToken);

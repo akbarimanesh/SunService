@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SunService.Domain.Core.SunServices.UserS.DTOs;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 
 public class UpdateViewModelUser
 {
@@ -21,4 +23,5 @@ public class UpdateViewModelUser
     public int cityId { get; set; }
     public int? RoleId { get; set; }
     public string? ImagePath { get; set; }
+    public List<RatingDto> Ratings { get; set; }
 }

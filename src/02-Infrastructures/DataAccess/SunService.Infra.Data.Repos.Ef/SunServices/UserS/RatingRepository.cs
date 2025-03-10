@@ -87,6 +87,30 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             return await _appDbContext.Ratings.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
+        public async Task<List<RatingDto>> GetRatingsByExpertId(int expertId, int homeServiceId, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Ratings
+                .Where(r => r.ExpertId == expertId &&
+                            r.HomeServiceId == homeServiceId &&
+                            r.Status == StatuseRating.aproved) 
+                .OrderByDescending(r => r.CreatedAt) 
+                .Select(r => new RatingDto
+                {
+                    Id = r.Id,
+                    ExpertFullName = r.Expert.FirstName + " " + r.Expert.LastName,
+                    CustomerFullName = r.Customer.FirstName + " " + r.Customer.LastName,
+                    HomeServiceTitle = r.HomeService.Title,
+                    Score = r.Score,
+                    Comment = r.Comment,
+                    CreatedAt = r.CreatedAt,
+                    AverageRating = _appDbContext.Ratings
+                        .Where(x => x.ExpertId == expertId && x.HomeServiceId == homeServiceId)
+                        .Average(x => x.Score) 
+                })
+                .ToListAsync(cancellationToken);
+        }
+
+
         public async Task Rejected(int id, CancellationToken cToken)
         {
             var rating = await _appDbContext.Ratings.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -97,12 +121,12 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
         public async Task UpdateRating(Rating rating, CancellationToken cancellationToken)
         {
             var rating1 = await _appDbContext.Ratings.FirstOrDefaultAsync(x => x.Id == rating.Id, cancellationToken);
-           rating1.Id = rating.Id;
-           rating1.ExpertId = rating.ExpertId;
-           rating1.CustomerId = rating.CustomerId;
-           rating1.Score = rating.Score;
-           rating1.Comment = rating.Comment;
-           rating1.HomeServiceId = rating.HomeServiceId;
+            rating1.Id = rating.Id;
+            rating1.ExpertId = rating.ExpertId;
+            rating1.CustomerId = rating.CustomerId;
+            rating1.Score = rating.Score;
+            rating1.Comment = rating.Comment;
+            rating1.HomeServiceId = rating.HomeServiceId;
             rating1.Status = rating.Status;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }

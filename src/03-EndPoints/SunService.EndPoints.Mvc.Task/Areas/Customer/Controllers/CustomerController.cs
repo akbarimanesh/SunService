@@ -322,7 +322,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
         }
      [HttpGet]
-        public async Task<IActionResult> ProfileExpert(int id, CancellationToken cToken)
+        public async Task<IActionResult> ProfileExpert(int id,int homeserviceId, CancellationToken cToken)
         {
            
             var homeservices = await _homeServiceAppServices.GetAllHomeService(cToken);
@@ -335,7 +335,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             
                 var expert = await _UserSAppServices.GetExpert(id, cToken);
                 selectedHomeServices = await _UserSAppServices.GetHomeServicesExpert(id, cToken);
-            
+            var ratings = await _ratingAppServices.GetRatingsByExpertId(id, homeserviceId, cToken);
 
             var model = new UpdateViewModelUser
             {
@@ -355,11 +355,15 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 ImagePath = user.ImagePath,
                 ProfileImgFile = user.ProfileImgFile,
                 Selectedhomeservice = selectedHomeServices,
-                Homeservices = homeservices.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }).ToList()
+                Homeservices = homeservices.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }).ToList(),
+                 Ratings = ratings
             };
 
            
 
             return View(model);
         }
-    } }
+      
+
+    }
+}
