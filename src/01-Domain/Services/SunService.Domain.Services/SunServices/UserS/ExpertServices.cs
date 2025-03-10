@@ -1,4 +1,5 @@
-﻿using SunService.Domain.Core.SunServices.UserS.Data;
+﻿using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.UserS.Data;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Services;
@@ -29,9 +30,19 @@ namespace SunService.Domain.Services.SunServices.UserS
             return await _ExpertRepository.GetAllExperts(cancellationToken);
         }
 
+        public async Task<Expert> GetExpert(int id, CancellationToken cancellationToken)
+        {
+            return await _ExpertRepository.GetExpert(id, cancellationToken);    
+        }
+
         public async Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken)
         {
             return await _ExpertRepository.GetExpertById(homeServiceId, cancellationToken);
+        }
+
+        public async Task<List<int>> GetHomeServicesExpert(int expertid, CancellationToken CancellationToken)
+        {
+            return await _ExpertRepository.GetHomeServicesExpert(expertid, CancellationToken);
         }
 
         public async Task UpdateExpert(Expert expert, CancellationToken cancellationToken)

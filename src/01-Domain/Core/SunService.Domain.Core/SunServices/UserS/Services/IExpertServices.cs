@@ -1,4 +1,5 @@
-﻿using SunService.Domain.Core.SunServices.UserS.DTOs;
+﻿using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace SunService.Domain.Core.SunServices.UserS.Services
 {
     public interface IExpertServices
     {
+        public Task<List<int>> GetHomeServicesExpert(int expertid, CancellationToken CancellationToken);
+        public Task<Expert> GetExpert(int id, CancellationToken cancellationToken);
         public Task<List<ExpertDto>> GetAllExperts(CancellationToken cancellationToken);
         public Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateExpert(Expert expert, CancellationToken cancellationToken);

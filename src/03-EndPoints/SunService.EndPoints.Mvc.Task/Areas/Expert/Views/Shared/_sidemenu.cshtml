@@ -1,0 +1,63 @@
+﻿@using SunService.Domain.Core.SunServices.UserS.DTOs
+@using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
+
+<div class="sidemenu-area">
+    <div class="sidemenu-header">
+        <a href="dashboard.html" class="navbar-brand d-flex align-items-center">
+            <img src="~/UserTemplate/images/logo.png" class="logo-one" alt="Logo"><img src="~/UserTemplate/images/logo-2.png" class="logo-two" alt="Logo">
+        </a>
+        <div class="responsive-burger-menu d-block d-lg-none">
+            <span class="top-bar"></span>
+            <span class="middle-bar"></span>
+            <span class="bottom-bar"></span>
+        </div>
+    </div>
+    <div class="sidemenu-body">
+        <ul class="sidemenu-nav metisMenu h-100" id="sidemenu-nav" data-simplebar>
+            <li class="nav-item active">
+                <a asp-area="Expert" asp-controller="Expert" asp-action="Index" class="nav-link">
+                    <span class="icon"><i class="ri-home-line"></i></span>
+                    <span class="menu-title">داشبورد</span>
+                </a>
+            </li>
+          
+                <li class="nav-item">
+                <a asp-area="Expert" asp-controller="Expert" asp-action="Update" class="nav-link">
+                        <span class="icon"><i class="ri-user-line"></i></span>
+                        <span class="menu-title">ویرایش پروفایل</span>
+                    </a>
+                </li>
+          
+           
+           
+           
+            <li class="nav-item">
+                <a asp-area="Expert" asp-controller="Expert" asp-action="Requests" class="nav-link">
+                    <span class="icon"><i class="ri-briefcase-line"></i></span>
+                    <span class="menu-title">درخواست ها</span>
+                </a>
+            </li>
+           @*  <li class="nav-item">
+                <a asp-area="" asp-controller="HomeService" asp-action="Index" class="nav-link">
+                    <span class="icon"><i class="ri-stack-fill"></i></span>
+                    <span class="menu-title">لیست خدمات</span>
+                </a>
+            </li> *@
+           
+          @*   <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon"><i class="ri-briefcase-line"></i></span>
+                    <span class="menu-title">صورتحساب ها</span>
+                </a>
+            </li>
+             *@
+            <li class="nav-item">
+                <a asp-area="Account" asp-controller="UserS" asp-action="Logout" class="nav-link">
+                    <span class="icon"><i class="ri-logout-circle-r-line"></i></span>
+                    <span class="menu-title">خروج</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>

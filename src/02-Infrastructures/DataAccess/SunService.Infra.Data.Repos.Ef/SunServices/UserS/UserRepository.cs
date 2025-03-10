@@ -88,6 +88,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             result.CardNumber= user.CardNumber;
             result.ShabaNumber= user.ShabaNumber;
             result.Balance = user.Balance;
+         
             return result;
 
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SunService.Domain.Core.SunServices.BaseEntities.Services;
+using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
@@ -96,6 +97,21 @@ namespace SunService.Domain.AppServices.SunServices.UserS
         public async Task<int> GetCount(CancellationToken cancellationToken)
         {
             return await _UserServices.GetCount(cancellationToken);
+        }
+
+        public async Task<Expert> GetExpert(int id, CancellationToken cancellationToken)
+        {
+            return await _expertServices.GetExpert(id, cancellationToken);
+        }
+
+        public async  Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken)
+        {
+           return await _expertServices.GetExpertById(homeServiceId, cancellationToken);    
+        }
+
+        public async Task<List<int>> GetHomeServicesExpert(int expertid, CancellationToken CancellationToken)
+        {
+            return await _expertServices.GetHomeServicesExpert(expertid,CancellationToken);
         }
 
         public async Task<IdentityResult> Login(string username, string password, CancellationToken cToken)

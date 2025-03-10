@@ -106,6 +106,12 @@ namespace SunService.Domain.AppServices.SunServices.HService
                 return null;
         }
 
+        public async Task<Result> UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken)
+        {
+            await _homeServiceServices.UpdateExpertServices(expertId, selectedHomeServices, cancellationToken);
+            return new Result(true, "ویرایش با موفقیت انجام شد.");
+        }
+
         public async Task<Result> UpdateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
         {
             if (homeService.ProfileImgFile is not null)

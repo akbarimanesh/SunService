@@ -37,6 +37,7 @@
                     <th scope="col">قیمت پیشنهادی</th>
                     <th scope="col">تاریخ پیشنهاد</th>
                     <th scope="col">تاریخ اتمام کار</th>
+                    <th scope="col">توضیحات</th>
                     <th scope="col">امتیاز کاربر</th>
                     <th scope="col">عملیات</th>
                     
@@ -51,6 +52,7 @@
                         <td>@offer.PriceOffer</td>
                         <td>@offer.OfferDate.ToPersianString("yyyy/MM/dd")</td>
                         <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>
+                        <td>@offer.Description</td>
 
                         <td>
                             <span class="stars">

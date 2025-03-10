@@ -1,0 +1,14 @@
+﻿@using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
+@model UpdateViewModelUser
+<div class="form-group relative">
+    @if (Model != null)
+    {
+        <img style="border-radius: 50%" src="@(!string.IsNullOrEmpty(Model.ImagePath) ? Model.ImagePath : "~/images/Profiles/default-profile.jpg")" width="80" height="80" class="d-block mx-auto" />
+    }
+    else
+    {
+        <img style="border-radius: 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
+    }
+
+</div>
+

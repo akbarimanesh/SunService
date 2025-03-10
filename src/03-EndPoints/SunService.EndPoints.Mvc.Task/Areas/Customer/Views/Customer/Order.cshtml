@@ -67,11 +67,12 @@
                             <a asp-area="Customer" asp-controller="Customer" asp-action="Offer" asp-route-Id="@order.Id" class="status">پیشنهادها</a>
                         </td>
                         <td>
+
                             @if (order.OrderHomeServiceStatus == OrderHomeServiceStatusEnum.FinishingWork)
                             {
                                 <span class="text-success">پایان کار</span>
                             }
-                            else
+                            else if(order.OrderHomeServiceStatus==OrderHomeServiceStatusEnum.ExpetToCome)
                             {
                                 <input type="hidden" name="offerId" value="@order.OfferId" />
                                 <a asp-area="Customer" asp-controller="Customer" asp-action="Payment" asp-route-offerId="@order.OfferId" class="status">اتمام کار</a>

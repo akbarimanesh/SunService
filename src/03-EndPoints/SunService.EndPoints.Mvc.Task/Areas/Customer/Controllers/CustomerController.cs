@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.AppServices.SunServices.UserS;
 using SunService.Domain.Core.SunServices.HService.AppServices;
@@ -37,9 +38,25 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             _ratingAppServices = ratingAppServices;
         }
 
-        public IActionResult Index()
+        public async Task< IActionResult> Index(CancellationToken cToken)
         {
-            return View();
+            {
+                var userId = _userManager.GetUserId(User);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return NotFound();
+                }
+
+                var id = int.Parse(userId);
+                var user = await _UserSAppServices.GetById(id, cToken);
+
+                
+                ViewBag.UserProfile = user != null
+                    ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                    : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+                return View();
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Update(CancellationToken cToken)
@@ -74,6 +91,13 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 ProfileImgFile = user.ProfileImgFile,
 
             };
+           
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
             return View(model);
 
         }
@@ -109,6 +133,14 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
             var orders = await _orderAppServices.GetAllOrderUser(id, cancellationToken);
+          
+            var user = await _UserSAppServices.GetById(id, cancellationToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
             return View(orders);
         }
 
@@ -128,12 +160,33 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 ImplementationTime = order.ImplementationTime,
                 ImageUrls = order.Images?.Select(img => img.Path).ToList() ?? new List<string>()
             };
+          
+            var user = await _UserSAppServices.GetById(id, cancellationToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
             return View(orderDto);
         }
         public async Task<IActionResult> Offer(int id, CancellationToken cToken)
         {
             var order = await _orderAppServices.GetorderById(id, cToken);
             var offers = await _offerAppServices.GetAllOffer(order.Id, cToken);
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var id1 = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id1, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
             return View(offers);
         }
         [HttpGet]
@@ -149,6 +202,19 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 TempData["ErrorMessage"] = result.IsMessage;
             }
             var offer = await _offerAppServices.GetOfferById(id, cToken);
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var id1 = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id1, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
             return RedirectToAction("Offer", "Customer", new { id = offer.OrderId });
 
         }
@@ -164,6 +230,18 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             {
                 TempData["ErrorMessage"] = result.IsMessage;
             }
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var id1 = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id1, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
 
             return RedirectToAction("Offer", "Customer");
         }
@@ -198,7 +276,19 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 OrderId = orderId
             };
 
-            ViewBag.OrderId = orderId; 
+            ViewBag.OrderId = orderId;
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var id1 = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id1, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
 
             return View(model);
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.Data;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
@@ -7,7 +8,9 @@ using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
@@ -51,6 +54,11 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             }).ToListAsync(cancellationToken);
         }
 
+        public async Task<Expert> GetExpert(int id, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Experts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
         public async Task<Expert> GetExpertById(int homeServiceId, CancellationToken cancellationToken)
         {
             return await _appDbContext.ExpertServices
@@ -62,6 +70,14 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
              })
              .FirstOrDefaultAsync(cancellationToken);
 
+        }
+
+        public async Task<List<int>> GetHomeServicesExpert(int expertid, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.ExpertServices
+        .Where(es => es.ExpertId == expertid) 
+        .Select(es => es.HomeServiceId) 
+        .ToListAsync(cancellationToken); 
         }
 
         public async Task UpdateExpert(Expert expert, CancellationToken cancellationToken)

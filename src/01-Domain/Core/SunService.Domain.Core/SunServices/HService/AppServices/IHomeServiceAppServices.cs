@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
 {
     public interface IHomeServiceAppServices
     {
+        public Task<Result> UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken);
         public Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken);
         public Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken);
         public Task<Result> CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken);

@@ -69,6 +69,25 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             return await _appDbContext.HomeServices.AsNoTracking().AnyAsync(t => t.Title == homeServiceTitle);
         }
 
+        public async Task UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken)
+        {
+            var existingServices = await _appDbContext.ExpertServices
+                .Where(es => es.ExpertId == expertId)
+                .ToListAsync(cancellationToken);
+
+            
+            var servicesToRemove = existingServices.Where(es => !selectedHomeServices.Contains(es.HomeServiceId)).ToList();
+            _appDbContext.ExpertServices.RemoveRange(servicesToRemove);
+
+          
+            var existingServiceIds = existingServices.Select(es => es.HomeServiceId).ToList();
+            var newServices = selectedHomeServices.Where(sid => !existingServiceIds.Contains(sid))
+                .Select(sid => new ExpertService { ExpertId = expertId, HomeServiceId = sid }).ToList();
+
+            await _appDbContext.ExpertServices.AddRangeAsync(newServices, cancellationToken);
+            await _appDbContext.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task UpdateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
         {
             var homeServicey1 = await _appDbContext.HomeServices.FirstOrDefaultAsync(x => x.Id == homeService.Id, cancellationToken);

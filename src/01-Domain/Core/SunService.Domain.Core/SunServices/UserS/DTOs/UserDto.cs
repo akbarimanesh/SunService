@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace SunService.Domain.Core.SunServices.UserS.DTOs
         public IFormFile? ProfileImgFile { get; set; }
         public string? Biography { get; set; }
         public string? ImagePath { get; set; }
+       
         #endregion
 
     }

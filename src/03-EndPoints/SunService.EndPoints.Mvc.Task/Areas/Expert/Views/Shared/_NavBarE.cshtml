@@ -138,7 +138,6 @@
                                 {
                                     @await Html.PartialAsync("_UserProfile", ViewBag.UserProfile as UpdateViewModelUser)
                                 }
-
                                 <span class="name">حساب کاربری</span>
                             </div>
                         </a>
@@ -149,7 +148,6 @@
                                     {
                                         @await Html.PartialAsync("_UserProfile", ViewBag.UserProfile as UpdateViewModelUser)
                                     }
-
                                 </div>
                                 <div class="info text-center">
                                     <span class="name">@User.Claims.First(x => x.Type == "FullName").Value</span>
@@ -158,13 +156,13 @@
                              <div class="dropdown-body">
                                 <ul class="profile-nav p-0 pt-3">
                                     <li class="nav-item active">
-                                        <a asp-area="Customer" asp-controller="Customer" asp-action="Index" class="nav-link">
+                                        <a asp-area="Expert" asp-controller="Expert" asp-action="Index" class="nav-link">
                                             <span class="icon"><i class="ri-home-line"></i></span>
                                             <span class="menu-title">داشبورد</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a asp-area="Customer" asp-controller="Customer" asp-action="Update" class="nav-link">
+                                        <a asp-area="Expert" asp-controller="Expert" asp-action="Update" class="nav-link">
                                             <span class="icon"><i class="ri-user-line"></i></span>
                                             <span class="menu-title">ویرایش پروفایل</span>
                                         </a>
@@ -172,19 +170,19 @@
 
 
                                     <li class="nav-item">
-                                        <a asp-area="Customer" asp-controller="Customer" asp-action="Order" class="nav-link">
-                                            <span class="icon"><i class="ri-briefcase-line"></i></span>
-                                            <span class="menu-title">سفارش های من</span>
+                                        <a asp-area="Expert" asp-controller="Expert" asp-action="Requests" class="nav-link">
+                                            <span class="icon"><i class="ri-stack-fill"></i></span>
+                                            <span class="menu-title">درخواست ها</span>
                                         </a>
                                     </li>
 
-                                   
-                                    <li class="nav-item">
-                                        <a asp-area="" asp-controller="HomeService" asp-action="Index" class="nav-link">
-                                            <span class="icon"><i class=" ri-stack-fill"></i></span>
-                                            <span class="menu-title">خدمات</span>
+
+                                   @*  <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <span class="icon"><i class="ri-briefcase-line"></i></span>
+                                            <span class="menu-title">صورتحساب ها</span>
                                         </a>
-                                    </li>
+                                    </li> *@
                                 </ul>
                             </div>
                             <div class="dropdown-footer">
@@ -224,7 +222,6 @@
                                     {
                                         @await Html.PartialAsync("_UserProfile", ViewBag.UserProfile as UpdateViewModelUser)
                                     }
-
                                     <span class="name">حساب کاربری</span>
                                 </div>
                             </a>
@@ -235,7 +232,6 @@
                                         {
                                             @await Html.PartialAsync("_UserProfile", ViewBag.UserProfile as UpdateViewModelUser)
                                         }
-
                                     </div>
                                     <div class="info text-center">
                                         <span class="name" @User.Claims.First(x => x.Type == "FullName").Value</span>
