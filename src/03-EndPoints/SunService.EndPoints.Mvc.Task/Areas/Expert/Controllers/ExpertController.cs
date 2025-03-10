@@ -145,6 +145,58 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
 
             return View(user);
         }
+        [HttpGet]
+        public async Task<IActionResult> Profile(CancellationToken cToken)
+        {
+            var userId = _userManager.GetUserId(User);
+            var homeservices = await _homeServiceAppServices.GetAllHomeService(cToken);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var id = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id, cToken);
+
+            bool isExpert = User.IsInRole("Expert");
+
+            var selectedHomeServices = new List<int>();
+
+            if (isExpert)
+            {
+                var expert = await _UserSAppServices.GetExpert(id, cToken);
+                selectedHomeServices = await _UserSAppServices.GetHomeServicesExpert(id, cToken);
+            }
+
+            var model = new UpdateViewModelUser
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                Email = user.Email,
+                UserName = user.UserName,
+                RoleId = user.RoleId,
+                Mobile = user.Mobile,
+                Status = user.Status,
+                CardNumber = user.CardNumber,
+                ShabaNumber = user.ShabaNumber,
+                Balance = user.Balance ?? 0,
+                cityId = user.CityId,
+                ImagePath = user.ImagePath,
+                ProfileImgFile = user.ProfileImgFile,
+                Selectedhomeservice = selectedHomeServices,
+                Homeservices = homeservices.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }).ToList()
+            };
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+            return View(model);
+        }
+
 
     }
 }

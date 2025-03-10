@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.AppServices.SunServices.UserS;
@@ -28,17 +29,19 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IUserSAppServices _UserSAppServices;
         private readonly IRatingAppServices _ratingAppServices;
-        public CustomerController(IorderAppServices orderAppServices, IOfferAppServices offerAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices, IRatingAppServices ratingAppServices)
+        private readonly IHomeServiceAppServices _homeServiceAppServices;
+        public CustomerController(IorderAppServices orderAppServices, IOfferAppServices offerAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices, IRatingAppServices ratingAppServices, IHomeServiceAppServices homeServiceAppServices)
         {
             _orderAppServices = orderAppServices;
             _offerAppServices = offerAppServices;
             _userManager = userManager;
             _UserSAppServices = userSAppServices;
-           
+
             _ratingAppServices = ratingAppServices;
+            _homeServiceAppServices = homeServiceAppServices;
         }
 
-        public async Task< IActionResult> Index(CancellationToken cToken)
+        public async Task<IActionResult> Index(CancellationToken cToken)
         {
             {
                 var userId = _userManager.GetUserId(User);
@@ -50,7 +53,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 var id = int.Parse(userId);
                 var user = await _UserSAppServices.GetById(id, cToken);
 
-                
+
                 ViewBag.UserProfile = user != null
                     ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
                     : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
@@ -91,7 +94,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 ProfileImgFile = user.ProfileImgFile,
 
             };
-           
+
 
 
             ViewBag.UserProfile = user != null
@@ -133,7 +136,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
             var orders = await _orderAppServices.GetAllOrderUser(id, cancellationToken);
-          
+
             var user = await _UserSAppServices.GetById(id, cancellationToken);
 
 
@@ -160,7 +163,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 ImplementationTime = order.ImplementationTime,
                 ImageUrls = order.Images?.Select(img => img.Path).ToList() ?? new List<string>()
             };
-          
+
             var user = await _UserSAppServices.GetById(id, cancellationToken);
 
 
@@ -261,7 +264,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             var offer = await _offerAppServices.GetOfferById(offerId, cToken);
             return RedirectToAction("Score", "Customer", new { orderId = offer.OrderId });
         }
-       
+
         [HttpGet]
         public async Task<IActionResult> Score(int orderId, CancellationToken cToken)
         {
@@ -271,7 +274,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
             var model = new SubRatingDto
             {
-                ExpertId = order.ExpertId??0,
+                ExpertId = order.ExpertId ?? 0,
                 CustomerId = order.CustomerId,
                 OrderId = orderId
             };
@@ -292,7 +295,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
             return View(model);
 
-            
+
         }
         [HttpPost]
         public async Task<IActionResult> Score(SubRatingDto ratingDto, CancellationToken cToken)
@@ -303,7 +306,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 return RedirectToAction("Score", new { orderId = ratingDto.OrderId });
             }
 
-            var result= await _ratingAppServices.CreateRating(ratingDto, ratingDto.OrderId, cToken);
+            var result = await _ratingAppServices.CreateRating(ratingDto, ratingDto.OrderId, cToken);
             if (result.IsSuccess)
             {
                 TempData["SuccessMessage"] = result.IsMessage;
@@ -318,5 +321,45 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
 
         }
-    }
-}
+     [HttpGet]
+        public async Task<IActionResult> ProfileExpert(int id, CancellationToken cToken)
+        {
+           
+            var homeservices = await _homeServiceAppServices.GetAllHomeService(cToken);
+
+            
+            var user = await _UserSAppServices.GetById(id, cToken);
+           
+            var selectedHomeServices = new List<int>();
+
+            
+                var expert = await _UserSAppServices.GetExpert(id, cToken);
+                selectedHomeServices = await _UserSAppServices.GetHomeServicesExpert(id, cToken);
+            
+
+            var model = new UpdateViewModelUser
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                Email = user.Email,
+                UserName = user.UserName,
+                RoleId = user.RoleId,
+                Mobile = user.Mobile,
+                Status = user.Status,
+                CardNumber = user.CardNumber,
+                ShabaNumber = user.ShabaNumber,
+                Balance = user.Balance ?? 0,
+                cityId = user.CityId,
+                ImagePath = user.ImagePath,
+                ProfileImgFile = user.ProfileImgFile,
+                Selectedhomeservice = selectedHomeServices,
+                Homeservices = homeservices.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }).ToList()
+            };
+
+           
+
+            return View(model);
+        }
+    } }

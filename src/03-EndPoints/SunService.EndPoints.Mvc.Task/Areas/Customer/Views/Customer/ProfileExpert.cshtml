@@ -1,0 +1,145 @@
+﻿@using SunService.Domain.Core.SunServices.BaseEntities.AppServices
+@using SunService.Domain.Core.SunServices.HService.AppServices
+@using SunService.EndPoints.Mvc.Task.Areas.Admin.Models
+@using SunService.EndPoints.Mvc.Task.Areas.Customer.Models
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model UpdateViewModelUser
+@inject IBaseDataAppService BaseDataAppService;
+@inject IHomeServiceAppServices _HomeServiceAppServices;
+
+<div class="breadcrumb-area">
+  
+    @{
+        ViewData["Title"] = "خانه > نمایش پروفایل کارشناس";
+    }
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+            <div class="alert alert-danger">
+                <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                                <li>@error.ErrorMessage</li>
+            }
+                </ul>
+            </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+
+
+
+    <h3> پروفایل</h3>
+
+    <div class="profile-outer-area">
+        <form asp-action="Profile" asp-controller="Expert" method="post" enctype="multipart/form-data">
+            <div class="form-group relative">
+            @if (string.IsNullOrEmpty(Model.ImagePath))
+            {
+                            <img style="border-radius : 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
+            }
+            else
+            {
+                            <img style="border-radius : 50%" src="@Model.ImagePath" width="80" height="80" class="d-block mx-auto" />
+            }
+            </div>
+
+            <br />
+
+
+            <br />
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserName" />
+            <input type="hidden" asp-for="Status" />
+            <input type="hidden" asp-for="RoleId" />
+            <input type="hidden" asp-for="Balance" />
+
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>نام</label>
+                    <input disabled asp-for="FirstName" class="form-control" type="text" value="@Model.FirstName">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label> نام خانوادگی</label>
+                    <input disabled asp-for="LastName" class="form-control" type="text" value="@Model.LastName">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label> ایمیل</label>
+                    <input disabled asp-for="Email" class="form-control" type="email" placeholder="آدرس ایمیل" value="@Model.Email">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>موبایل</label>
+                    <input disabled asp-for="Mobile" class="form-control" type="text" placeholder="شماره موبایل" value="@Model.Mobile" placeholder="09121234567">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>شماره کارت</label>
+                    <input disabled asp-for="CardNumber" class="form-control" type="text" value="@Model.CardNumber">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>شماره شبا</label>
+                    <input disabled asp-for="ShabaNumber" class="form-control" type="text" value="@Model.ShabaNumber">
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group select-group">
+                        <label>شهر</label>
+                    <select disabled asp-for="cityId" class="form-select form-control" value="@Model.cityId">
+                        @foreach (var city in await @BaseDataAppService.GetCities(default))
+                        {
+                                        <option value="@city.Id">@city.Title</option>
+                        }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12">
+                    <div class="form-group" id="skills-container">
+                        <label>مهارت‌ها</label>
+                    <select disabled asp-for="Selectedhomeservice" asp-items="Model.Homeservices" class="form-control js-example-basic-multiple" multiple="multiple" value="@Model.Selectedhomeservice">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label>آدرس</label>
+                    <input disabled asp-for="Address" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+            <script>
+                        $(document).ready(function() {
+                    $('.js-example-basic-multiple').select2();
+                });
+            </script>
+
+            <partial name="_ValidationScriptsPartial" />
+}

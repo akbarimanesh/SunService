@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.EndPoints.Mvc.Task.Areas.Admin.Models;
@@ -15,14 +17,32 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryAppServices _categoryAppServices;
-
-        public CategoryController(ICategoryAppServices categoryAppServices)
+        private readonly UserManager<User> _userManager;
+        private readonly IUserSAppServices _UserSAppServices;
+        public CategoryController(ICategoryAppServices categoryAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices)
         {
             _categoryAppServices = categoryAppServices;
+            _userManager = userManager;
+            _UserSAppServices = userSAppServices;
         }
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var id = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+          
             TempData["Menu-Category"] = "current";
             var categories = await _categoryAppServices.GetAllCategories(cToken);
             return View(categories);

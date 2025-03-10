@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.SunServices.UserS.AppServices;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.EndPoints.Mvc.Task.Areas.Admin.Models;
 
 namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
@@ -14,15 +17,33 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
     public class SubCategoryController : Controller
     {
         private readonly ISubCategoryAppServices _subcategoryAppServices;
-
-        public SubCategoryController(ISubCategoryAppServices subcategoryAppServices)
+        private readonly UserManager<User> _userManager;
+        private readonly IUserSAppServices _UserSAppServices;
+        public SubCategoryController(ISubCategoryAppServices subcategoryAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices)
         {
             _subcategoryAppServices = subcategoryAppServices;
+            _userManager = userManager;
+            _UserSAppServices = userSAppServices;
         }
 
-        
+
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var id = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+            
             TempData["Menu-SubCategory"] = "current";
             var subcategories = await _subcategoryAppServices.GetAllSubCategories(cToken);
             return View(subcategories);

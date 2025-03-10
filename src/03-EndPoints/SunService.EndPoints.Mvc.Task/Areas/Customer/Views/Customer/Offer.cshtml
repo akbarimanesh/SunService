@@ -47,8 +47,18 @@
                 @foreach (var offer in Model)
                 {
                     <tr>
+                       
                         <td>@offer.Id</td>
-                        <td>@offer.ExpertFullName</td>
+                        <td>
+                            <input type="hidden" name="id" value="@offer.ExpertId" />
+                       
+                            <a asp-area="Customer" asp-controller="Customer" asp-action="ProfileExpert" asp-route-id="@offer.ExpertId" class="expert-profile-link">
+                                
+
+                                @offer.ExpertFullName
+                            </a>
+                        </td>
+                       
                         <td>@offer.PriceOffer</td>
                         <td>@offer.OfferDate.ToPersianString("yyyy/MM/dd")</td>
                         <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>

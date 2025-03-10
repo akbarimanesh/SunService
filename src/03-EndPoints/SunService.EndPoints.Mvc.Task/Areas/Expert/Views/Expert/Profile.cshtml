@@ -11,66 +11,50 @@
 <div class="breadcrumb-area">
     <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
     @{
-        ViewData["Title"] = "خانه > ویرایش پروفایل";
+        ViewData["Title"] = "خانه > نمایش پروفایل کارشناس";
     }
 </div>
 
 @if (!ViewData.ModelState.IsValid)
 {
-    <div class="alert alert-danger">
-        <ul>
+        <div class="alert alert-danger">
+            <ul>
             @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
             {
-                <li>@error.ErrorMessage</li>
+                        <li>@error.ErrorMessage</li>
             }
-        </ul>
-    </div>
+            </ul>
+        </div>
 }
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
 
-<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
-    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،تخصص از شما ،کار از ما.</p>
-    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
-<div class="my-profile-box">
-    <div class="form-group d-flex align-items-center mt-2 mr-3">
-        <label for="balance" class="mr-2 font-weight-bold">موجودی :</label>
-        <div id="balance" class="form-control bg-light d-flex align-items-center justify-content-between px-3" style="max-width: 200px; border-radius: 8px;">
-            <span class="text-primary font-weight-bold">@Model.Balance</span>
-            <span class="text-muted">تومان</span>
-        </div>
-    </div>
 
-    <h3>ویرایش پروفایل</h3>
+
+    <h3> پروفایل</h3>
 
     <div class="profile-outer-area">
-        <form asp-action="Update" asp-controller="Expert" method="post" enctype="multipart/form-data">
+        <form asp-action="Profile" asp-controller="Expert" method="post" enctype="multipart/form-data">
             <div class="form-group relative">
                 @if (string.IsNullOrEmpty(Model.ImagePath))
                 {
-                    <img style="border-radius : 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
+                        <img style="border-radius : 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
                 }
                 else
                 {
-                    <img style="border-radius : 50%" src="@Model.ImagePath" width="80" height="80" class="d-block mx-auto" />
+                        <img style="border-radius : 50%" src="@Model.ImagePath" width="80" height="80" class="d-block mx-auto" />
                 }
             </div>
 
             <br />
-            <label>تغییر عکس</label>
-            <div class="form-group relative">
-                <input asp-for="ProfileImgFile" type="file" class="form-control">
-            </div>
+           
 
             <br />
 
@@ -84,47 +68,47 @@
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
                         <label>نام</label>
-                        <input asp-for="FirstName" class="form-control" type="text" value="@Model.FirstName">
+                    <input disabled asp-for="FirstName" class="form-control" type="text" value="@Model.FirstName">
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
                         <label> نام خانوادگی</label>
-                        <input asp-for="LastName" class="form-control" type="text" value="@Model.LastName">
+                    <input disabled asp-for="LastName" class="form-control" type="text" value="@Model.LastName">
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
                         <label> ایمیل</label>
-                        <input asp-for="Email" class="form-control" type="email" placeholder="آدرس ایمیل" value="@Model.Email">
+                    <input disabled asp-for="Email" class="form-control" type="email" placeholder="آدرس ایمیل" value="@Model.Email">
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
                         <label>موبایل</label>
-                        <input asp-for="Mobile" class="form-control" type="text" placeholder="شماره موبایل" value="@Model.Mobile" placeholder="09121234567">
+                    <input disabled asp-for="Mobile" class="form-control" type="text" placeholder="شماره موبایل" value="@Model.Mobile" placeholder="09121234567">
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
                         <label>شماره کارت</label>
-                        <input asp-for="CardNumber" class="form-control" type="text" value="@Model.CardNumber">
+                    <input disabled asp-for="CardNumber" class="form-control" type="text" value="@Model.CardNumber">
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
                         <label>شماره شبا</label>
-                        <input asp-for="ShabaNumber" class="form-control" type="text" value="@Model.ShabaNumber">
+                    <input disabled asp-for="ShabaNumber" class="form-control" type="text" value="@Model.ShabaNumber">
                     </div>
                 </div>
 
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group select-group">
                         <label>شهر</label>
-                        <select asp-for="cityId" class="form-select form-control" value="@Model.cityId">
+                    <select disabled asp-for="cityId" class="form-select form-control" value="@Model.cityId">
                             @foreach (var city in await @BaseDataAppService.GetCities(default))
                             {
-                                <option value="@city.Id">@city.Title</option>
+                                    <option value="@city.Id">@city.Title</option>
                             }
                         </select>
                     </div>
@@ -132,7 +116,7 @@
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group" id="skills-container">
                         <label>مهارت‌ها</label>
-                        <select asp-for="Selectedhomeservice" asp-items="Model.Homeservices" class="form-control js-example-basic-multiple"  multiple="multiple">
+                    <select disabled asp-for="Selectedhomeservice" asp-items="Model.Homeservices" class="form-control js-example-basic-multiple" multiple="multiple">
                         </select>
                     </div>
                 </div>
@@ -140,24 +124,22 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="form-group">
                         <label>آدرس</label>
-                        <input asp-for="Address" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
+                    <input disabled asp-for="Address" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
                     </div>
                 </div>
 
-                <div class="col-lg-12 col-md-12">
-                    <button type="submit" class="default-btn">ارسال <i class="flaticon-send"></i></button>
-                </div>
+               
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-                $(document).ready(function() {
-            $('.js-example-basic-multiple').select2();
-        });
-    </script>
+        <script>
+                    $(document).ready(function() {
+                $('.js-example-basic-multiple').select2();
+            });
+        </script>
 
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

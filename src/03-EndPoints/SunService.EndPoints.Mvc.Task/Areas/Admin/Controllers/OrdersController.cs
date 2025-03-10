@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 using SunService.Domain.AppServices.SunServices.HService;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Enums;
+using SunService.Domain.Core.SunServices.UserS.AppServices;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.EndPoints.Mvc.Task.Areas.Admin.Models;
 
@@ -16,14 +20,32 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
     public class OrdersController : Controller
     {
         private readonly IorderAppServices _orderAppServices;
-
-        public OrdersController(IorderAppServices orderAppServices)
+        private readonly UserManager<User> _userManager;
+        private readonly IUserSAppServices _UserSAppServices;
+        public OrdersController(IorderAppServices orderAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices)
         {
             _orderAppServices = orderAppServices;
+            _userManager = userManager;
+            _UserSAppServices = userSAppServices;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var id = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id, cancellationToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+           
             TempData["Menu-Orders"] = "current";
             var orders = await _orderAppServices.GetAllOrder(cancellationToken);
             return View(orders);

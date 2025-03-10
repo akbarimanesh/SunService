@@ -86,7 +86,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                     OrderId = x.OrderId,
                     CompletionDate = x.CompletionDate,
                     StateOffer = x.StateOffer,
-
+                    ExpertId = x.ExpertId,
                   
                     AverageRating = x.Expert.ExpertServices
                         .Where(es => es.HomeServiceId == x.Order.HomeServiceId) 
@@ -106,6 +106,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 Id = x.Id,
                 HomeServiceTitle = x.Order.HomeService.Title,
                 ExpertFullName = x.Expert.FirstName + " " + x.Expert.LastName,
+                ExpertId=x.Id,
                 PriceOffer = x.PriceOffer,
                 Description = x.Description,
                 OfferDate = x.OfferDate,

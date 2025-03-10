@@ -37,7 +37,22 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
-          
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var id = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+           
+
             TempData["Menu-Users"] = "current";
             var users = await _UserSAppServices.GetAll(cToken);
             return View(users);
