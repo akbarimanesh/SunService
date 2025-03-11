@@ -13,7 +13,7 @@ namespace SunService.Domain.Core.SunServices.HService.Enums
         ChoiceExpert = 2,
         [Display(Name = "در انتظار آمدن متخصص به محل شما")]
         ExpetToCome = 3,
-        [Display(Name = "اتمام کار")]
+        [Display(Name = "اتمام کار و دریافت دستمزد")]
         FinishingWork = 4
        
        
