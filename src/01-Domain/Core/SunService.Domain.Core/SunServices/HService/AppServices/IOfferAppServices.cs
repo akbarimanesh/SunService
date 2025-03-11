@@ -11,6 +11,7 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
 {
     public interface IOfferAppServices
     {
+        public Task<Result> CreateOffer(OfferDto offerDto, int expertId, CancellationToken cancellationToken);
         public Task<Result> UpdateBalances(int offerId, CancellationToken cancellationToken);
         public Task<Offer> GetOfferById(int id, CancellationToken cancellationToken);
         public Task<Result> AcceptOffer(int id, CancellationToken cToken);

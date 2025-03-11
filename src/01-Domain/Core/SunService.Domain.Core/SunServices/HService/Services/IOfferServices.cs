@@ -21,7 +21,7 @@ namespace SunService.Domain.Core.SunServices.HService.Services
         public Task<List<OfferDto>> GetAllOffer(int OrderId,CancellationToken cancellationToken);
         public Task<List<OfferDto>> GetAllOfferAllOrder(CancellationToken cancellationToken);
         public Task<Offer> GetOfferById(int id, CancellationToken cancellationToken);
-        public global::System.Threading.Tasks.Task CreateOffer(Offer offer, CancellationToken cancellationToken);
+        public global::System.Threading.Tasks.Task CreateOffer(OfferDto offerdto, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteOffer(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task UpdateOffer(Offer offer, CancellationToken cancellationToken);
     }

@@ -30,9 +30,9 @@ namespace SunService.Domain.Services.SunServices.HService
             await _OfferRepository.ChangeStatuseOrder(orderId, cancellationToken);
         }
 
-        public async Task CreateOffer(Offer offer, CancellationToken cancellationToken)
+        public async Task CreateOffer(OfferDto offerdto, CancellationToken cancellationToken)
         {
-            await _OfferRepository.CreateOffer(offer, cancellationToken);
+            await _OfferRepository.CreateOffer(offerdto, cancellationToken);
         }
 
         public async Task DeleteOffer(int id, CancellationToken cancellationToken)

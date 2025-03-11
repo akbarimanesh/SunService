@@ -10,6 +10,7 @@ using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.EndPoints.Mvc.Task.Areas.Customer.Models;
+using System;
 
 namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
 {
@@ -21,12 +22,14 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
         private readonly IUserSAppServices _UserSAppServices;
         private readonly IHomeServiceAppServices _homeServiceAppServices;
         private readonly IorderAppServices _orderAppServices;
-        public ExpertController(UserManager<User> userManager, IUserSAppServices userSAppServices, IHomeServiceAppServices homeServiceAppServices, IorderAppServices orderAppServices)
+        private readonly IOfferAppServices _offerAppServices;
+        public ExpertController(UserManager<User> userManager, IUserSAppServices userSAppServices, IHomeServiceAppServices homeServiceAppServices, IorderAppServices orderAppServices, IOfferAppServices offerAppServices)
         {
             _userManager = userManager;
             _UserSAppServices = userSAppServices;
             _homeServiceAppServices = homeServiceAppServices;
             _orderAppServices = orderAppServices;
+            _offerAppServices = offerAppServices;
         }
 
 
@@ -105,7 +108,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UpdateViewModelUser user, CancellationToken cToken)
         {
-           
+
             if (ModelState.IsValid)
             {
                 var user1 = new UserDto
@@ -130,7 +133,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
 
                 if (result.IsSuccess)
                 {
-                    
+
                     if (user.Selectedhomeservice != null)
                     {
                         await _homeServiceAppServices.UpdateExpertServices(user.Id, user.Selectedhomeservice, cToken);
@@ -203,6 +206,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
         {
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
+            ViewBag.CurrentUserId = userId;
             if (string.IsNullOrEmpty(userId))
             {
                 return NotFound();
@@ -243,6 +247,104 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
                 : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
 
             return View(orderDto);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Offer(int id, CancellationToken cToken)
+        {
+           
+            if (id == 0)
+            {
+                TempData["ErrorMessage"] = "شناسه سفارش معتبر نیست.";
+                return RedirectToAction("Orders", "Expert");
+            }
+
+            var order = await _orderAppServices.GetorderById(id, cToken);
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "سفارش موردنظر یافت نشد.";
+                return RedirectToAction("Orders", "Expert");
+            }
+
+            var model = new OfferDto
+            {
+               
+                OrderId = id 
+            };
+
+
+
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var id1 = int.Parse(userId);
+            var user = await _UserSAppServices.GetById(id1, cToken);
+
+
+            ViewBag.UserProfile = user != null
+                ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
+                : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Offer(int id, OfferDto model, CancellationToken cToken)
+        {
+
+           
+            if (!ModelState.IsValid)
+            {
+
+                return View(model);
+            }
+            var userId = _userManager.GetUserId(User);
+            var id1 = int.Parse(userId);
+            model.ExpertId = id1;
+            var user = await _userManager.FindByIdAsync(userId);
+            var CityId1 = user?.CityId;
+
+            model.OrderId = id;
+
+
+            DateTime persianDateTime = model.OfferDate;
+
+
+            PersianDateTime persianDate = PersianDateTime.Parse(persianDateTime.ToString("yyyy/MM/dd"));
+
+
+            DateTime gregorianDate = persianDate.ToDateTime();
+
+
+            model.OfferDate = gregorianDate;
+
+            DateTime persianDateTime1 = model.CompletionDate;
+
+
+            PersianDateTime persianDate1 = PersianDateTime.Parse(persianDateTime1.ToString("yyyy/MM/dd"));
+
+
+            DateTime gregorianDate1 = persianDate1.ToDateTime();
+
+
+            model.CompletionDate = gregorianDate1;
+
+       
+
+            var result = await _offerAppServices.CreateOffer(model, id1, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+
+            }
+            return RedirectToAction("Order", "Expert");
+
         }
     }
 }

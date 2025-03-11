@@ -1,0 +1,96 @@
+﻿@using SunService.Domain.Core.SunServices.HService.DTOs
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model OfferDto
+
+<div class="breadcrumb-area">
+    <h1>سلام،  <span>@User.Claims.First(x => x.Type == "FullName").Value</span>!</h1>
+    @{
+        ViewData["Title"] = "خانه > ثبت پیشنهاد";
+    }
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+        <div class="alert alert-danger">
+            <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                        <li>@error.ErrorMessage</li>
+            }
+            </ul>
+        </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="notification-alert alert alert-success alert-dismissible fade show" role="alert">
+    <p><span>@User.Claims.First(x => x.Type == "FullName").Value</span>،تخصص از شما ،کار از ما.</p>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+        <div class="my-profile-box">
+            <h3>ثبت پیشنهاد</h3>
+
+            <div class="profile-outer-area">
+                <form asp-action="Offer" asp-controller="Expert" method="post" enctype="multipart/form-data">
+
+
+                    <input type="hidden" name="id" value="@Model.OrderId" />
+
+
+
+
+
+                    <div class="row align-items-center">
+                        <div class=" col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>قیمت پیشنهادی (تومان)</label>
+
+                               
+
+                            <input asp-for="PriceOffer" asp-controller="Expert" asp-action="Offer" type="number" placeholder="قیمت پیشنهادی" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label> تاریخ شروع</label>
+                            <input asp-for="OfferDate" asp-controller="Expert" asp-action="Offer" type="text" class="form-control" placeholder="تاریخ شروع" data-jdp>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label> تاریخ تحویل</label>
+                            <input asp-for="CompletionDate" asp-controller="Expert" asp-action="Offer" type="text" class="form-control" placeholder="تاریخ تحویل" data-jdp>
+                            </div>
+                        </div>
+                        <div class="class col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>توضیحات</label>
+                                <textarea asp-for="Description" asp-controller="Expert" asp-action="Offer" class="form-control" cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12 col-md-12">
+                            <button type="submit" class="default-btn">ارسال <i class="flaticon-send"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+   
+
+@section Scripts
+{
+        <partial name="_ValidationScriptsPartial" />
+}

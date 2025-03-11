@@ -49,12 +49,32 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         
         }
 
-        public async Task CreateOffer(Offer offer, CancellationToken cancellationToken)
+        public async Task CreateOffer(OfferDto offerdto, CancellationToken cancellationToken)
         {
-            await _appDbContext.Offers.AddAsync(offer, cancellationToken);
-            await _appDbContext.SaveChangesAsync(cancellationToken);
-        }
+            var offer = new Offer()
+            {
 
+                Description = offerdto.Description,
+                PriceOffer = offerdto.PriceOffer,
+                
+                CompletionDate = offerdto.CompletionDate,
+                OfferDate = offerdto.OfferDate,
+                OrderId = offerdto.OrderId,
+                StateOffer = offerdto.StateOffer,
+                ExpertId = offerdto.ExpertId ,
+                
+                
+            };
+            await _appDbContext.Offers.AddAsync(offer, cancellationToken);
+         
+            var order = await _appDbContext.Orders.FirstOrDefaultAsync(o => o.Id == offerdto.OrderId, cancellationToken);
+            if (order != null)
+            {
+                
+                order.OrderHomeServiceStatus = OrderHomeServiceStatusEnum.ChoiceExpert;
+                await _appDbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
         public async Task DeleteOffer(int id, CancellationToken cancellationToken)
         {
             var offer = await _appDbContext.Offers.FirstOrDefaultAsync(x => x.Id == id);

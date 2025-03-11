@@ -35,7 +35,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
                 CityId = order.CityId ?? 0,
                 
-               
+               Offers=order.Offers,
                 CustomerId = order.CustomerId,
              
                HomeServiceId = order.HomeserviceId,
@@ -56,7 +56,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<List<OrderDto>> GetAllOrder(CancellationToken cancellationToken)
         {
-            return await _appDbContext.Orders.AsNoTracking().Select(x => new OrderDto()
+            return await _appDbContext.Orders.AsNoTracking().Include(o => o.Offers).Select(x => new OrderDto()
             {
                 Id = x.Id,
                 HomeServiceTitle = x.HomeService.Title,
@@ -66,7 +66,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 CreateAt = x.CreateAt,
                 OrderHomeServiceStatus = x.OrderHomeServiceStatus,
                  OfferId = x.OfferId,
-                
+                Offers=x.Offers.ToList(),
             }).ToListAsync(cancellationToken);
         }
 
@@ -84,7 +84,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
             
             var orders = await _appDbContext.Orders
-                .Where(o => expertSkills.Contains(o.HomeServiceId) && o.OrderHomeServiceStatus == OrderHomeServiceStatusEnum.OfferExpert) 
+                .Where(o => expertSkills.Contains(o.HomeServiceId)  ).Include(o => o.Offers)
                 .OrderByDescending(o => o.CreateAt)
                 .Select(o => new OrderDto
                 {
@@ -94,9 +94,11 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                     ImplementationDate = o.ImplementationDate,
                     OrderHomeServiceStatus = o.OrderHomeServiceStatus,
                     Description = o.Description,
-                    CustomerFullName = o.Customer.FirstName + " " + o.Customer.LastName,
+                    CustomerFullName = o.Customer.FirstName + " " + o.Customer.LastName, 
                     CityId = o.Customer.CityId,
-                    ImageUrls = o.Images.Select(img => img.Path).ToList()
+                    ImageUrls = o.Images.Select(img => img.Path).ToList(),
+                    Offers = o.Offers.ToList(),
+                    
                 })
                 .ToListAsync(cancellationToken);
 
@@ -106,7 +108,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Orders.AsNoTracking().Where(x => x.CustomerId == id).Select(x => new OrderDto()
+            return await _appDbContext.Orders.AsNoTracking().Where(x => x.CustomerId == id).Include(o => o.Offers).Select(x => new OrderDto()
             {
                 Id = x.Id,
                 HomeServiceTitle = x.HomeService.Title,
@@ -116,13 +118,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 CreateAt = x.CreateAt,
                 OrderHomeServiceStatus = x.OrderHomeServiceStatus,
                 OfferId = x.OfferId,
-                
+                Offers = x.Offers.ToList(),
             }).ToListAsync(cancellationToken);
         }
 
         public async Task<Order> GetorderById(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Orders.AsNoTracking().Include(x => x.HomeService).Include(x => x.Images).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _appDbContext.Orders.AsNoTracking().Include(x => x.HomeService).Include(x => x.Images).Include(o => o.Offers).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public async Task<bool> HasCustomerChosenExpert(int orderId, CancellationToken cancellationToken)

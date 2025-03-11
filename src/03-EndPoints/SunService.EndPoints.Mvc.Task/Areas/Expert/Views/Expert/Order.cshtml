@@ -41,13 +41,19 @@
                     <th>وضعیت</th>
                     <th>جزئیات سفارش</th>
                     <th>ارائه پیشنهاد</th>
-                    
+
 
                 </tr>
             </thead>
             <tbody>
                 @foreach (var order in Model)
                 {
+
+                    var currentUserId = Convert.ToInt32(ViewBag.CurrentUserId);
+
+                  
+                    var expertOffer = order.Offers?.FirstOrDefault(o => o.ExpertId == currentUserId);
+                   
                     <tr>
 
                         <td>@order.Id</td>
@@ -64,9 +70,33 @@
                         </td>
 
                         <td>
-                            <a asp-area="Expert" asp-controller="Expert" asp-action="Offer" asp-route-Id="@order.Id" class="status">ارائه پیشنهاد</a>
+                            <input type="hidden" name="id" asp-for="@order.Id" />
+
+
+
+
+                            @if (expertOffer != null && expertOffer.StateOffer == null)
+                            {
+                                <span class="text-warning">در انتظار تأیید</span>
+                            }
+                            else if (expertOffer != null && expertOffer.StateOffer == true)
+                            {
+                                <span class="text-success">پذیرفته شده</span>
+                            }
+                            else if (expertOffer != null && expertOffer.StateOffer == false)
+                            {
+                                <span class="text-danger">رد شده</span>
+                            }
+                            else
+                            {
+                                <a asp-area="Expert" asp-controller="Expert" asp-action="Offer" asp-route-Id="@order.Id" class="status">
+                                    ارائه پیشنهاد
+                                </a>
+                            }
                         </td>
-                       
+
+
+
 
                     </tr>
                 }

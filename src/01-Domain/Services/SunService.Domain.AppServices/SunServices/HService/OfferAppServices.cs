@@ -15,17 +15,38 @@ namespace SunService.Domain.AppServices.SunServices.HService
     public class OfferAppServices : IOfferAppServices
     {
         private readonly IOfferServices _offerServices;
-       
-        public OfferAppServices(IOfferServices offerServices)
+       private readonly IorderAppServices _orderAppServices;
+        public OfferAppServices(IOfferServices offerServices, IorderAppServices orderAppServices)
         {
             _offerServices = offerServices;
-           
+            _orderAppServices = orderAppServices;
         }
 
         public async Task<Result> AcceptOffer(int id, CancellationToken cToken)
         {
             await _offerServices.AcceptOffer(id, cToken);
             return new Result(true, " پیشنهاد مورد نظر شما با موفقیت پذیرفته شد .");
+        }
+
+        public async Task<Result> CreateOffer(OfferDto offerDto, int expertId, CancellationToken cancellationToken)
+        {
+            var order = await _orderAppServices.GetorderById(offerDto.OrderId, cancellationToken);
+            if (order == null)
+            {
+                return new Result(false, " سفارش موردنظر یافت نشد  .");
+            }
+            var basePrice = order.HomeService.BasePrice;
+            if (offerDto.PriceOffer < basePrice)
+            {
+                return new Result(false, $"قیمت پیشنهادی شما نباید کمتر از {basePrice} تومان باشد.");
+            }
+            else
+            {
+              
+                await _offerServices.CreateOffer(offerDto, cancellationToken);
+
+                return new Result(true, " پیشنهاد شما با موفقیت ثبت شد  .");
+            }
         }
 
         public async Task<List<OfferDto>> GetAllOffer(int OrderId, CancellationToken cancellationToken)
