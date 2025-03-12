@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunService.EndPoints.Mvc.Ta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunService.Infra.Data.Db.SqlServer.Dapper", "src\02-Infrastructures\Db\SunService.Infra.Data.Db.SqlServer.Dapper\SunService.Infra.Data.Db.SqlServer.Dapper\SunService.Infra.Data.Db.SqlServer.Dapper.csproj", "{82041FF3-50C4-4272-835F-3129D7EBDCDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunService.EndPoints.Api.Task", "src\03-EndPoints\SunService.EndPoints.APi.Task\SunService.EndPoints.Api.Task\SunService.EndPoints.Api.Task.csproj", "{BF0489ED-08F4-4245-B17E-5D4C62BD4E51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{82041FF3-50C4-4272-835F-3129D7EBDCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82041FF3-50C4-4272-835F-3129D7EBDCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82041FF3-50C4-4272-835F-3129D7EBDCDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF0489ED-08F4-4245-B17E-5D4C62BD4E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF0489ED-08F4-4245-B17E-5D4C62BD4E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF0489ED-08F4-4245-B17E-5D4C62BD4E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF0489ED-08F4-4245-B17E-5D4C62BD4E51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,5 +102,6 @@ Global
 		{ADBDAE5B-6528-4442-8561-2B377B1D8406} = {08FA8C17-68CE-4D89-A244-A8B746B2BFD3}
 		{F2E1D73C-459F-42AD-B1E6-834FAD48890F} = {C67A4A83-0B5B-49F1-A145-DE37E51C96CE}
 		{82041FF3-50C4-4272-835F-3129D7EBDCDC} = {08FA8C17-68CE-4D89-A244-A8B746B2BFD3}
+		{BF0489ED-08F4-4245-B17E-5D4C62BD4E51} = {C67A4A83-0B5B-49F1-A145-DE37E51C96CE}
 	EndGlobalSection
 EndGlobal

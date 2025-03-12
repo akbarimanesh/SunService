@@ -1,0 +1,6 @@
+@SunService.EndPoints.Api.Task_HostAddress = http://localhost:5056
+
+GET {{SunService.EndPoints.Api.Task_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
