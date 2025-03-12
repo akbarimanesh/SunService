@@ -1,7 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.Task.Configs;
+using SunService.Infra.Data.Db.SqlServer.Dapper;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
@@ -14,11 +20,14 @@ namespace SunService.Domain.AppServices.SunServices.HService
     public class CategoryRepository : ICategoryRepository
     {
         private readonly AppDbContext _appDbContext;
-
-        public CategoryRepository(AppDbContext appDbContext)
+        private readonly string _connectionString;
+        public CategoryRepository(IOptions<SiteSettings> siteSettings, AppDbContext appDbContext)
         {
+            _connectionString = siteSettings.Value.ConnectionStrings.SqlConnection;
             _appDbContext = appDbContext;
         }
+           
+       
 
         public async Task CreateCategory(CategoryDto category, CancellationToken cancellationToken)
         {
@@ -39,18 +48,26 @@ namespace SunService.Domain.AppServices.SunServices.HService
             _appDbContext.Categories.Remove(category);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
-
         public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
         {
-            return await _appDbContext.Categories.AsNoTracking().Select(x => new CategoryDto()
+            using (var connection = new SqlConnection(_connectionString))
             {
-                Id = x.Id,
-                Title = x.Title,
-                ImagePath=x.ImagePath
-
-            }).ToListAsync(cancellationToken);
-
+                await connection.OpenAsync();
+                var categories = await connection.QueryAsync<CategoryDto>(QuerysSundb.GetAllCategories);
+                return categories.ToList();
+            }
         }
+        //public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
+        //{
+        //    return await _appDbContext.Categories.AsNoTracking().Select(x => new CategoryDto()
+        //    {
+        //        Id = x.Id,
+        //        Title = x.Title,
+        //        ImagePath=x.ImagePath
+
+        //    }).ToListAsync(cancellationToken);
+
+        //}
 
         public async Task<Category> GetCategoryById(int id, CancellationToken cancellationToken)
         {

@@ -110,6 +110,7 @@ builder.Services.AddScoped<IGetStatisticsDataServices, GetStatisticsDataServices
 
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(siteSettings.ConnectionStrings.SqlConnection));
+builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection("SiteSettings"));
 #endregion
 builder.Services.ConfigureApplicationCookie(options =>
 {

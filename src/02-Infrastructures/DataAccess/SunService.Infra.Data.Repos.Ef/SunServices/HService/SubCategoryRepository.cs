@@ -1,7 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
+using SunService.Domain.Core.Task.Configs;
+using SunService.Infra.Data.Db.SqlServer.Dapper;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
 using System.Collections.Generic;
@@ -14,11 +20,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
     public class SubCategoryRepository : ISubCategoryRepository
     {
         private readonly AppDbContext _appDbContext;
-
-        public SubCategoryRepository(AppDbContext appDbContext)
+        private readonly string _connectionString;
+        public SubCategoryRepository(IOptions<SiteSettings> siteSettings, AppDbContext appDbContext)
         {
+            _connectionString = siteSettings.Value.ConnectionStrings.SqlConnection;
             _appDbContext = appDbContext;
         }
+      
 
         public async Task CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken)
         {
@@ -32,17 +40,25 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext.SubCategories.Remove(subcategory);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
-
         public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
         {
-            return await _appDbContext.SubCategories.AsNoTracking().Select(x => new SubCategoryDto()
+            using (var connection = new SqlConnection(_connectionString))
             {
-                Id = x.Id,
-                Title = x.Title,
-                CategoryName=x.Category.Title,
-
-            }).ToListAsync(cancellationToken);
+                await connection.OpenAsync();
+                var subcategories = await connection.QueryAsync<SubCategoryDto>(QuerysSundb.GetAllSubCategories);
+                return subcategories.ToList();
+            }
         }
+        //public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
+        //{
+        //    return await _appDbContext.SubCategories.AsNoTracking().Select(x => new SubCategoryDto()
+        //    {
+        //        Id = x.Id,
+        //        Title = x.Title,
+        //        CategoryName=x.Category.Title,
+
+        //    }).ToListAsync(cancellationToken);
+        //}
 
         public async Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken)
         {
