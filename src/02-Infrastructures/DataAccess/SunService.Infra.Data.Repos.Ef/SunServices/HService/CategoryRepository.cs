@@ -57,6 +57,13 @@ namespace SunService.Domain.AppServices.SunServices.HService
                 return categories.ToList();
             }
         }
+
+        public async Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken)
+        {
+            return await _appDbContext.Categories.Include(c => c.SubCategories).ThenInclude(sc => sc.HomeServices).ToListAsync();
+
+        }
+
         //public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
         //{
         //    return await _appDbContext.Categories.AsNoTracking().Select(x => new CategoryDto()

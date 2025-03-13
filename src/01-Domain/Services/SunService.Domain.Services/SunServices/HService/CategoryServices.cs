@@ -34,6 +34,11 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _CategoryRepository.GetAllCategories(cancellationToken);
         }
 
+        public async Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken)
+        {
+            return await _CategoryRepository.GetAllCategoriesWithHomeservice(cancellationToken);
+        }
+
         public async Task<Category> GetCategoryById(int id, CancellationToken cancellationToken)
         {
             return await _CategoryRepository.GetCategoryById(id, cancellationToken);

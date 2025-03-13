@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.HService.Services
 {
     public interface ICategoryServices
     {
+        public  Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken);
         public Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken);
         public Task<Category> GetCategoryById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateCategory(CategoryDto category, CancellationToken cancellationToken);

@@ -115,6 +115,10 @@ builder.Services.AddScoped<IGetStatisticsDataServices, GetStatisticsDataServices
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(siteSettings.ConnectionStrings.SqlConnection));
 builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection("SiteSettings"));
 #endregion
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

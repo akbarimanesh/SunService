@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
 {
     public interface ICategoryAppServices
     {
+        public Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken);
         public Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken);
         public Task<Category> GetCategoryById(int id, CancellationToken cancellationToken);
         public Task<Result> CreateCategory(CategoryDto category, CancellationToken cancellationToken);
