@@ -15,7 +15,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public int Id { get; set; }
         public string? HomeServiceTitle { get; set; }
         public int CustomerId { get; set; }
-   public Customer? Customer { get; set; }
+        public Customer? Customer { get; set; }
         public int? CityId { get; set; }
      
         public int? ExpertId { get; set; }

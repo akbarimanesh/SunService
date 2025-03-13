@@ -19,6 +19,7 @@ using SunService.Domain.Core.Task.Configs;
 using SunService.Domain.Services.SunServices.BaseEntities;
 using SunService.Domain.Services.SunServices.HService;
 using SunService.Domain.Services.SunServices.UserS;
+using SunService.EndPoints.Api.Task.ApiFramework.Fillters;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using SunService.Infra.Data.Repos.Ef.SunServices.BaseEntities;
 using SunService.Infra.Data.Repos.Ef.SunServices.HService;
@@ -123,7 +124,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped<ApiKeyAuthFilter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
