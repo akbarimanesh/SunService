@@ -36,7 +36,7 @@ namespace SunService.Domain.AppServices.SunServices.HService
                 return new Result(false, " سفارش موردنظر یافت نشد  .");
             }
             var basePrice = order.HomeService.BasePrice;
-            if (offerDto.PriceOffer < basePrice)
+            if (offerDto.PriceOffer <= basePrice)
             {
                 return new Result(false, $"قیمت پیشنهادی شما نباید کمتر از {basePrice} تومان باشد.");
             }

@@ -12,5 +12,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public int Id { get; set; }
         public string Title { get; set; }
         public string CategoryName { get; set; }
+        public List<HomeService> HomeServices { get; set; }
+        public List<SubCategoryDto> SubCategories { get; set; } = new List<SubCategoryDto>();
     }
 }

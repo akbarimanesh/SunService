@@ -40,6 +40,11 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _HomeServiceRepository.GetHomeServiceById(id, cancellationToken);  
         }
 
+        public async Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
+        {
+            return await _HomeServiceRepository.GetHomeServicesBySubCategoryId(subCategoryId, cancellationToken);   
+        }
+
         public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)
         {
             return await _HomeServiceRepository.GetTitleHomeService(homeServiceTitle, cToken);

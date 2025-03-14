@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.HService.Data
 {
     public interface ISubCategoryRepository
     {
+        public Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken);
         public Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken);
         public Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken);

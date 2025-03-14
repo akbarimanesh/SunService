@@ -49,6 +49,19 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 return subcategories.ToList();
             }
         }
+
+        public async Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
+        {
+             return await _appDbContext.SubCategories.Where(sc => sc.CategoryId == categoryId)
+            .Select(sc => new SubCategoryDto
+            {
+                Id = sc.Id,
+                Title = sc.Title,
+                CategoryName=sc.Category.Title
+            })
+            .ToListAsync(cancellationToken);
+        }
+
         //public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
         //{
         //    return await _appDbContext.SubCategories.AsNoTracking().Select(x => new SubCategoryDto()

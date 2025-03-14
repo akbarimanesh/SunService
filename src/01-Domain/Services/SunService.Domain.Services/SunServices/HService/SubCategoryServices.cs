@@ -33,6 +33,12 @@ namespace SunService.Domain.Services.SunServices.HService
         {
             return await _SubCategoryRepository.GetAllSubCategories(cancellationToken);
         }
+
+        public async Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
+        {
+            return await _SubCategoryRepository.GetSubCategoriesByCategoryId(categoryId, cancellationToken);  
+        }
+
         public async Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken)
         {
             return await _SubCategoryRepository.GetSubCategoryById(id, cancellationToken);

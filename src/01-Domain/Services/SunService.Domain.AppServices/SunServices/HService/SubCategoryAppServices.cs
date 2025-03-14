@@ -72,11 +72,10 @@ namespace SunService.Domain.AppServices.SunServices.HService
             return subcategories;
         }
 
-
-
-
-          
-           
+        public async Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
+        {
+            return await _subCategoryServices.GetSubCategoriesByCategoryId(categoryId, cancellationToken);
+        }
 
         public async Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken)
         {

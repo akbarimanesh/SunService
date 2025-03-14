@@ -267,7 +267,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
 
             var model = new OfferDto
             {
-               
+                BasePrice = order.HomeService.BasePrice,
                 OrderId = id 
             };
 

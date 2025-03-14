@@ -14,23 +14,14 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1, CancellationToken cToken = default)
+        public async Task<IActionResult> Index( CancellationToken cToken = default)
         {
-            int pageSize = 8;
+           
             var allCategories = await _categoryAppServices.GetAllCategories(cToken);
 
-            var pagedCategories = allCategories
-                .Skip((page - 1) * pageSize) 
-                .Take(pageSize) 
-                .ToList();
+           
 
-            int totalItems = allCategories.Count;
-            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-            ViewData["TotalPages"] = totalPages;
-            ViewData["CurrentPage"] = page;
-
-            return View(pagedCategories);
+            return View(allCategories);
         }
 
     }

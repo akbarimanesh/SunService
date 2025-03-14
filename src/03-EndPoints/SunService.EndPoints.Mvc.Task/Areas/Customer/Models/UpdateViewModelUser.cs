@@ -9,8 +9,8 @@ public class UpdateViewModelUser
     public string? LastName { get; set; }
     public string? Mobile { get; set; }
     public string? Address { get; set; }
-    public string CardNumber { get; set; }
-    public string ShabaNumber { get; set; }
+    public string? CardNumber { get; set; }
+    public string? ShabaNumber { get; set; }
     public int Balance { get; set; }
     public string Email { get; set; }
     public IFormFile? ProfileImgFile { get; set; }

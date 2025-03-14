@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SunService.Domain.Core.SunServices.HService.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public string? ImagePath { get; set; }
         public string SubCategoryTitle { get; set; }
         public int SubCategoryId { get; set; }
+        public SubCategory SubCategory { get; set; }
         public string? CategoryTitle {  get; set; }
         public IFormFile? ProfileImgFile { get; set; }
     }

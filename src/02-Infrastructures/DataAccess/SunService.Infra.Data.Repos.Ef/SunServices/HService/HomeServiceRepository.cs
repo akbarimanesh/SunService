@@ -79,6 +79,21 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             return await _appDbContext.HomeServices.AsNoTracking().Include(h => h.SubCategory).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
+        public async Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.HomeServices
+            .Where(hs => hs.SubCategoryId == subCategoryId) 
+            .Select(hs => new HomeServiceDto
+            {
+                Id = hs.Id,
+                Title = hs.Title,
+                SubCategoryTitle = hs.SubCategory.Title, 
+                BasePrice = hs.BasePrice,
+                ImagePath = hs.ImagePath
+            })
+            .ToListAsync(cancellationToken); 
+        }
+
         public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)
         {
             return await _appDbContext.HomeServices.AsNoTracking().AnyAsync(t => t.Title == homeServiceTitle);

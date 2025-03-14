@@ -106,6 +106,11 @@ namespace SunService.Domain.AppServices.SunServices.HService
                 return null;
         }
 
+        public async Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
+        {
+            return await _homeServiceServices.GetHomeServicesBySubCategoryId(subCategoryId, cancellationToken);
+        }
+
         public async Task<Result> UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken)
         {
             await _homeServiceServices.UpdateExpertServices(expertId, selectedHomeServices, cancellationToken);
