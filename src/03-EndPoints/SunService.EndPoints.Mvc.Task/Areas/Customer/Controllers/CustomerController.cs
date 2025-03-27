@@ -13,8 +13,10 @@ using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
+using SunService.EndPoints.Mvc.Task.Areas.Account.Controllers;
 using SunService.EndPoints.Mvc.Task.Areas.Admin.Models;
 using SunService.EndPoints.Mvc.Task.Areas.Customer.Models;
+using SunService.EndPoints.Mvc.Task.Models;
 using System.Security.Claims;
 using System.Threading;
 
@@ -22,7 +24,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 {
     [Area("Customer")]
     [Authorize]
-    public class CustomerController : Controller
+    public class CustomerController : BaseController
     {
         private readonly IorderAppServices _orderAppServices;
         private readonly IOfferAppServices _offerAppServices;
@@ -30,20 +32,29 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         private readonly IUserSAppServices _UserSAppServices;
         private readonly IRatingAppServices _ratingAppServices;
         private readonly IHomeServiceAppServices _homeServiceAppServices;
-        public CustomerController(IorderAppServices orderAppServices, IOfferAppServices offerAppServices, UserManager<User> userManager, IUserSAppServices userSAppServices, IRatingAppServices ratingAppServices, IHomeServiceAppServices homeServiceAppServices)
+        private readonly ICategoryAppServices _categoryAppServices;
+        public CustomerController(
+             UserManager<User> userManager,
+             IUserSAppServices UserSAppServices,
+             IHomeServiceAppServices homeServiceAppServices,
+             IorderAppServices orderAppServices,
+             IOfferAppServices offerAppServices,
+             IRatingAppServices ratingAppServices,
+        ICategoryAppServices categoryAppServices
+        ) : base(categoryAppServices)
         {
+            _userManager = userManager;
+            _UserSAppServices = UserSAppServices;
             _orderAppServices = orderAppServices;
             _offerAppServices = offerAppServices;
-            _userManager = userManager;
-            _UserSAppServices = userSAppServices;
-
-            _ratingAppServices = ratingAppServices;
             _homeServiceAppServices = homeServiceAppServices;
+            _ratingAppServices = ratingAppServices;
         }
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
             {
+                await SetCategories(cToken);
                 var userId = _userManager.GetUserId(User);
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -58,12 +69,15 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                     ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
                     : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
 
+
+
                 return View();
             }
         }
         [HttpGet]
         public async Task<IActionResult> Update(CancellationToken cToken)
         {
+            await SetCategories(cToken);
             var userId = _userManager.GetUserId(User);
 
 
@@ -133,6 +147,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Order(CancellationToken cancellationToken)
         {
+            await SetCategories(cancellationToken);
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
             var orders = await _orderAppServices.GetAllOrderUser(id, cancellationToken);
@@ -149,6 +164,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
         public async Task<IActionResult> Show(int Id, CancellationToken cancellationToken)
         {
+            await SetCategories(cancellationToken);
             var userId = _userManager.GetUserId(User);
             var id = int.Parse(userId);
             var order = await _orderAppServices.GetorderById(Id, cancellationToken);
@@ -175,6 +191,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Offer(int id, CancellationToken cToken)
         {
+            await SetCategories(cToken);
             var order = await _orderAppServices.GetorderById(id, cToken);
             var offers = await _offerAppServices.GetAllOffer(order.Id, cToken);
             var userId = _userManager.GetUserId(User);
@@ -195,6 +212,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> AcceptOffer(int id, CancellationToken cToken)
         {
+            await SetCategories(cToken);
             var result = await _offerAppServices.AcceptOffer(id, cToken);
             if (result.IsSuccess)
             {
@@ -224,6 +242,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> RejectOffer(int id, CancellationToken cToken)
         {
+            await SetCategories(cToken);
             var result = await _offerAppServices.RejectedOffer(id, cToken);
             if (result.IsSuccess)
             {
@@ -251,6 +270,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Payment(int offerId, CancellationToken cToken)
         {
+            await SetCategories(cToken);
             var result = await _offerAppServices.UpdateBalances(offerId, cToken);
             if (result.IsSuccess)
             {
@@ -268,7 +288,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Score(int orderId, CancellationToken cToken)
         {
-
+            await SetCategories(cToken);
             var order = await _orderAppServices.GetorderById(orderId, cToken);
             if (order == null) return NotFound();
 
@@ -321,49 +341,52 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
 
 
         }
-     [HttpGet]
-        public async Task<IActionResult> ProfileExpert(int id,int homeserviceId, CancellationToken cToken)
+        [HttpGet]
+        public async Task<IActionResult> ProfileExpert(int id, int homeserviceId, CancellationToken cToken)
         {
+            await SetCategories(cToken);
+
+            
+            var expertUser = await _UserSAppServices.GetById(id, cToken);
+            var expertDetails = await _UserSAppServices.GetExpert(id, cToken);
+
            
             var homeservices = await _homeServiceAppServices.GetAllHomeService(cToken);
-
-            
-            var user = await _UserSAppServices.GetById(id, cToken);
-           
-            var selectedHomeServices = new List<int>();
-
-            
-                var expert = await _UserSAppServices.GetExpert(id, cToken);
-                selectedHomeServices = await _UserSAppServices.GetHomeServicesExpert(id, cToken);
+            var selectedHomeServices = await _UserSAppServices.GetHomeServicesExpert(id, cToken);
             var ratings = await _ratingAppServices.GetRatingsByExpertId(id, homeserviceId, cToken);
 
+           
             var model = new UpdateViewModelUser
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Address = user.Address,
-                Email = user.Email,
-                UserName = user.UserName,
-                RoleId = user.RoleId,
-                Mobile = user.Mobile,
-                Status = user.Status,
-                CardNumber = user.CardNumber,
-                ShabaNumber = user.ShabaNumber,
-                Balance = user.Balance ?? 0,
-                cityId = user.CityId,
-                ImagePath = user.ImagePath,
-                ProfileImgFile = user.ProfileImgFile,
+                Id = expertUser.Id,
+                FirstName = expertUser.FirstName,
+                LastName = expertUser.LastName,
+                Address = expertUser.Address,
+                Email = expertUser.Email,
+                UserName = expertUser.UserName,
+                RoleId = expertUser.RoleId,
+                Mobile = expertUser.Mobile,
+                Status = expertUser.Status,
+                CardNumber = expertUser.CardNumber,
+                ShabaNumber = expertUser.ShabaNumber,
+                Balance = expertUser.Balance ?? 0,
+                cityId = expertUser.CityId,
+                ImagePath = expertUser.ImagePath ?? "~/images/Profiles/default-profile.jpg",
+                ProfileImgFile = expertUser.ProfileImgFile,
                 Selectedhomeservice = selectedHomeServices,
-                Homeservices = homeservices.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }).ToList(),
-                 Ratings = ratings
+                Biography = expertDetails?.Biography,
+                Homeservices = homeservices.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Title
+                }).ToList(),
+                Ratings = ratings ?? new List<RatingDto>()
             };
 
-           
-
             return View(model);
-        }
-      
 
+
+
+        }
     }
 }

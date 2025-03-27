@@ -20,7 +20,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public string Description { get; set; }
         public int OrderId { get; set; }
         public int ExpertId { get; set; }
-
+        public int? BasePrice { get; set; }
         public bool? StateOffer { get; set; }
         public double AverageRating { get; set; } 
     }

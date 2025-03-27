@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
 {
     public interface ISubCategoryAppServices
     {
+        public Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken);
         public Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken);
         public Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken);
         public Task<Result> CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken);

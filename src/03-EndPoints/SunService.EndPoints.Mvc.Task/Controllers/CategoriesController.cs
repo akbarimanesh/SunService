@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using SunService.Domain.Core.SunServices.HService.AppServices;
+using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.UserS.DTOs;
+using SunService.EndPoints.Mvc.Task.Models;
 
 namespace SunService.EndPoints.Mvc.Task.Controllers
 {
@@ -14,23 +17,25 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1, CancellationToken cToken = default)
+        public async Task<IActionResult> Index( CancellationToken cToken = default)
         {
-            int pageSize = 8;
+
             var allCategories = await _categoryAppServices.GetAllCategories(cToken);
 
-            var pagedCategories = allCategories
-                .Skip((page - 1) * pageSize) 
-                .Take(pageSize) 
-                .ToList();
+            
+            var viewModel = new HomePageViewModel
+            {
+                categoryDtos = allCategories,
+                
+                homeServiceDtos = new List<HomeServiceDto>(), 
+                ratingDtos = new List<RatingDto>(), 
+                Menu = new MenuViewModel
+                {
+                    CategoryDtos = allCategories
+                }
+            };
 
-            int totalItems = allCategories.Count;
-            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-            ViewData["TotalPages"] = totalPages;
-            ViewData["CurrentPage"] = page;
-
-            return View(pagedCategories);
+            return View(viewModel);
         }
 
     }

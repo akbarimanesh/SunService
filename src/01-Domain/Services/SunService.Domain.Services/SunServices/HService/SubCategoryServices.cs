@@ -13,10 +13,11 @@ namespace SunService.Domain.Services.SunServices.HService
     public class SubCategoryServices : ISubCategoryServices
     {
         private readonly ISubCategoryRepository _SubCategoryRepository;
-
-        public SubCategoryServices(ISubCategoryRepository subCategoryRepository)
+        private readonly IDapperRepository _dapperRepository;
+        public SubCategoryServices(ISubCategoryRepository subCategoryRepository, IDapperRepository dapperRepository)
         {
             _SubCategoryRepository = subCategoryRepository;
+            _dapperRepository = dapperRepository;
         }
 
         public async Task CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken)
@@ -31,8 +32,14 @@ namespace SunService.Domain.Services.SunServices.HService
 
         public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
         {
-            return await _SubCategoryRepository.GetAllSubCategories(cancellationToken);
+            return await _dapperRepository.GetAllSubCategories(cancellationToken);
         }
+
+        public async Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
+        {
+            return await _SubCategoryRepository.GetSubCategoriesByCategoryId(categoryId, cancellationToken);  
+        }
+
         public async Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken)
         {
             return await _SubCategoryRepository.GetSubCategoryById(id, cancellationToken);

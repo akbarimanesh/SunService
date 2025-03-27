@@ -13,10 +13,11 @@ namespace SunService.Domain.Services.SunServices.HService
     public class CategoryServices : ICategoryServices
     {
         private readonly ICategoryRepository _CategoryRepository;
-
-        public CategoryServices(ICategoryRepository categoryRepository)
+        private readonly IDapperRepository _dapperRepository;
+        public CategoryServices(ICategoryRepository categoryRepository, IDapperRepository dapperRepository)
         {
             _CategoryRepository = categoryRepository;
+            _dapperRepository = dapperRepository;
         }
 
         public async Task CreateCategory(CategoryDto category, CancellationToken cancellationToken)
@@ -31,7 +32,7 @@ namespace SunService.Domain.Services.SunServices.HService
 
         public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
         {
-            return await _CategoryRepository.GetAllCategories(cancellationToken);
+            return await _dapperRepository.GetAllCategories(cancellationToken);
         }
 
         public async Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken)

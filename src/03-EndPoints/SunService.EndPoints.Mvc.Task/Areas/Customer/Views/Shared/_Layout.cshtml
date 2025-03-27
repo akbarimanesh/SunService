@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using SunService.Domain.AppServices.SunServices.HService
+@using SunService.Domain.Core.SunServices.HService.AppServices
+@using SunService.Domain.Core.SunServices.HService.Services
+@using SunService.Domain.Services.SunServices.HService
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 
@@ -55,6 +59,7 @@
     @await Html.PartialAsync("_sidemenu")
 
     <div class="main-dashboard-content d-flex flex-column">
+      
 
         <div class="navbar-area">
             @await Html.PartialAsync("_NavBarC")

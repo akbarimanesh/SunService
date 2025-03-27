@@ -70,6 +70,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(option =>
 
 #region Register Services
 builder.Services.AddScoped<IBaseEntitiesRepository, BaseEntitiesRepository>();
+builder.Services.AddScoped<IDapperRepository, DapperRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IHomeServiceRepository, HomeServiceRepository>();
 builder.Services.AddScoped<IOfferRepository, OfferRepository>();

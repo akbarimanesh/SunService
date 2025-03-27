@@ -7,7 +7,7 @@
     ViewData["Title"] = "دسته بندی ";
 }
 
-@model List<CategoryDto>
+@model HomePageViewModel
 @await Html.PartialAsync("_TitlePage")
 <div class="page">
 
@@ -48,13 +48,13 @@
 
 
 
-                            @foreach (var category in Model)
+                            @foreach (var category in Model.categoryDtos)
                             {
                                 <div class="col-lg-3 col-6">
                                     <div class="browse-jobs-item">
                                         <img src="@category.ImagePath" alt="@category.Title" width="80" height="80" class="jobs-card-img">
 
-                                        <h3><a href="#">@category.Title</a></h3>
+                                        <h3><a asp-controller="SubCategories" asp-action="Index" asp-route-categoryId="@category.Id">@category.Title</a></h3>
                                     </div>
                                 </div>
                             }

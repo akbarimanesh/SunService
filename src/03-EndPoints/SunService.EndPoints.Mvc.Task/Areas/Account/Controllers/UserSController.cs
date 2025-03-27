@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SunService.Domain.Core.SunServices.BaseEntities.AppServices;
+using SunService.Domain.Core.SunServices.HService.AppServices;
+using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
 using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.EndPoints.Mvc.Task.Areas.Account.Models;
 using SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers;
+using SunService.EndPoints.Mvc.Task.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Threading;
@@ -16,14 +19,22 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
 {
     [Area("Account")]
    
-    public class UserSController : Controller
+    public class UserSController : BaseController
     {
         private readonly IUserSAppServices _UserSAppServices;
         private readonly SignInManager<User> _signInManager;
         private readonly IBaseDataAppService _baseDataAppService;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
-        public UserSController(IUserSAppServices userSAppServices, SignInManager<User> signInManager, IBaseDataAppService baseDataAppService, UserManager<User> userManager, ILogger<HomeController> logger)
+        private readonly ICategoryAppServices _categoryAppServices;
+        public UserSController(
+       IUserSAppServices userSAppServices,
+       SignInManager<User> signInManager,
+       IBaseDataAppService baseDataAppService,
+       UserManager<User> userManager,
+       ILogger<HomeController> logger,
+       ICategoryAppServices categoryAppServices
+   ) : base(categoryAppServices) 
         {
             _UserSAppServices = userSAppServices;
             _signInManager = signInManager;
@@ -32,9 +43,9 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
             _logger = logger;
         }
 
-
         public async Task<IActionResult> Register(CancellationToken cToken)
         {
+            await SetCategories(cToken);
             var model = new RegisterViewModel
             {
                 Roles = GetRolesList() 
@@ -50,6 +61,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel user, CancellationToken cToken)
         {
+           
             if (!ModelState.IsValid)
             {
                 user.Roles = GetRolesList(); 
@@ -94,8 +106,8 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         public async Task< IActionResult> Login(CancellationToken cToken)
         {
 
-            
 
+            await SetCategories(cToken);
             return View();
 
            
@@ -139,8 +151,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
-
-
+            await SetCategories(cToken);
             return View();
 
 

@@ -40,15 +40,20 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext.SubCategories.Remove(subcategory);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
-        public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
+      
+
+        public async Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnection(_connectionString))
+             return await _appDbContext.SubCategories.Where(sc => sc.CategoryId == categoryId)
+            .Select(sc => new SubCategoryDto
             {
-                await connection.OpenAsync();
-                var subcategories = await connection.QueryAsync<SubCategoryDto>(QuerysSundb.GetAllSubCategories);
-                return subcategories.ToList();
-            }
+                Id = sc.Id,
+                Title = sc.Title,
+                CategoryName=sc.Category.Title
+            })
+            .ToListAsync(cancellationToken);
         }
+
         //public async Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken)
         //{
         //    return await _appDbContext.SubCategories.AsNoTracking().Select(x => new SubCategoryDto()

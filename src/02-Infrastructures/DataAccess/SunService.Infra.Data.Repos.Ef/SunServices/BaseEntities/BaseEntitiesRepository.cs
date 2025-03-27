@@ -52,14 +52,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.BaseEntities
             _appDbContext.Cities.Remove(city);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
-        public async Task<List<City>> GetCities(CancellationToken cancellationToken)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                return (await connection.QueryAsync<City>(QuerysSundb.GetAllcities)).ToList();
-            }
-        }
+     
 
         //public async Task<List<City>> GetCities(CancellationToken cancellationToken)
         //{

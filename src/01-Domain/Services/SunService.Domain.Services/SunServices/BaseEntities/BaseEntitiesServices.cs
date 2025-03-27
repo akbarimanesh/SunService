@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using SunService.Domain.Core.SunServices.BaseEntities.Data;
 using SunService.Domain.Core.SunServices.BaseEntities.Services;
+using SunService.Domain.Core.SunServices.HService.Data;
 using SunService.Domain.Core.SunServices.HService.DTOs;
 using SunService.Domain.Core.SunServices.HService.Entities;
 using System.Net.Http.Headers;
@@ -11,11 +12,13 @@ namespace SunService.Domain.Services.SunServices.BaseEntities
     public class BaseEntitiesServices : IBaseEntitiesServices
     {
         private readonly IBaseEntitiesRepository _BaseEntitiesRepository;
+        private readonly IDapperRepository _dapperRepository;
         private readonly IMemoryCache _memoryCache;
-        public BaseEntitiesServices(IBaseEntitiesRepository baseEntitiesRepository, IMemoryCache memoryCache)
+        public BaseEntitiesServices(IBaseEntitiesRepository baseEntitiesRepository, IMemoryCache memoryCache, IDapperRepository dapperRepository)
         {
             _BaseEntitiesRepository = baseEntitiesRepository;
             _memoryCache = memoryCache;
+            _dapperRepository = dapperRepository;
         }
 
         public async Task AddOrderImages(List<string> imgAddress, int orderId, CancellationToken cancellationToken)
@@ -44,7 +47,7 @@ namespace SunService.Domain.Services.SunServices.BaseEntities
             }
             else
             {
-                Cities = await _BaseEntitiesRepository.GetCities(cancellationToken);
+                Cities = await _dapperRepository.GetCities(cancellationToken);
                 _memoryCache.Set("CitiesList", Cities, TimeSpan.FromHours(48));
             }
 

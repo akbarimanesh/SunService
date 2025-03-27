@@ -13,5 +13,7 @@ namespace SunService.EndPoints.Mvc.Task.Models
         public List<RatingDto>? ratingDtos { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
+        public MenuViewModel Menu { get; set; } = new MenuViewModel();
+        public List<SubCategoryDto> SubCategories { get; set; }
     }
 }

@@ -49,15 +49,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext.HomeServices.Remove(homeService);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
-        public async Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                var homeservices = await connection.QueryAsync<HomeServiceDto>(QuerysSundb.GetAllHomeServices);
-                return homeservices.ToList();
-            }
-        }
+       
         //public async Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken)
         //{
         //    return await _appDbContext.HomeServices.AsNoTracking().Include(h => h.SubCategory).ThenInclude(sc => sc.Category).Select(x => new HomeServiceDto()
@@ -77,6 +69,21 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         public async Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken)
         {
             return await _appDbContext.HomeServices.AsNoTracking().Include(h => h.SubCategory).FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.HomeServices
+            .Where(hs => hs.SubCategoryId == subCategoryId) 
+            .Select(hs => new HomeServiceDto
+            {
+                Id = hs.Id,
+                Title = hs.Title,
+                SubCategoryTitle = hs.SubCategory.Title, 
+                BasePrice = hs.BasePrice,
+                ImagePath = hs.ImagePath
+            })
+            .ToListAsync(cancellationToken); 
         }
 
         public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)

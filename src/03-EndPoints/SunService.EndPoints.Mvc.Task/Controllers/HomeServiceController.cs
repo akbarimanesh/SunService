@@ -45,7 +45,32 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
             return View(viewModel);
         }
 
-       
-       
+        public async Task<IActionResult> SubCategoryHomeServices(int subCategoryId, int page = 1, CancellationToken cToken = default)
+        {
+            int pageSize = 5;
+
+           
+            var homeServices = await _homeServiceAppServices.GetHomeServicesBySubCategoryId(subCategoryId, cToken);
+
+           
+            var pagedHomeServices = homeServices
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var categories = await _categoryAppServices.GetAllCategories(cToken);
+
+           
+            var viewModel = new HomePageViewModel
+            {
+                homeServiceDtos = pagedHomeServices,
+                categoryDtos = categories,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)homeServices.Count() / pageSize)
+            };
+
+            return View("Index", viewModel);
+        }
+
     }
 }

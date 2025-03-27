@@ -12,9 +12,10 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
         public int Id { get; set; }
         public string Title { get; set; }
         public string? ImagePath { get; set; }
-       
+        public int CategoryId { get; set; }
         public IFormFile? ProfileImgFile { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
+        public List<SubCategoryDto> SubCategories { get; set; } = new List<SubCategoryDto>();
     }
 }

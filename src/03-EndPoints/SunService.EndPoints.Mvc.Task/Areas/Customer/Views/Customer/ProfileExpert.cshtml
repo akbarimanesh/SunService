@@ -64,7 +64,7 @@
             <input type="hidden" asp-for="Status" />
             <input type="hidden" asp-for="RoleId" />
             <input type="hidden" asp-for="Balance" />
-
+       
             <div class="row align-items-center">
                 <div class="col-xl-6 col-lg-12 col-md-12">
                     <div class="form-group">
@@ -133,6 +133,12 @@
                     <input disabled asp-for="Address" class="form-control" type="text" value="@Model.Address" placeholder="آدرس">
                     </div>
                 </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                    <label>بیوگرافی</label>
+                    <textarea disabled asp-for="Biography" class="form-control" type="text" value="@Model.Biography" placeholder="بیوگرافی"></textarea>
+                </div>
+            </div>
             <div class="expert-reviews">
                 <h3>نظرات مشتریان </h3>
 

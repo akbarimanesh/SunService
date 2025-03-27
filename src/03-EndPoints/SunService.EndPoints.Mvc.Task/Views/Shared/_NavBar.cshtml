@@ -1,5 +1,11 @@
-﻿@using SunService.Domain.Core.SunServices.UserS.DTOs
+﻿@using SunService.Domain.AppServices.SunServices.HService
+@using SunService.Domain.Core.SunServices.HService.AppServices
+@using SunService.Domain.Core.SunServices.HService.DTOs
+@using SunService.Domain.Core.SunServices.UserS.DTOs
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var categories = ViewData["Categories"] as List<CategoryDto>;
+}
 
 <div class="navbar-area">
     <div class="mobile-responsive-nav">
@@ -46,144 +52,30 @@
                             </ul> *@
                         </li>
                         <li class="nav-item">
-                            <a href="~/Categories/Index" class="nav-link">
+                            <a asp-controller="Categories" asp-action="Index" class="nav-link">
                                 دسته بندی 
                                 <i class="ri-arrow-down-s-line"></i>
                             </a>
+
                             <ul class="dropdown-menu">
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        تمیزکاری<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                نظافت و پذیرایی
+                                @if (categories != null && categories.Any())
+                                {
+                                    @foreach (var category in categories)
+                                    {
+                                        <li class="nav-item dropdown">
+                                            <a asp-controller="SubCategories" asp-action="Index" asp-route-categoryId="@category.Id">
+                                                @category.Title
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                شستشو
-                                            </a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        ساختمان<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                چوب و کابینت
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                لوله کشی
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        تعمیرات اشیا<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                تعمیر لوازم خانگی
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                سرمایش و گرمایش
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        اسباب کشی<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                باربری
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                بسته بندی
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        خودرو<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                تعمیرات خودرو
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                کارواش خودرو
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        سلامت و زیبایی<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                پزشکی و پرستاری
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                زیبایی بانوان
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        سازمان ها<i class="ri-arrow-down-s-line"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                خدمات شرکتی
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="~/HomeService/Index" class="nav-link">
-                                                تامین نیروی انسانی
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                <li class="nav-item">
-                                    <a href="~/HomeService/Index" class="nav-link">
-                                        سایر خدمات
-                                    </a>
-                                </li>
-                                </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li><span class="dropdown-item">دسته‌بندی‌ای موجود نیست.</span></li>
+                                }
                             </ul>
+
+
                         </li>
 
                         <li class="nav-item">

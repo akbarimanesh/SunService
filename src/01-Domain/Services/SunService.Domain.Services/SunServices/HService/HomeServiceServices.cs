@@ -14,10 +14,11 @@ namespace SunService.Domain.Services.SunServices.HService
     public class HomeServiceServices : IHomeServiceServices
     {
         private readonly IHomeServiceRepository _HomeServiceRepository;
-
-        public HomeServiceServices(IHomeServiceRepository homeServiceRepository)
+        private readonly IDapperRepository _dapperRepository;
+        public HomeServiceServices(IHomeServiceRepository homeServiceRepository, IDapperRepository dapperRepository)
         {
             _HomeServiceRepository = homeServiceRepository;
+            _dapperRepository = dapperRepository;
         }
 
         public async Task CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken)
@@ -32,12 +33,17 @@ namespace SunService.Domain.Services.SunServices.HService
 
         public async Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken)
         {
-            return await _HomeServiceRepository.GetAllHomeService(cancellationToken);   
+            return await _dapperRepository.GetAllHomeService(cancellationToken);
         }
 
         public async Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken)
         {
             return await _HomeServiceRepository.GetHomeServiceById(id, cancellationToken);  
+        }
+
+        public async Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
+        {
+            return await _HomeServiceRepository.GetHomeServicesBySubCategoryId(subCategoryId, cancellationToken);   
         }
 
         public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)

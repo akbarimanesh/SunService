@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SunService.Domain.Core.SunServices.UserS.Data;
 using SunService.Domain.Core.SunServices.UserS.DTOs;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.Domain.Core.SunServices.UserS.Enums;
 using SunService.Infra.Data.Db.SqlServer.Ef.Common;
 using System;
@@ -115,6 +116,8 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
 
         public async Task<bool> Update(UserDto model, CancellationToken cancellationToken)
         {
+            string role = string.Empty;
+         
             var user = await _appDbContext.Users
             .Include(x => x.City)
             .FirstOrDefaultAsync(x => x.Id == model.Id, cancellationToken);
@@ -135,6 +138,19 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
             user.Address=model.Address;
             user.ShabaNumber = model.ShabaNumber;
             user.Balance=model.Balance;
+           
+
+
+           
+            if ((RoleEnum)model.RoleId == RoleEnum.Expert)
+            {
+                role = "Expert";
+                if (user is Expert expert)
+                {
+                    expert.Biography = model.Biography;
+                }
+            }
+          
             await _appDbContext.SaveChangesAsync(cancellationToken);
             return true;
         }

@@ -48,15 +48,7 @@ namespace SunService.Domain.AppServices.SunServices.HService
             _appDbContext.Categories.Remove(category);
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
-        public async Task<List<CategoryDto>> GetAllCategories(CancellationToken cancellationToken)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                var categories = await connection.QueryAsync<CategoryDto>(QuerysSundb.GetAllCategories);
-                return categories.ToList();
-            }
-        }
+       
 
         public async Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken)
         {

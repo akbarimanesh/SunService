@@ -56,7 +56,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
                 Description = offerdto.Description,
                 PriceOffer = offerdto.PriceOffer,
-                
+               
                 CompletionDate = offerdto.CompletionDate,
                 OfferDate = offerdto.OfferDate,
                 OrderId = offerdto.OrderId,
