@@ -7,11 +7,11 @@
     ViewData["Title"] = "زیردسته بندی ها";
 }
 
-<<<<<<< HEAD
+
 @model HomePageViewModel
-=======
-@model List<SubCategoryDto>
->>>>>>> 428ace9864b323b8f7437fedf5fea4be5a89b919
+
+
+
 @await Html.PartialAsync("_TitlePage")
 <div class="page">
 
@@ -32,11 +32,11 @@
             <div class="bar mb-4"></div>
 
             <ul class="candidates-skill-tag d-flex flex-wrap justify-content-center p-0">
-<<<<<<< HEAD
+
                 @foreach (var subcategory in Model.SubCategories)
-=======
-                @foreach (var subcategory in Model)
->>>>>>> 428ace9864b323b8f7437fedf5fea4be5a89b919
+
+               
+
                 {
                     <li class="subcategory-item m-2">
                         <a asp-controller="HomeService" asp-action="SubCategoryHomeServices" asp-route-subCategoryId="@subcategory.Id"

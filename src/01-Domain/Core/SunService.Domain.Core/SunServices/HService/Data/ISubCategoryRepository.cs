@@ -11,11 +11,9 @@ namespace SunService.Domain.Core.SunServices.HService.Data
     public interface ISubCategoryRepository
     {
         public Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken);
-<<<<<<< HEAD
+
         //public Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken);
-=======
-        public Task<List<SubCategoryDto>> GetAllSubCategories(CancellationToken cancellationToken);
->>>>>>> 428ace9864b323b8f7437fedf5fea4be5a89b919
+
         public Task<SubCategory> GetSubCategoryById(int id, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task DeleteSubCategory(int id, CancellationToken cancellationToken);
