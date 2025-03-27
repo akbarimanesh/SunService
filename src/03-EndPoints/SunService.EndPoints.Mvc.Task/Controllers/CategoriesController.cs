@@ -19,6 +19,7 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
         [HttpGet]
         public async Task<IActionResult> Index( CancellationToken cToken = default)
         {
+<<<<<<< HEAD
 
             var allCategories = await _categoryAppServices.GetAllCategories(cToken);
 
@@ -36,6 +37,14 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
             };
 
             return View(viewModel);
+=======
+           
+            var allCategories = await _categoryAppServices.GetAllCategories(cToken);
+
+           
+
+            return View(allCategories);
+>>>>>>> 428ace9864b323b8f7437fedf5fea4be5a89b919
         }
 
     }
