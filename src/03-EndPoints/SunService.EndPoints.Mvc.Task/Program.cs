@@ -107,6 +107,9 @@ builder.Services.AddScoped<IRatingAppServices, RatingAppServices>();
 builder.Services.AddScoped<IGetStatisticsDataAppServices, GetStatisticsDataAppServices>();
 builder.Services.AddScoped<IGetStatisticsDataReopsitory, GetStatisticsDataReopsitory>();
 builder.Services.AddScoped<IGetStatisticsDataServices, GetStatisticsDataServices>();
+builder.Services.AddScoped<IGetStatisticsDataCustomerAppService, GetStatisticsDataCustomerAppService>();    
+builder.Services.AddScoped<IGetStatisticsDataCustomerService, GetStatisticsDataCustomerService>();
+builder.Services.AddScoped<IGetStatisticsDataCustomerReopsitory, GetStatisticsDataCustomerReopsitory>();
 
 
 

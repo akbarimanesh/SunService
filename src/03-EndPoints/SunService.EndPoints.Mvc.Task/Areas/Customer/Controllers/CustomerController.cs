@@ -33,6 +33,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
         private readonly IRatingAppServices _ratingAppServices;
         private readonly IHomeServiceAppServices _homeServiceAppServices;
         private readonly ICategoryAppServices _categoryAppServices;
+        private readonly IGetStatisticsDataCustomerAppService _getStatisticsDataCustomerAppService;
         public CustomerController(
              UserManager<User> userManager,
              IUserSAppServices UserSAppServices,
@@ -40,7 +41,8 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
              IorderAppServices orderAppServices,
              IOfferAppServices offerAppServices,
              IRatingAppServices ratingAppServices,
-        ICategoryAppServices categoryAppServices
+        ICategoryAppServices categoryAppServices,
+        IGetStatisticsDataCustomerAppService getStatisticsDataCustomerAppService
         ) : base(categoryAppServices)
         {
             _userManager = userManager;
@@ -49,12 +51,13 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
             _offerAppServices = offerAppServices;
             _homeServiceAppServices = homeServiceAppServices;
             _ratingAppServices = ratingAppServices;
+            _getStatisticsDataCustomerAppService = getStatisticsDataCustomerAppService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cToken)
         {
-            {
-                await SetCategories(cToken);
+           
+            await SetCategories(cToken);
                 var userId = _userManager.GetUserId(User);
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -62,17 +65,29 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Customer.Controllers
                 }
 
                 var id = int.Parse(userId);
-                var user = await _UserSAppServices.GetById(id, cToken);
+            var DashboardDataBalance = await _getStatisticsDataCustomerAppService.GetBalanceCount(id, cToken);
+            var DashboardDataOrder = await _getStatisticsDataCustomerAppService.GetOrderCount(id, cToken);
+            var DashboardDataOffer = await _getStatisticsDataCustomerAppService.GetfferCount(id, cToken);
+            var DashboardDataService = await _getStatisticsDataCustomerAppService.GetServiceCount( cToken);
+            var user = await _UserSAppServices.GetById(id, cToken);
 
 
                 ViewBag.UserProfile = user != null
                     ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
                     : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
 
+            var viewModel = new StatisticsDataCustomerDto
+            {
+                BalanceCount= DashboardDataBalance,
+               
+                OrderCount= DashboardDataOrder,
+                OfferCount = DashboardDataOffer,
+                ServiceCount = DashboardDataService,
+            };
 
 
-                return View();
-            }
+            return View(viewModel);
+            
         }
         [HttpGet]
         public async Task<IActionResult> Update(CancellationToken cToken)
