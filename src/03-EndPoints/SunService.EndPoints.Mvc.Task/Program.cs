@@ -110,7 +110,9 @@ builder.Services.AddScoped<IGetStatisticsDataServices, GetStatisticsDataServices
 builder.Services.AddScoped<IGetStatisticsDataCustomerAppService, GetStatisticsDataCustomerAppService>();    
 builder.Services.AddScoped<IGetStatisticsDataCustomerService, GetStatisticsDataCustomerService>();
 builder.Services.AddScoped<IGetStatisticsDataCustomerReopsitory, GetStatisticsDataCustomerReopsitory>();
-
+builder.Services.AddScoped<IGetStatisticsDataExpertAppService, GetStatisticsDataExpertAppService>();
+builder.Services.AddScoped<IGetStatisticsDataExpertService, GetStatisticsDataExpertService>();
+builder.Services.AddScoped<IGetStatisticsDataExpertReopsitory, GetStatisticsDataExpertReopsitory>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(siteSettings.ConnectionStrings.SqlConnection));

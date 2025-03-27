@@ -30,13 +30,15 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
         private readonly IorderAppServices _orderAppServices;
         private readonly IOfferAppServices _offerAppServices;
         private readonly ICategoryAppServices _categoryAppServices;
+        private readonly IGetStatisticsDataExpertAppService _getStatisticsDataExpertAppService;
         public ExpertController(
             UserManager<User> userManager,
             IUserSAppServices UserSAppServices,
             IHomeServiceAppServices homeServiceAppServices,
             IorderAppServices orderAppServices,
             IOfferAppServices offerAppServices,
-            ICategoryAppServices categoryAppServices
+            ICategoryAppServices categoryAppServices,
+             IGetStatisticsDataExpertAppService getStatisticsDataExpertAppService
        ) : base(categoryAppServices)
         {
             _userManager= userManager;
@@ -44,7 +46,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
             _orderAppServices = orderAppServices;
             _offerAppServices = offerAppServices;
              _homeServiceAppServices = homeServiceAppServices;
-            
+            _getStatisticsDataExpertAppService= getStatisticsDataExpertAppService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cToken)
@@ -58,17 +60,28 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Expert.Controllers
                 }
 
                 var id = int.Parse(userId);
+                var DashboardDataBalance = await _getStatisticsDataExpertAppService.GetBalanceCount(id, cToken);
+                var DashboardDataOrder = await _getStatisticsDataExpertAppService.GetOrderCount(id, cToken);
+                var DashboardDataSkill = await _getStatisticsDataExpertAppService.GetSkillCount(id, cToken);
+                var DashboardDataService = await _getStatisticsDataExpertAppService.GetServiceCount(cToken);
                 var user = await _UserSAppServices.GetById(id, cToken);
-             
+
+                var viewModel = new StatisticsDataExpertDto
+                {
+                    BalanceCount = DashboardDataBalance,
+
+                    OrderCount = DashboardDataOrder,
+                    SkillCount = DashboardDataSkill,
+                    ServiceCount = DashboardDataService,
+                };
 
 
-             
 
                 ViewBag.UserProfile = user != null
                     ? new UpdateViewModelUser { Id = user.Id, ImagePath = user.ImagePath ?? "~/images/Profiles/default-profile.jpg" }
                     : new UpdateViewModelUser { ImagePath = "~/images/Profiles/default-profile.jpg" };
 
-                return View();
+                return View(viewModel);
 
             }
         }

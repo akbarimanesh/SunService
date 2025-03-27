@@ -1,4 +1,5 @@
-﻿
+﻿@using SunService.Domain.Core.SunServices.HService.DTOs
+@model StatisticsDataExpertDto
 
 
 <div class="breadcrumb-area">
@@ -24,8 +25,8 @@
                 <div class="icon-box">
                     <i class="ri-briefcase-line"></i>
                 </div>
-                <span class="sub-title">درخواست ها</span>
-                <h3>100</h3>
+                <span class="sub-title">موجودی</span>
+                <h3>@Model.BalanceCount</h3>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
@@ -33,8 +34,8 @@
                 <div class="icon-box">
                     <i class="ri-file-list-line"></i>
                 </div>
-                <span class="sub-title">مهارت ها</span>
-                <h3>6382</h3>
+                <span class="sub-title">درخواست ها</span>
+                <h3>@Model.OrderCount</h3>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
@@ -42,8 +43,8 @@
                 <div class="icon-box">
                     <i class="ri-chat-2-line"></i>
                 </div>
-                <span class="sub-title">پیام ها</span>
-                <h3>85</h3>
+                <span class="sub-title">مهارت ها</span>
+                <h3>@Model.SkillCount</h3>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
@@ -52,7 +53,7 @@
                     <i class="ri-bookmark-line"></i>
                 </div>
                 <span class="sub-title">خدمات</span>
-                <h3>57</h3>
+                <h3>@Model.ServiceCount</h3>
             </div>
         </div>
     </div>
