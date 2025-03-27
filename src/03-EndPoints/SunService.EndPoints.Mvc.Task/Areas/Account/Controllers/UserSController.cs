@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 using SunService.Domain.Core.SunServices.BaseEntities.AppServices;
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
@@ -61,7 +62,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel user, CancellationToken cToken)
         {
-           
+            
             if (!ModelState.IsValid)
             {
                 user.Roles = GetRolesList(); 
@@ -116,6 +117,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel user, CancellationToken cToken)
         {
+           
             if (!ModelState.IsValid)
                 return View(user);
 
@@ -170,8 +172,9 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
                 .ToList();
         }
 
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout(CancellationToken cToken)
         {
+            await SetCategories(cToken);
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }

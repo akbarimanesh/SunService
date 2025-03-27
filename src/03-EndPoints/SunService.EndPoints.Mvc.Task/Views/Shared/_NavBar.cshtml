@@ -63,7 +63,7 @@
                                     @foreach (var category in categories)
                                     {
                                         <li class="nav-item dropdown">
-                                            <a asp-controller="SubCategories" asp-action="Index" asp-route-categoryId="@category.Id">
+                                            <a asp-area="" asp-controller="SubCategories" asp-action="Index" asp-route-categoryId="@category.Id">
                                                 @category.Title
                                             </a>
                                         </li>
@@ -81,7 +81,7 @@
                         <li class="nav-item">
                             @if (!User.Identity.IsAuthenticated)
                             {
-                                 <a href="~/Account/UserS/Login" class="nav-link">سفارش های من </a>
+                                <a asp-area="Account" asp-controller="UserS" asp-action="Login" class="nav-link">سفارش های من </a>
                                
                             }
                             else
@@ -156,8 +156,8 @@
                                
                             @if (!User.Identity.IsAuthenticated)
                             {
-                                <a href="~/Account/UserS/Login" class="default-btn two border-radius-5">ورود <i class="ri-login-box-line"></i></a>
-                                <a href="~/Account/UserS/Register" class="default-btn two border-radius-5">ثبت نام <i class="ri-user-add-line"></i></a>
+                                    <a asp-area="Account" asp-controller="UserS" asp-action="Login" class="default-btn two border-radius-5">ورود <i class="ri-login-box-line"></i></a>
+                                    <a asp-area="Account" asp-controller="UserS" asp-action="Register" class="default-btn two border-radius-5">ثبت نام <i class="ri-user-add-line"></i></a>
                             }
                             else
                             {
@@ -182,7 +182,7 @@
                                         </a>
 
                                     }
-                                    <a href="~/Account/UserS/Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
+                                        <a asp-area="َAccount" asp-controller="UserS" asp-action="Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
                                 </div>
                             }
                                 @if (User.Identity.IsAuthenticated)

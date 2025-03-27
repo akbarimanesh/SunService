@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 {
@@ -89,6 +90,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
         public async Task<bool> GetTitleHomeService(string homeServiceTitle, CancellationToken cToken)
         {
             return await _appDbContext.HomeServices.AsNoTracking().AnyAsync(t => t.Title == homeServiceTitle);
+        }
+
+        public async Task<List<HomeService>> SearchServices(string title, CancellationToken cancellationToken)
+        {
+            return await _appDbContext.HomeServices.Include(h => h.SubCategory)
+            .Where(s => s.Title.Contains(title) || s.Description.Contains(title))
+            .ToListAsync(cancellationToken);
         }
 
         public async Task UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken)

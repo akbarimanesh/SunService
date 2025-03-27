@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SunService.Domain.AppServices.SunServices.HService
 {
@@ -109,6 +110,21 @@ namespace SunService.Domain.AppServices.SunServices.HService
         public async Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken)
         {
             return await _homeServiceServices.GetHomeServicesBySubCategoryId(subCategoryId, cancellationToken);
+        }
+
+        public async Task<List<HomeServiceDto>> SearchServices(string title, CancellationToken cancellationToken)
+        {
+            var services = await _homeServiceServices.SearchServices(title, cancellationToken);
+            return services.Select(s => new HomeServiceDto
+            {
+                Id = s.Id,
+                Title = s.Title,
+                Description = s.Description,
+                ImagePath= s.ImagePath,
+                BasePrice= s.BasePrice,
+                SubCategoryTitle=s.SubCategory.Title,
+
+            }).ToList();
         }
 
         public async Task<Result> UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken)

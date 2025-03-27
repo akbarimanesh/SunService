@@ -1,8 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using SunService.Domain.Core.SunServices.HService.AppServices;
 using SunService.Domain.Core.SunServices.HService.DTOs;
+using SunService.Domain.Core.SunServices.HService.Entities;
 using SunService.Domain.Core.SunServices.UserS.AppServices;
+using SunService.Domain.Core.SunServices.UserS.Entities;
 using SunService.EndPoints.Mvc.Task.Areas.Account.Controllers;
 using SunService.EndPoints.Mvc.Task.Models;
 using System.Diagnostics;
@@ -59,7 +61,26 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
         }
 
 
+        public async Task<IActionResult> Search( string title, CancellationToken cancellationToken)
+        {
+            await SetCategories(cancellationToken);
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                TempData["ErrorMessage"] = "عنوان خدمات نباید خالی باشد.";
+                
+            }
 
+            var services = await _homeServiceAppServices.SearchServices(title, cancellationToken);
+            var model = new HomePageViewModel
+            {
+                homeServiceDtos = services,
+               
+               
+                
+            };
+
+            return View("SearchService", model);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

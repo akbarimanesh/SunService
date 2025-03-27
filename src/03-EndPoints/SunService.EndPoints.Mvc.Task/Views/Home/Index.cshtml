@@ -27,33 +27,20 @@
                 <div class="banner-content">
 
                     <div class="banner-form wow fadeInLeft" data-wow-delay="200ms" data-wow-duration="1000ms">
-                        <form>
+                        <form asp-controller="Home" asp-action="Search" >
                             <div class="row">
-                                <div class="col-lg-4 col-sm-4">
+                                <div class="col-lg-8 col-sm-12">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="عنوان خدمات">
+                                        <input class="form-control" type="text" name="title" placeholder="عنوان خدمات">
                                         <i class="ri-search-line"></i>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-sm-4">
-                                    <div class="form-group select-group">
-                                        <select class="form-select form-control">
-                                            <option data-display='Choose A Category'>یک دسته را انتخاب کنید</option>
-                                            @foreach (var category in Model.categoryDtos)
-                                            {
-
-                                                <option>@category.Title</option>
-
-
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
+                               
 
                                 <div class="col-lg-4 col-sm-12">
                                     <button type="submit" class="submit-btn border-radius-5">
-                                        جستجوی شغل
+                                        جستجوی خدمات
                                     </button>
                                 </div>
                             </div>

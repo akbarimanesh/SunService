@@ -7,14 +7,20 @@
 @{
     ViewData["Title"] = "خدمات ";
 }
-@{
-    var categories = ViewData["Categories"] as List<CategoryDto>;
-}
+
 @model HomePageViewModel
 @await Html.PartialAsync("_TitlePage")
 <div class="page">
     @inject IHomeServiceAppServices _HomeServiceAppServices;
-    @if (!ViewData.ModelState.IsValid)
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+   @*  @if (!ViewData.ModelState.IsValid)
     {
         <div class="alert alert-danger">
             <ul>
@@ -24,22 +30,22 @@
                 }
             </ul>
         </div>
-    }
+    } *@
     <div class="find-jobs-area-pageservice pt-100 pb-70">
         <div class="container">
             <div class="job-listing-top">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
                         <div class="job-listing-form">
-                            <form asp-action="Search" asp-controller="Home">
+                            <form>
                                 <div class="row align-items-center">
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-6 col-sm-12">
                                         <div class="form-group">
                                             <input class="form-control" type="text" name="title" placeholder="عنوان خدمات">
                                             <i class="ri-search-line"></i>
                                         </div>
                                     </div>
-                                   
+
 
                                    
                                     <div class="col-lg-6 col-md-12">
@@ -55,43 +61,41 @@
             </div>
             <div class="find-jobs-area-pageservice pt-100 pb-70">
                 <div class="container">
-                    <div class="section-title text-center">
-                        <h2>خدمات آنلاین و تعمیرات در منزل با سان</h2>
-                        <div class="bar m-auto"></div>
-                        <p class="m-auto">در حال حاضر 13 خدمات در سان موجود می باشد.</p>
-                    </div>
+
                     <div class="row pt-45">
-                      
-                        @foreach (var item in @Model.homeServiceDtos)
+                        @if (Model.homeServiceDtos.Any())
+                        {
+                            @foreach (var item in Model.homeServiceDtos)
+                            {
+                                <div class="col-lg-12">
+                                    <div class="find-jobs-card d-flex align-items-center">
+                                        <div class="find-jobs-img">
+                                            <a href="job-details.html">
+                                                <img src="@item.ImagePath" alt="@item.Title">
+                                            </a>
+                                        </div>
+                                        <div class="content">
+                                            <h3><a href="job-details.html">@item.Title</a></h3>
+                                            <ul class="content-list3">
+                                                <li><i class="ri-briefcase-line"></i> زیر دسته بندی : <b>@item.SubCategoryTitle</b></li>
+                                                <li><i class="ri-currency-line"></i>قیمت پایه : <b>@item.BasePrice</b></li>
+                                            </ul>
+                                        </div>
+                                        <div class="find-jobs-btn">
+                                            <a asp-controller="Order" asp-action="Create" asp-route-Id="@item.Id" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
+                                              
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
                         {
                             <div class="col-lg-12">
-                                <div class="find-jobs-card d-flex align-items-center">
-                                    <div class="find-jobs-img">
-                                        <a href="job-details.html">
-                                            <img src="@item.ImagePath" alt="@item.Title">
-                                        </a>
-                                    </div>
-                                    <div class="content">
-
-                                        <h3><a href="job-details.html">@item.Title</a></h3>
-                                        <ul class="content-list2">
-                                        </ul>
-                                        <ul class="content-list3">
-                                            @*  <li><i class="ri-map-pin-line"></i> @item : <b>تمیزکاری</b></li> *@
-                                            <li><i class="ri-briefcase-line"></i> زیر دسته بندی : <b>@item.SubCategoryTitle</b></li>
-
-                                            <li><i class="ri-currency-line"></i>قیمت پایه : <b>@item.BasePrice</b></li>
-                                        </ul>
-                                    </div>
-                                    <div class="find-jobs-btn">
-                                        <a asp-controller="Order" asp-action="Create" asp-route-Id="@item.Id" class="default-btn border-radius-5">ثبت سفارش<i class="ri-send-plane-2-line"></i></a>
-                                    </div>
-
-                                </div>
+                                <p class="text-center text-danger">هیچ نتیجه‌ای یافت نشد!</p>
                             </div>
                         }
-                       
-                        
                     </div>
                 </div>
             </div>
@@ -126,8 +130,8 @@
                 </div>
             </div>
 
-            </div>
         </div>
     </div>
+</div>
 </div>
 

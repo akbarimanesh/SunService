@@ -10,6 +10,7 @@ namespace SunService.Domain.Core.SunServices.HService.Data
 {
     public interface IHomeServiceRepository
     {
+        public Task<List<HomeService>> SearchServices(string title, CancellationToken cancellationToken);
         public Task<List<HomeServiceDto>> GetHomeServicesBySubCategoryId(int subCategoryId, CancellationToken cancellationToken);
         public global::System.Threading.Tasks.Task UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken);
         //public Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken);

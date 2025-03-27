@@ -51,6 +51,11 @@ namespace SunService.Domain.Services.SunServices.HService
             return await _HomeServiceRepository.GetTitleHomeService(homeServiceTitle, cToken);
         }
 
+        public async Task<List<HomeService>> SearchServices(string title, CancellationToken cancellationToken)
+        {
+           return await _HomeServiceRepository.SearchServices(title, cancellationToken);
+        }
+
         public async Task UpdateExpertServices(int expertId, List<int> selectedHomeServices, CancellationToken cancellationToken)
         {
             await _HomeServiceRepository.UpdateExpertServices(expertId, selectedHomeServices, cancellationToken);   
