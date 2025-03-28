@@ -19,6 +19,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             _appDbContext = appDbContext;
         }
 
+        public async Task ActiveOrder(int orderid, CancellationToken cToken)
+        {
+            var order = await _appDbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderid, cToken);
+            order.StateOrder = true;
+            await _appDbContext.SaveChangesAsync(cToken);
+        }
+
         public async Task<int> CreateOrder(OrderDto order, CancellationToken cancellationToken)
         {
 
@@ -37,7 +44,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 
                Offers=order.Offers,
                 CustomerId = order.CustomerId,
-             
+             StateOrder=order.StateOrder,
                HomeServiceId = order.HomeserviceId,
                 ExpertId = order.ExpertId,
 
@@ -45,6 +52,13 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             await _appDbContext.Orders.AddAsync(order1, cancellationToken);
             await _appDbContext.SaveChangesAsync(cancellationToken);
             return order1.Id;
+        }
+
+        public async Task DeActiveOrder(int orderid, CancellationToken cToken)
+        {
+            var order = await _appDbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderid, cToken);
+            order.StateOrder = false;
+            await _appDbContext.SaveChangesAsync(cToken);
         }
 
         public async Task DeleteOrder(int id, CancellationToken cancellationToken)
@@ -67,6 +81,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 OrderHomeServiceStatus = x.OrderHomeServiceStatus,
                  OfferId = x.OfferId,
                 Offers=x.Offers.ToList(),
+                StateOrder=x.StateOrder
             }).ToListAsync(cancellationToken);
         }
 
@@ -98,7 +113,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                     CityId = o.Customer.CityId,
                     ImageUrls = o.Images.Select(img => img.Path).ToList(),
                     Offers = o.Offers.ToList(),
-                    
+                    StateOrder=o.StateOrder
                 })
                 .ToListAsync(cancellationToken);
 
@@ -119,6 +134,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
                 OrderHomeServiceStatus = x.OrderHomeServiceStatus,
                 OfferId = x.OfferId,
                 Offers = x.Offers.ToList(),
+                StateOrder=x.StateOrder
             }).ToListAsync(cancellationToken);
         }
 

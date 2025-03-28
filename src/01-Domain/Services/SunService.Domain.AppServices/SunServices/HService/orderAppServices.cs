@@ -27,6 +27,17 @@ namespace SunService.Domain.AppServices.SunServices.HService
             _baseEntitiesServices = baseEntitiesServices;
         }
 
+        public async Task<Result> ActiveOrder(int orderid, CancellationToken cToken)
+        {
+            if (await _orderServices.GetorderById(orderid, cToken) != null)
+            {
+                await _orderServices.ActiveOrder(orderid, cToken);
+                return new Result(true, "سفارش فعال شد.");
+            }
+            else
+                return new Result(false, "همچین سفارشی وجود ندارد.");
+        }
+
         public async Task<Result> CreateOrder(OrderDto orderdto, CancellationToken cancellationToken)
         {
             var customer = await _customerServices.GetCustomerById(orderdto.CustomerId, cancellationToken);
@@ -63,6 +74,17 @@ namespace SunService.Domain.AppServices.SunServices.HService
                 await _baseEntitiesServices.AddOrderImages(imagesPath,orderid, cancellationToken);
             }
             return new Result(true, "سفارش شما با موفقیت ثبت شد");
+        }
+
+        public async Task<Result> DeActiveOrder(int orderid, CancellationToken cToken)
+        {
+            if (await _orderServices.GetorderById(orderid, cToken) != null)
+            {
+                await _orderServices.DeActiveOrder(orderid, cToken);
+                return new Result(true, "سفارش غیر فعال شد.");
+            }
+            else
+                return new Result(false, "همچین سفارشی وجود ندارد.");
         }
 
         public async Task<List<OrderDto>> GetAllOrder(CancellationToken cancellationToken)

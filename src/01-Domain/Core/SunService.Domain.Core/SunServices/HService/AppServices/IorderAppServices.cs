@@ -11,6 +11,8 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
 {
     public interface IorderAppServices
     {
+        public Task<Result> ActiveOrder(int orderid, CancellationToken cToken);
+        public Task<Result> DeActiveOrder(int orderid, CancellationToken cToken);
         public  Task<List<OrderDto>> GetAllOrderHomeserviceExpert(int expertId, CancellationToken cancellationToken);
         public Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken);
         public Task<Order> GetorderById(int id, CancellationToken cancellationToken);

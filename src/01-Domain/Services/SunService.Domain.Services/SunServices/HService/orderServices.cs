@@ -21,9 +21,19 @@ namespace SunService.Domain.Services.SunServices.HService
             _OrderRepository = orderRepository;
         }
 
+        public async Task ActiveOrder(int orderid, CancellationToken cToken)
+        {
+           await _OrderRepository.ActiveOrder(orderid, cToken);
+        }
+
         public async Task<int> CreateOrder(OrderDto orderdto, CancellationToken cancellationToken)
         {
            return await _OrderRepository.CreateOrder(orderdto, cancellationToken);
+        }
+
+        public async Task DeActiveOrder(int orderid, CancellationToken cToken)
+        {
+            await _OrderRepository.DeActiveOrder(orderid, cToken);  
         }
 
         public async Task DeleteOrder(int id, CancellationToken cancellationToken)

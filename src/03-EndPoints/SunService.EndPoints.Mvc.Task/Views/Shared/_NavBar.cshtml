@@ -182,7 +182,7 @@
                                         </a>
 
                                     }
-                                        <a asp-area="َAccount" asp-controller="UserS" asp-action="Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
+                                        <a asp-area="Account" asp-controller="UserS" asp-action="Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
                                 </div>
                             }
                                 @if (User.Identity.IsAuthenticated)
@@ -221,7 +221,7 @@
                             {
                                 <div>
                                     <a href="#" class="default-btn two border-radius-5">داشبورد @User.Identity.Name  <i class="ri-file-user-fill"></i></a>
-                                    <a href="~/Account/UserS/Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
+                                    <a asp-area="Account" asp-controller="UserS" asp-action="Logout" class="default-btn two border-radius-5">خروج <i class="ri-logout-box-line"></i></a>
                                 </div>
                             }
                         </div>

@@ -99,6 +99,42 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             return View(model);
 
         }
+        [HttpPost]
+        public async Task<IActionResult> ActiveOrder(int id, CancellationToken cToken)
+        {
+            var result = await _orderAppServices.ActiveOrder(id, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+               
+            }
+            return RedirectToAction("Index", "Orders");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeActiveOrder(int id, CancellationToken cToken)
+        {
+            var result = await _orderAppServices.DeActiveOrder(id, cToken);
+            if (result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = result.IsMessage;
+
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.IsMessage;
+               
+            }
+            return RedirectToAction("Index", "Orders");
+
+        }
         private List<SelectListItem> GetOrdersList()
         {
             return Enum.GetValues(typeof(OrderHomeServiceStatusEnum))

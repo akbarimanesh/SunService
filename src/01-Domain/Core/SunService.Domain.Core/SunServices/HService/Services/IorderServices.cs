@@ -12,6 +12,8 @@ namespace SunService.Domain.Core.SunServices.HService.Services
 {
     public interface IorderServices
     {
+        public System.Threading.Tasks.Task ActiveOrder(int orderid, CancellationToken cToken);
+        public System.Threading.Tasks.Task DeActiveOrder(int orderid, CancellationToken cToken);
         public Task<List<OrderDto>> GetAllOrderHomeserviceExpert(int expertId, CancellationToken cancellationToken);
         public Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken);
         public Task<List<OrderDto>> GetAllOrder(CancellationToken cancellationToken);

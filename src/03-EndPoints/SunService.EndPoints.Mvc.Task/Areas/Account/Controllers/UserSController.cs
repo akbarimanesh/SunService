@@ -174,7 +174,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Account.Controllers
 
         public async Task<IActionResult> Logout(CancellationToken cToken)
         {
-            await SetCategories(cToken);
+           
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }

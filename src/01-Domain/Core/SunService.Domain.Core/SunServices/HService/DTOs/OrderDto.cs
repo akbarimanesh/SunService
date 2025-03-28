@@ -20,7 +20,7 @@ namespace SunService.Domain.Core.SunServices.HService.DTOs
      
         public int? ExpertId { get; set; }
         public int HomeserviceId { get; set; }
-     
+        public bool StateOrder { get; set; } = true;
         public string? CustomerFullName { get; set; }
         public DateTime ImplementationDate { get; set; }
         public DateTime CreateAt { get; set; }

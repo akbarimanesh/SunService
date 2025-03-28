@@ -47,6 +47,7 @@
                                
                                 <th>وضعیت سفارش</th>
                                 <th>پیشنهاد</th>
+                                <th>فعال/غیرفعال</th>
                                 <th>عملیات</th>
 
                             </tr>
@@ -69,6 +70,20 @@
 
                                     <td>
                                         <a asp-controller="Offers" asp-action="Index" asp-route-Id="@order.Id" class="btn btn-success">پیشنهادها</a>
+                                    </td>
+                                 
+                                    <td>
+                                        @if (order.StateOrder)
+                                        {
+                                            <form asp-action="DeActiveOrder" asp-controller="Orders" asp-route-id="@order.Id" value="@order.StateOrder"><button type="submit" class="badge bg-success">فعال</button></form>
+                                        }
+
+
+
+                                        else
+                                        {
+                                            <form asp-action="ActiveOrder" asp-controller="Orders" asp-route-id="@order.Id" value="@order.StateOrder"><button type="submit" class="badge bg-warning"> غیرفعال</button></form>
+                                        }
                                     </td>
                                    <td>
                                         <a asp-controller="Orders" asp-action="Update" asp-route-Id="@order.Id" class="btn btn-info">وضعیت</a>
