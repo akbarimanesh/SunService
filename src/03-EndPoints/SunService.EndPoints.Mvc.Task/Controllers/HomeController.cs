@@ -30,6 +30,7 @@ namespace SunService.EndPoints.Mvc.Task.Controllers
         }
         public async Task<IActionResult> Index(int page = 1, CancellationToken cToken = default)
         {
+           
             await SetCategories(cToken);
             int pageSize = 4; 
 

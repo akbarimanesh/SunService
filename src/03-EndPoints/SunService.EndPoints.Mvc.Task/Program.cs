@@ -30,15 +30,15 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.ConfigureLogging(o =>
-{
-    o.ClearProviders();
-    o.AddSerilog();
-}).UseSerilog((context, config) =>
-{
-    config.WriteTo.Console();
-    config.WriteTo.Seq("http://localhost:5341/", apiKey: "G3kSqNTR3g9VgOAwKZdd");
-});
+//builder.Host.ConfigureLogging(o =>
+//{
+//    o.ClearProviders();
+//    o.AddSerilog();
+//}).UseSerilog((context, config) =>
+//{
+//    config.WriteTo.Console();
+//    config.WriteTo.Seq("http://localhost:5341/", apiKey: "G3kSqNTR3g9VgOAwKZdd");
+//});
 
 // Add services to the container.
 
@@ -47,7 +47,17 @@ builder.Host.ConfigureLogging(o =>
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 var siteSettings = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
 builder.Services.AddSingleton(siteSettings);
-
+var apiKey = configuration["Serilog:WriteTo:1:Args:apiKey"];  
+var seqUrl = configuration["Serilog:WriteTo:1:Args:serverUrl"];
+builder.Host.ConfigureLogging(o =>
+{
+    o.ClearProviders();
+    o.AddSerilog();
+}).UseSerilog((context, config) =>
+{
+    config.WriteTo.Console();
+    config.WriteTo.Seq(seqUrl, apiKey: apiKey);
+});
 #endregion
 builder.Services.AddControllersWithViews();
 builder.Services.AddIdentity<User, IdentityRole<int>>(option =>
@@ -144,8 +154,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
+app.UseErrorLogging();
 app.UseRouting();
-//app.UseErrorLogging();
+
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "areas",

@@ -25,10 +25,12 @@ namespace SunService.EndPoints.Mvc.Task.Middleware
                 Log.Error(ex, message);
 
                 context.Response.ContentType = "application/json";
-
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new
                 {
+                    
                     error = message,
+                   
                 }));
             }
         }
