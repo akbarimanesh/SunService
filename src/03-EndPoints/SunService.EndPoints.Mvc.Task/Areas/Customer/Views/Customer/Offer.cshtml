@@ -38,7 +38,7 @@
                     <th scope="col">تاریخ پیشنهاد</th>
                     <th scope="col">تاریخ اتمام کار</th>
                     <th scope="col">توضیحات</th>
-                    <th scope="col">امتیاز کاربر</th>
+                    @* <th scope="col">امتیاز کاربر</th> *@
                     <th scope="col">عملیات</th>
                     
                 </tr>
@@ -65,7 +65,7 @@
                         <td>@offer.CompletionDate.ToPersianString("yyyy/MM/dd")</td>
                         <td>@offer.Description</td>
 
-                        <td>
+                       @*  <td>
                             <span class="stars">
                                 @{
                                     int roundedRating = (int)Math.Round(offer.AverageRating);
@@ -75,7 +75,7 @@
                                     <span class="@(i <= roundedRating ? "star-filled" : "star-empty")">★</span>
                                 }
                             </span>
-                        </td>
+                        </td> *@
 
                         <style>
                             .star-filled {

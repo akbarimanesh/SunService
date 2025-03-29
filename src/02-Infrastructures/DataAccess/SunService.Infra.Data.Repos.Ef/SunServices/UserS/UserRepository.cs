@@ -46,7 +46,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
         public async Task<List<UserSummaryDto>> GetAll(CancellationToken cancellationToken)
         {
             var users = await _appDbContext.Users
-           .Select(u => new UserSummaryDto
+           .OrderByDescending(o => o.RegisterAt).Select(u => new UserSummaryDto
            {
                Id = u.Id,
                FirstName=u.FirstName,

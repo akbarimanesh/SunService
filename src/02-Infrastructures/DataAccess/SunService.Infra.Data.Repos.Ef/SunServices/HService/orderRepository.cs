@@ -70,7 +70,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<List<OrderDto>> GetAllOrder(CancellationToken cancellationToken)
         {
-            return await _appDbContext.Orders.AsNoTracking().Include(o => o.Offers).Select(x => new OrderDto()
+            return await _appDbContext.Orders.AsNoTracking().Include(o => o.Offers).OrderByDescending(o => o.CreateAt).Select(x => new OrderDto()
             {
                 Id = x.Id,
                 HomeServiceTitle = x.HomeService.Title,
@@ -123,7 +123,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<List<OrderDto>> GetAllOrderUser(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Orders.AsNoTracking().Where(x => x.CustomerId == id).Include(o => o.Offers).Select(x => new OrderDto()
+            return await _appDbContext.Orders.AsNoTracking().Where(x => x.CustomerId == id).Include(o => o.Offers).OrderByDescending(o => o.CreateAt).Select(x => new OrderDto()
             {
                 Id = x.Id,
                 HomeServiceTitle = x.HomeService.Title,

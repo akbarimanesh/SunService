@@ -61,7 +61,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.UserS
                 .Include(x => x.Expert.ExpertServices)
                     .ThenInclude(es => es.Ratings)
                 .Include(x => x.Customer)
-                .Select(x => new RatingDto()
+                .OrderByDescending(o => o.CreatedAt).Select(x => new RatingDto()
                 {
                     Id = x.Id,
                     HomeServiceTitle = x.HomeService.Title,

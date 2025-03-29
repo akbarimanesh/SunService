@@ -84,12 +84,19 @@
                                 <a asp-area="Account" asp-controller="UserS" asp-action="Login" class="nav-link">سفارش های من </a>
                                
                             }
-                            else
+                            else if(User.IsInRole("Customer"))
                             {
                                 <a asp-area="Customer" asp-controller="Customer" asp-action="Order" class="nav-link">  
                                سفارش های من
 @*                                / <i class="ri-arrow-down-s-line"></i> *@
                                </a>
+                            }
+                            else if (User.IsInRole("Expert"))
+                            {
+                                <a asp-area="Expert" asp-controller="Expert" asp-action="Order" class="nav-link">
+                                    درخواست های من
+                                    @*                                / <i class="ri-arrow-down-s-line"></i> *@
+                                </a>
                             }
                         </li>
                         <li class="nav-item">
@@ -175,6 +182,12 @@
                                             داشبورد @User.Identity.Name  <i class="ri-file-user-fill"></i>
                                         </a>
                                     }
+                                     else if (User.IsInRole("Customer"))
+                                    {
+                                        <a asp-area="Customer" asp-controller="Customer" asp-action="Index" as class="default-btn two border-radius-5">
+                                            داشبورد @User.Identity.Name  <i class="ri-file-user-fill"></i>
+                                        </a>
+                                    }
                                     else
                                     {
                                         <a asp-area="Expert" asp-controller="Expert" asp-action="Index" as class="default-btn two border-radius-5">
@@ -188,7 +201,7 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <div class="optional-item">
-                                        <a href="~/HomeService/Create" class="default-btn border-radius-5">ارسال سفارش <i class="ri-briefcase-2-line"></i></a>
+                                        <a href="~/Order/Create" class="default-btn border-radius-5">ارسال سفارش <i class="ri-briefcase-2-line"></i></a>
                                     </div>
                                 }
                         </div>
@@ -227,7 +240,7 @@
                         </div>
                         <div class="side-nav-item">
                             <a href="post-job.html" class="default-btn">
-                                ارسال آگهی <i class="ri-briefcase-2-line"></i>
+                                ارسال سفارش <i class="ri-briefcase-2-line"></i>
                             </a>
                         </div>
                     </div>

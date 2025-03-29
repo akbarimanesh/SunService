@@ -20,17 +20,16 @@ namespace SunService.EndPoints.Mvc.Task.Middleware
             }
             catch (Exception ex)
             {
-                var message = $"An error occurred: {ex.Message}";
+                var innerMessage = ex.InnerException != null ? ex.InnerException.Message : "No inner exception";
 
-                Log.Error(ex, message);
+                Log.Error(ex, "An error occurred: {Message} | Inner Exception: {InnerMessage}", ex.Message, innerMessage);
 
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new
                 {
-                    
-                    error = message,
-                   
+                    error = $"An error occurred: {ex.Message}",
+                    details = innerMessage
+
                 }));
             }
         }

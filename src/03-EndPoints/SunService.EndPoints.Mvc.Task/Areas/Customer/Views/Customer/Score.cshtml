@@ -34,6 +34,7 @@
             <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
             <input type="hidden" name="ExpertId" value="@Model.ExpertId" />
             <div class="row">
+             
                 <div class="col-lg-6">
                     <div class="form-group">
                         <div class="custom-star-rating">
@@ -44,6 +45,7 @@
                             <span class="fa fa-star" data-value="5"></span>
                         </div>
                         <input type="hidden" name="Score" id="Score" value="0" />
+                       
                     </div>
                 </div>
             </div>
@@ -102,3 +104,8 @@
             color: gold; /* Gold color for filled stars */
         }
 </style>
+@section Scripts
+  {
+    <partial name="_ValidationScriptsPartial" />
+}
+

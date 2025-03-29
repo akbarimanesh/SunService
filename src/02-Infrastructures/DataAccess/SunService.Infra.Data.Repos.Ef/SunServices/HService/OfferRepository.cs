@@ -121,7 +121,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
 
         public async Task<List<OfferDto>> GetAllOfferAllOrder(CancellationToken cancellationToken)
         {
-            return await _appDbContext.Offers.AsNoTracking().Select(x => new OfferDto()
+            return await _appDbContext.Offers.AsNoTracking().OrderByDescending(o => o.OfferDate).Select(x => new OfferDto()
             {
                 Id = x.Id,
                 HomeServiceTitle = x.Order.HomeService.Title,
