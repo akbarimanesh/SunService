@@ -1,4 +1,5 @@
 ﻿@using SunService.Domain.Core.SunServices.UserS.Enums
+@* @using Swashbuckle.AspNetCore.SwaggerUI *@
 @model HomePageViewModel
 
 @if (!ViewData.ModelState.IsValid)
@@ -249,58 +250,68 @@
         .ToList();
 }
 
+
+
 <div class="freelancers-area pt-100 pb-70">
     <div class="container">
         <div class="section-title text-center">
             <h2>کارشناس های دارای بالاترین امتیاز</h2>
             <div class="bar m-auto"></div>
         </div>
-
-        <div class="row pt-45 justify-content-center">
-            @foreach (var item in groupedExperts)
-            {
-               
-               
-                 @if (item.Status == StatuseRating.aproved) 
+      
+        <br />
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach (var item in groupedExperts)
                 {
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="freelancers-card">
-                            <a href="freelancer.html">
-                                @if (string.IsNullOrEmpty(item.ImagePathEXpert))
-                                {
-                                    <img style="border-radius: 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
-                                }
-                                else
-                                {
-                                    <img style="border-radius: 50%" src="@item.ImagePathEXpert" width="80" height="80" class="d-block mx-auto" />
-                                }
-                            </a>
-                            <div class="title">
-                                <h3>
-                                    <a href="freelancer.html">@item.ExpertFullName</a>
-                                </h3>
-                            </div>
-                            <p>@item.HomeServiceTitle</p>
-                            <div class="rating">
-                                <span class="stars">
-                                    @{
-                                        int roundedRating = (int)Math.Round(item.AverageRating);
-                                    }
-                                    @for (int i = 1; i <= 5; i++)
+                    @if (item.Status == StatuseRating.aproved)
+                    {
+                        <div class="swiper-slide">
+                            <div class="freelancers-card">
+                                <a >
+                                    @if (string.IsNullOrEmpty(item.ImagePathEXpert))
                                     {
-                                        <span class="@(i <= roundedRating ? "star-filled" : "star-empty")">★</span>
+                                        <img style="border-radius: 50%" src="~/images/Profiles/default-profile.jpg" width="80" height="80" class="d-block mx-auto" />
                                     }
-                                </span>
-                            </div>
-                            <div class="sub-title">
-                                <span class="sub-title2">میانگین امتیاز : <b>@item.AverageRating.ToString("0.0")</b></span>
+                                    else
+                                    {
+                                        <img style="border-radius: 50%" src="@item.ImagePathEXpert" width="80" height="80" class="d-block mx-auto" />
+                                    }
+                                </a>
+                                <div class="title">
+                                    <h3>
+                                        <a>@item.ExpertFullName</a>
+                                    </h3>
+                                </div>
+                                <p>@item.HomeServiceTitle</p>
+                                <div class="rating">
+                                    <span class="stars">
+                                        @{
+                                            int roundedRating = (int)Math.Round(item.AverageRating);
+                                        }
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <span class="@(i <= roundedRating ? "star-filled" : "star-empty")">★</span>
+                                        }
+                                    </span>
+                                </div>
+                                <div class="sub-title">
+                                    <span class="sub-title2">میانگین امتیاز : <b>@item.AverageRating.ToString("0.0")</b></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
-            }
+            </div>
+            <br />
+           
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            
+            <div class="swiper-pagination"></div>
         </div>
     </div>
+    <br>
 </div>
 
 <style>
@@ -313,6 +324,75 @@
         color: lightgray;
         font-size: 18px;
     }
+
+    .swiper {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .swiper-button-next, .swiper-button-prev {
+        background-color: #00c897; 
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff !important;
+        font-size: 20px;
+        transition: 0.3s;
+    }
+
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background-color: #008f6b; 
+        }
+
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 18px; 
+            font-weight: bold;
+        }
+
+    .freelancers-card{
+        margin-top:10px;
+        border-radius:5px;
+    }
 </style>
 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        loop: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        autoplay: {
+            delay: 5000, 
+            disableOnInteraction: false,
+        },
+        speed: 800, 
+        breakpoints: {
+            1024: { slidesPerView: 3 },
+            768: { slidesPerView: 2 },
+            480: { slidesPerView: 1 }
+        }
+    });
+
+</script>
 
