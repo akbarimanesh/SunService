@@ -95,7 +95,10 @@ namespace SunService.Domain.AppServices.SunServices.HService
 
            
         }
-
+        public void  ClearHomeserviceCache()
+        {
+            _memoryCache.Remove("HomeServiceList");
+        }
         public async Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken)
         {
             if (await _homeServiceServices.GetHomeServiceById(id, cancellationToken) != null)

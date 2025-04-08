@@ -51,7 +51,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         public IActionResult Create()
         {
 
-
+            _categoryAppServices.ClearCategoryCache();
             return View();
 
         }
@@ -72,6 +72,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             var result = await _categoryAppServices.CreateCategory(category1, cToken);
             if (result.IsSuccess)
             {
+                _categoryAppServices.ClearCategoryCache();
                 TempData["SuccessMessage"] = result.IsMessage;
                 return RedirectToAction("Index", "Category");
 
@@ -81,6 +82,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 TempData["ErrorMessage"] = result.IsMessage;
 
             }
+           
             return View(category);
         }
         [HttpGet]
@@ -90,6 +92,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             var result = await _categoryAppServices.DeleteCategory(id, cToken);
             if (result.IsSuccess)
             {
+                _categoryAppServices.ClearCategoryCache();
                 TempData["SuccessMessage"] = result.IsMessage;
 
 
@@ -131,6 +134,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                 var result = await _categoryAppServices.UpdateCategory(category1, cToken);
                 if (result.IsSuccess)
                 {
+                    _categoryAppServices.ClearCategoryCache();
                     TempData["SuccessMessage"] = result.IsMessage;
                 }
                 else

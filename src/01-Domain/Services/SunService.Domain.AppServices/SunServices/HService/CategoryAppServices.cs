@@ -82,10 +82,13 @@ namespace SunService.Domain.AppServices.SunServices.HService
 
 
             return categories;
-
-           
         }
-
+        public void ClearCategoryCache()
+        {
+            _memoryCache.Remove("CategoriesList");
+        }
+       
+       
         public async Task<List<Category>> GetAllCategoriesWithHomeservice(CancellationToken cancellationToken)
         {
             return await _categoryServices.GetAllCategoriesWithHomeservice(cancellationToken);

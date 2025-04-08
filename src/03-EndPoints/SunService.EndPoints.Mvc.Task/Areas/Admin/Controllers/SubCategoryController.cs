@@ -52,7 +52,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         public IActionResult Create()
         {
 
-
+            _subcategoryAppServices.ClearSubCategoryCache();
             return View();
 
         }
@@ -62,6 +62,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             var result = await _subcategoryAppServices.CreateSubCategory(subcategory, cToken);
             if (result.IsSuccess)
             {
+                _subcategoryAppServices.ClearSubCategoryCache();
                 TempData["SuccessMessage"] = result.IsMessage;
                 return RedirectToAction("Index", "SubCategory");
 
@@ -80,6 +81,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             var result = await _subcategoryAppServices.DeleteSubCategory(id, cToken);
             if (result.IsSuccess)
             {
+                _subcategoryAppServices.ClearSubCategoryCache();
                 TempData["SuccessMessage"] = result.IsMessage;
 
 
@@ -108,6 +110,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
                CategoryName=subcategory.Category.Title,
                CategoryId=subcategory.Category.Id,
             };
+            _subcategoryAppServices.ClearSubCategoryCache();
             return View(model);
 
 
@@ -117,10 +120,11 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var subcategory1 = new SubCategoryDto { Id = subcategory.Id, Title = subcategory.Title, CategoryName=subcategory.CategoryName };
+                var subcategory1 = new SubCategoryDto { Id = subcategory.Id, Title = subcategory.Title, CategoryName=subcategory.CategoryName, CategoryId=subcategory.CategoryId };
                 var result = await _subcategoryAppServices.UpdateSubCategory(subcategory1, cToken);
                 if (result.IsSuccess)
                 {
+                    _subcategoryAppServices.ClearSubCategoryCache();
                     TempData["SuccessMessage"] = result.IsMessage;
 
 

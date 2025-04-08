@@ -17,8 +17,10 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
         public Task<List<HomeServiceDto>> GetAllHomeService(CancellationToken cancellationToken);
         public Task<HomeService> GetHomeServiceById(int id, CancellationToken cancellationToken);
         public Task<Result> CreateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken);
+
         public Task<Result> DeleteHomeService(int id, CancellationToken cancellationToken);
         public Task<Result> UpdateHomeService(HomeServiceDto homeService, CancellationToken cancellationToken);
-       
+        public void ClearHomeserviceCache();
+
     }
 }

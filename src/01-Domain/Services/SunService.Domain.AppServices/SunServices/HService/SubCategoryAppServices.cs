@@ -71,6 +71,10 @@ namespace SunService.Domain.AppServices.SunServices.HService
             }
             return subcategories;
         }
+        public void ClearSubCategoryCache()
+        {
+            _memoryCache.Remove("SubCategoriesList");
+        }
 
         public async Task<List<SubCategoryDto>> GetSubCategoriesByCategoryId(int categoryId, CancellationToken cancellationToken)
         {

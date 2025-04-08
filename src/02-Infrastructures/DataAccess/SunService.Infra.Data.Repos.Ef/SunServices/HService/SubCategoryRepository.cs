@@ -84,7 +84,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             var subcategory1 = await _appDbContext.SubCategories.FirstOrDefaultAsync(x => x.Id == subcategory.Id, cancellationToken);
             subcategory1.Id = subcategory.Id;
             subcategory1.Title = subcategory.Title;
-           
+            subcategory1.CategoryId = subcategory.CategoryId;
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
     }

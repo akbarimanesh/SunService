@@ -50,7 +50,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         public IActionResult Create()
         {
 
-
+            _homeServiceAppServices.ClearHomeserviceCache();
             return View();
 
         }
@@ -72,6 +72,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             var result = await _homeServiceAppServices.CreateHomeService(homeservice1, cToken);
             if (result.IsSuccess)
             {
+                _homeServiceAppServices.ClearHomeserviceCache();
                 TempData["SuccessMessage"] = result.IsMessage;
                 return RedirectToAction("Index", "HomeService");
 
@@ -90,6 +91,7 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
             var result = await _homeServiceAppServices.DeleteHomeService(id, cToken);
             if (result.IsSuccess)
             {
+                _homeServiceAppServices.ClearHomeserviceCache();
                 TempData["SuccessMessage"] = result.IsMessage;
 
 
@@ -132,10 +134,11 @@ namespace SunService.EndPoints.Mvc.Task.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var homeservice1 = new HomeServiceDto { Id = homeService.Id, Title = homeService.Title, ImagePath = homeService.ImagePath, ProfileImgFile = homeService.ProfileImgFile,BasePrice=homeService.BasePrice,Description=homeService.Description,SubCategoryTitle=homeService.SubCategoryTitle };
+                var homeservice1 = new HomeServiceDto { Id = homeService.Id, Title = homeService.Title, ImagePath = homeService.ImagePath, ProfileImgFile = homeService.ProfileImgFile,BasePrice=homeService.BasePrice,Description=homeService.Description,SubCategoryTitle=homeService.SubCategoryTitle,SubCategoryId=homeService.SubCategoryId };
                 var result = await _homeServiceAppServices.UpdateHomeService(homeservice1, cToken);
                 if (result.IsSuccess)
                 {
+                    _homeServiceAppServices.ClearHomeserviceCache();
                     TempData["SuccessMessage"] = result.IsMessage;
                 }
                 else

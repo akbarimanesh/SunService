@@ -16,5 +16,6 @@ namespace SunService.Domain.Core.SunServices.HService.AppServices
         public Task<Result> CreateSubCategory(SubCategory subcategory, CancellationToken cancellationToken);
         public Task<Result> DeleteSubCategory(int id, CancellationToken cancellationToken);
         public Task<Result> UpdateSubCategory(SubCategoryDto subcategory, CancellationToken cancellationToken);
+        public void ClearSubCategoryCache();
     }
 }

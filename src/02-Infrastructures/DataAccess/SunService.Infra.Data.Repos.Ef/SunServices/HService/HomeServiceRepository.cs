@@ -126,7 +126,7 @@ namespace SunService.Infra.Data.Repos.Ef.SunServices.HService
             homeServicey1.Description = homeService.Description;
             homeServicey1.BasePrice = homeService.BasePrice;
             homeServicey1.ImagePath = homeService.ImagePath ?? homeServicey1.ImagePath;
-
+            homeServicey1.SubCategoryId= homeService.SubCategoryId;
 
             await _appDbContext.SaveChangesAsync(cancellationToken);
         }
